@@ -1,6 +1,6 @@
-# 50Cent React Frontend
+# 50Cent/ React Frontend
 
-> Frontend application for 50Cent Eliftech School project
+> Frontend application for 50Cent/ Eliftech School project
 
 ## Available Scripts
 

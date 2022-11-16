@@ -4,9 +4,9 @@ import (
 	"context"
 	"mime/multipart"
 
-	"eliftech-school/backend/config"
-	"eliftech-school/backend/internal/command"
-	"eliftech-school/backend/internal/models"
+	"50Cent/backend/config"
+	"50Cent/backend/internal/command"
+	"50Cent/backend/internal/models"
 
 	"gorm.io/gorm"
 )

@@ -3,11 +3,11 @@ package service
 import (
 	"context"
 
-	"eliftech-school/backend/config"
-	"eliftech-school/backend/internal/command"
-	"eliftech-school/backend/internal/domain"
-	"eliftech-school/backend/internal/models"
-	"eliftech-school/backend/internal/repositories"
+	"50Cent/backend/config"
+	"50Cent/backend/internal/command"
+	"50Cent/backend/internal/domain"
+	"50Cent/backend/internal/models"
+	"50Cent/backend/internal/repositories"
 )
 
 //go:generate mockgen -source=service.go -destination=mocks/mock.go

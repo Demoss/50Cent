@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"eliftech-school/backend/internal/domain"
+	"50Cent/backend/internal/domain"
 	"log"
 
 	"github.com/gin-gonic/gin"

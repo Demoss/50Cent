@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"eliftech-school/backend/config"
+	"50Cent/backend/config"
 	// swag docs
-	_ "eliftech-school/backend/docs"
-	"eliftech-school/backend/internal/service"
+	_ "50Cent/backend/docs"
+	"50Cent/backend/internal/service"
 
 	"github.com/gin-contrib/cors"
 

@@ -3,8 +3,8 @@ package database
 import (
 	"fmt"
 
-	"eliftech-school/backend/config"
-	"eliftech-school/backend/internal/models"
+	"50Cent/backend/config"
+	"50Cent/backend/internal/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

@@ -1,7 +1,7 @@
 package email
 
 import (
-	"eliftech-school/backend/config"
+	"50Cent/backend/config"
 
 	"github.com/sendgrid/sendgrid-go"
 )

@@ -1,4 +1,4 @@
-module eliftech-school/backend
+module 50Cent/backend
 
 go 1.18
 

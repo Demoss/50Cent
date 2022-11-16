@@ -1,11 +1,11 @@
 package service
 
 import (
+	"50Cent/backend/config"
+	"50Cent/backend/internal/domain"
+	"50Cent/backend/internal/models"
+	"50Cent/backend/internal/repositories"
 	"context"
-	"eliftech-school/backend/config"
-	"eliftech-school/backend/internal/domain"
-	"eliftech-school/backend/internal/models"
-	"eliftech-school/backend/internal/repositories"
 	"errors"
 	"mime/multipart"
 	"time"

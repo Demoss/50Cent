@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"eliftech-school/backend/internal/constants"
-	"eliftech-school/backend/internal/helper"
+	"50Cent/backend/internal/constants"
+	"50Cent/backend/internal/helper"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -11,8 +11,8 @@ import (
 
 	"github.com/stripe/stripe-go/v72"
 
-	"eliftech-school/backend/internal/command"
-	"eliftech-school/backend/internal/domain"
+	"50Cent/backend/internal/command"
+	"50Cent/backend/internal/domain"
 
 	"github.com/gin-gonic/gin"
 )

@@ -5,9 +5,9 @@
 package mock_repositories
 
 import (
+	command "50Cent/backend/internal/command"
+	models "50Cent/backend/internal/models"
 	context "context"
-	command "eliftech-school/backend/internal/command"
-	models "eliftech-school/backend/internal/models"
 	multipart "mime/multipart"
 	reflect "reflect"
 

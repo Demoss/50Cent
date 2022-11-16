@@ -4,8 +4,8 @@ import (
 	"context"
 	"math"
 
-	"eliftech-school/backend/internal/helper"
-	"eliftech-school/backend/internal/models"
+	"50Cent/backend/internal/helper"
+	"50Cent/backend/internal/models"
 
 	"gorm.io/gorm"
 )

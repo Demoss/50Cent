@@ -1,7 +1,7 @@
 package main
 
 import (
-	"eliftech-school/backend/app"
+	"50Cent/backend/app"
 )
 
 // @title        50 Cent API

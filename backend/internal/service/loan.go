@@ -1,15 +1,15 @@
 package service
 
 import (
+	"50Cent/backend/internal/constants"
+	"50Cent/backend/internal/helper"
 	"context"
-	"eliftech-school/backend/internal/constants"
-	"eliftech-school/backend/internal/helper"
 	"errors"
 	"time"
 
-	"eliftech-school/backend/internal/domain"
-	"eliftech-school/backend/internal/models"
-	"eliftech-school/backend/internal/repositories"
+	"50Cent/backend/internal/domain"
+	"50Cent/backend/internal/models"
+	"50Cent/backend/internal/repositories"
 )
 
 type LoanService struct {

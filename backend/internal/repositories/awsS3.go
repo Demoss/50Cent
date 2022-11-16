@@ -1,9 +1,9 @@
 package repositories
 
 import (
+	"50Cent/backend/config"
+	"50Cent/backend/internal/command"
 	"bytes"
-	"eliftech-school/backend/config"
-	"eliftech-school/backend/internal/command"
 	"errors"
 	"fmt"
 	"io"

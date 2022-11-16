@@ -6,7 +6,7 @@ import (
 	"github.com/twilio/twilio-go"
 	openapi "github.com/twilio/twilio-go/rest/api/v2010"
 
-	"eliftech-school/backend/config"
+	"50Cent/backend/config"
 )
 
 type TwilioRepository struct {
@@ -30,7 +30,7 @@ func (r *TwilioRepository) SendMessage(to, code string) (string, error) {
 	params := &openapi.CreateMessageParams{}
 	params.SetTo(to)
 	params.SetFrom(r.from)
-	params.SetBody(fmt.Sprintf("50cent.com | Your authorization code: %s", code))
+	params.SetBody(fmt.Sprintf("50Cent/.com | Your authorization code: %s", code))
 
 	resp, err := r.client.Api.CreateMessage(params)
 	if err != nil {

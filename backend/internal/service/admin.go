@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 
-	"eliftech-school/backend/config"
-	"eliftech-school/backend/internal/constants"
-	"eliftech-school/backend/internal/models"
-	"eliftech-school/backend/internal/repositories"
+	"50Cent/backend/config"
+	"50Cent/backend/internal/constants"
+	"50Cent/backend/internal/models"
+	"50Cent/backend/internal/repositories"
 )
 
 type AdminService struct {

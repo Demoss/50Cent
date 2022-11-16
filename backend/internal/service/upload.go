@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 
-	"eliftech-school/backend/internal/command"
-	"eliftech-school/backend/internal/models"
-	"eliftech-school/backend/internal/repositories"
+	"50Cent/backend/internal/command"
+	"50Cent/backend/internal/models"
+	"50Cent/backend/internal/repositories"
 )
 
 type UploadService struct {

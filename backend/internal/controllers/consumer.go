@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"eliftech-school/backend/internal/helper"
+	"50Cent/backend/internal/helper"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

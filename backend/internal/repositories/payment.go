@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	"eliftech-school/backend/config"
+	"50Cent/backend/config"
 	"errors"
 
 	"github.com/stripe/stripe-go/v72/paymentintent"

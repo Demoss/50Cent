@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"eliftech-school/backend/internal/command"
+	"50Cent/backend/internal/command"
 
 	"github.com/gin-gonic/gin"
 )

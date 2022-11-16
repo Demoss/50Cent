@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"eliftech-school/backend/internal/constants"
-	"eliftech-school/backend/internal/helper"
+	"50Cent/backend/internal/constants"
+	"50Cent/backend/internal/helper"
 
 	"github.com/gin-gonic/gin"
 )

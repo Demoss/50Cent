@@ -17,12 +17,12 @@ import (
 	"github.com/pquerna/otp/totp"
 	"google.golang.org/api/idtoken"
 
-	"eliftech-school/backend/config"
+	"50Cent/backend/config"
 
-	"eliftech-school/backend/internal/command"
-	"eliftech-school/backend/internal/domain"
-	"eliftech-school/backend/internal/models"
-	"eliftech-school/backend/internal/repositories"
+	"50Cent/backend/internal/command"
+	"50Cent/backend/internal/domain"
+	"50Cent/backend/internal/models"
+	"50Cent/backend/internal/repositories"
 
 	"github.com/golang-jwt/jwt"
 )
@@ -473,7 +473,7 @@ func (s *AuthService) RegisterOTP(ctx context.Context, userID uint) ([]byte, err
 
 func (s *AuthService) generateCodeSecret(email string) (code []byte, secret string, err error) {
 	key, err := totp.Generate(totp.GenerateOpts{
-		Issuer:      "50cent.com",
+		Issuer:      "50Cent/.com",
 		AccountName: email,
 	})
 	if err != nil {

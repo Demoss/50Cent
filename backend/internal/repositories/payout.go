@@ -1,8 +1,8 @@
 package repositories
 
 import (
+	"50Cent/backend/internal/models"
 	"context"
-	"eliftech-school/backend/internal/models"
 
 	"gorm.io/gorm"
 )

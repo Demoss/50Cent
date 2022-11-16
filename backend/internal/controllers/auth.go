@@ -9,11 +9,11 @@ import (
 	"log"
 	"net/http"
 
-	"eliftech-school/backend/internal/service"
+	"50Cent/backend/internal/service"
 
-	"eliftech-school/backend/internal/command"
-	"eliftech-school/backend/internal/domain"
-	"eliftech-school/backend/internal/helper"
+	"50Cent/backend/internal/command"
+	"50Cent/backend/internal/domain"
+	"50Cent/backend/internal/helper"
 
 	"github.com/gin-gonic/gin"
 )

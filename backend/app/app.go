@@ -1,12 +1,12 @@
 package app
 
 import (
-	"eliftech-school/backend/config"
-	"eliftech-school/backend/internal/controllers"
-	"eliftech-school/backend/internal/infrastructure/database"
-	"eliftech-school/backend/internal/infrastructure/email"
-	"eliftech-school/backend/internal/repositories"
-	"eliftech-school/backend/internal/service"
+	"50Cent/backend/config"
+	"50Cent/backend/internal/controllers"
+	"50Cent/backend/internal/infrastructure/database"
+	"50Cent/backend/internal/infrastructure/email"
+	"50Cent/backend/internal/repositories"
+	"50Cent/backend/internal/service"
 )
 
 func Run() error {

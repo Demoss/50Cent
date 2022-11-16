@@ -3,7 +3,7 @@ package repositories
 import (
 	"context"
 
-	"eliftech-school/backend/internal/models"
+	"50Cent/backend/internal/models"
 
 	"gorm.io/gorm"
 )

@@ -5,8 +5,8 @@
 package mock_service
 
 import (
+	domain "50Cent/backend/internal/domain"
 	context "context"
-	domain "eliftech-school/backend/internal/domain"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
