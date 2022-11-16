@@ -31,7 +31,7 @@ func (h *Controller) InitRouter(port string) error {
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AddAllowHeaders("Authorization")
 	corsConfig.AllowAllOrigins = true
-
+	corsConfig.AllowMethods = []string{"GET,POST,PUT"}
 	router.Use(cors.New(corsConfig))
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
