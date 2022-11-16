@@ -7,5 +7,5 @@ RUN go build -o back cmd/main.go
 
 FROM alpine:3.16
 WORKDIR /docker
-COPY --from=builder /docker/test-app .
+COPY --from=builder /docker/back .
 CMD ["./back"]
