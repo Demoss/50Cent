@@ -20,7 +20,7 @@ function createApi(getAxiosInstance: GetApiFunc) {
 
 export const Api = createApi(async () => {
   const apiToken = (await appStorage.getApiToken()) || '';
-  const baseURL = `${Config.API_BASEURL}/api/v1`;
+  const baseURL = `http://localhost:8000/api/v1`;
 
   return createAxiosInstance({ apiToken, baseURL });
 });
