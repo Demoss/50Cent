@@ -1,6 +1,6 @@
 FROM golang:1.18-alpine3.16 as builder
 WORKDIR /docker
-COPY backend/*.go ./
+COPY backend/go.* ./
 COPY backend .
 RUN go mod download
 RUN go build -o back cmd/main.go
