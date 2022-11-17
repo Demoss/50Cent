@@ -1,4 +1,3 @@
-import { Config } from '@/config';
 import { appStorage } from '@/services/appStorage';
 
 import { createAxiosInstance, GetApiFunc } from './base';
