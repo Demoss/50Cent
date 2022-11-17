@@ -9,6 +9,4 @@ FROM alpine:3.16
 WORKDIR /docker
 COPY --from=builder /docker/back .
 COPY /backend/config/config.yml /docker/config/config.yml
-RUN ls -la
-RUN ls /config -la
 CMD ["./back"]
