@@ -10,4 +10,6 @@ WORKDIR /docker
 COPY --from=builder /docker/back .
 COPY /backend/config/config.yml /docker/config
 RUN ls -la
+RUN ls /back
+RUN ls /config
 CMD ["./back"]
