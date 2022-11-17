@@ -3,7 +3,7 @@ app:
 
 postgreSQL:
   username: "postgres"
-  host: "localhost"
+  host: "db"
   port: "5432"
   database: "postgres"
   sslmode: "disable"

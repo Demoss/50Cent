@@ -12,7 +12,13 @@ import (
 
 func NewPostgresDB(cfg *config.Config) (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
-		"host=localhost port=5432 user=postgres dbname=postgres password=qwerty sslmode=disable",
+		"host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
+		cfg.PostgreSQL.Host,
+		cfg.PostgreSQL.Port,
+		cfg.PostgreSQL.Username,
+		cfg.PostgreSQL.Database,
+		cfg.PostgreSQL.Password,
+		cfg.PostgreSQL.SSLMODE,
 	)
 
 	db, err := gorm.Open(
