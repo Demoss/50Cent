@@ -14,11 +14,11 @@ type Config struct {
 		Port string `env:"PORT" env-default:"8000" yaml:"port"`
 	} `env:"app" yaml:"app"`
 	PostgreSQL struct {
-		Username string `env-required:"true" env-default:"postgres" yaml:"username"`
-		Password string `env-required:"true" env-default:"qwerty" yaml:"password"`
-		Host     string `env-required:"true" env-default:"localhost" yaml:"host"`
-		Port     string `env-required:"true" env-default:"5432" yaml:"port"`
-		Database string `env-required:"true" env-default:"postgres" yaml:"database"`
+		Username string `env-required:"true"  yaml:"username"`
+		Password string `env-required:"true"  yaml:"password"`
+		Host     string `env-required:"true"  yaml:"host"`
+		Port     string `env-required:"true"  yaml:"port"`
+		Database string `env-required:"true"  yaml:"database"`
 		SSLMODE  string `env-default:"disable" yaml:"sslmode"`
 	} `yaml:"postgreSQL"`
 	Auth struct {

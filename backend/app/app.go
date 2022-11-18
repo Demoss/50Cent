@@ -7,7 +7,6 @@ import (
 	"50Cent/backend/internal/infrastructure/email"
 	"50Cent/backend/internal/repositories"
 	"50Cent/backend/internal/service"
-	"fmt"
 )
 
 func Run() error {
@@ -18,7 +17,6 @@ func Run() error {
 		return err
 	}
 
-	fmt.Println(cfg)
 	mailclnt := email.NewSendgridClient(cfg)
 
 	rpsrs := repositories.NewRepository(db, cfg, mailclnt)
