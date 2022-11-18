@@ -10,47 +10,47 @@ const FooterComponent: FC = () => {
     <Footer>
       <Row justify="space-between">
         <Col>
-          <h2>Про нас</h2>
+          <h2>About us</h2>
           <Row>
-            <span>Про компанію</span>
+            <span>Company info</span>
           </Row>
           <Row>
             <span>FAG</span>
           </Row>
           <Row>
-            <span>Задати питання</span>
+            <span>Ask a question</span>
           </Row>
           <Row>
-            <span>Системні дані</span>
+            <span>System dat</span>
           </Row>
           <Row>
-            <span>Фірмовий стиль</span>
-          </Row>
-        </Col>
-
-        <Col>
-          <h2>Продукти та сервіси</h2>
-          <Row>
-            <span>Р2р позичання</span>
-          </Row>
-          <Row>
-            <span>Р2р кредитовання</span>
-          </Row>
-          <Row>
-            <span>Реферальна програма</span>
+            <span>Brand assets </span>
           </Row>
         </Col>
 
         <Col>
-          <h2>Дoкументація</h2>
+          <h2>Products and serices</h2>
           <Row>
-            <span>Узгода користувача</span>
+            <span>Р2р borrowing</span>
           </Row>
           <Row>
-            <span>Політика конфіденційності</span>
+            <span>Р2р lending</span>
           </Row>
           <Row>
-            <span>Підтримка</span>
+            <span>Referral program</span>
+          </Row>
+        </Col>
+
+        <Col>
+          <h2>Documentations</h2>
+          <Row>
+            <span>User agreement</span>
+          </Row>
+          <Row>
+            <span>Privacy Policy</span>
+          </Row>
+          <Row>
+            <span>Support</span>
           </Row>
         </Col>
       </Row>

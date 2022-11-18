@@ -80,22 +80,22 @@ export function AdminScreen() {
   const columns: ColumnsType<User> = [
     {
       key: 'role',
-      title: 'Роль',
+      title: 'Full name, role',
       dataIndex: 'role',
     },
     {
       key: 'name',
-      title: 'Імя',
+      title: 'Name',
       dataIndex: 'name',
     },
     {
       key: 'photo',
-      title: 'Фото',
+      title: 'Photo',
       render: (_, record: User) => {
         return (
           <span>
             <a target={`_blank`} href={record.photo}>
-              Фото
+              Photo
             </a>
           </span>
         );
@@ -103,12 +103,12 @@ export function AdminScreen() {
     },
     {
       key: 'passport',
-      title: 'Паспорт',
+      title: 'ID card',
       render: (_, record: User) => {
         return (
           <span>
             <a target={`_blank`} href={record.passport}>
-              Паспорт
+              ID card
             </a>
           </span>
         );
@@ -116,12 +116,12 @@ export function AdminScreen() {
     },
     {
       key: 'workplace',
-      title: 'Довідка з місця роботи',
+      title: 'Workplace',
       render: (_, record: User) => {
         return (
           <span>
             <a target={`_blank`} href={record.workplace}>
-              Місце роботи
+              Workplace
             </a>
           </span>
         );
@@ -129,12 +129,12 @@ export function AdminScreen() {
     },
     {
       key: 'property',
-      title: 'Майно',
+      title: 'Property',
       render: (_, record: User) => {
         return (
           <span>
             <a target={`_blank`} href={record.property}>
-              Майно
+              Private property
             </a>
           </span>
         );
@@ -142,15 +142,13 @@ export function AdminScreen() {
     },
     {
       key: 'action',
-      title: 'Дія',
+      title: 'Actions',
       render: (_, record: User) => (
         <span>
-          <ApproveAction onClick={onUserApprove(record)}>
-            Підтвердити
-          </ApproveAction>
+          <ApproveAction onClick={onUserApprove(record)}>Accept</ApproveAction>
           <Divider type="vertical" />
 
-          <RejectAction onClick={onUserReject(record)}>Скасувати</RejectAction>
+          <RejectAction onClick={onUserReject(record)}>Reject</RejectAction>
         </span>
       ),
     },
@@ -167,7 +165,6 @@ export function AdminScreen() {
       (user) => user.key === userKeyAdminWantsToDelete,
     )?.role;
 
-    //change from "Позичальник", or "Інвестор" to "consumer", or "investor":
     let role: UserTypeToSendApiRequest = UserTypeToSendApiRequest.investors;
     if (temp === roles.creditor) {
       role = UserTypeToSendApiRequest.consumers;
@@ -197,22 +194,22 @@ export function AdminScreen() {
 
   const success = (user: User) => {
     Modal.success({
-      title: 'Успішно!',
-      content: `Аккаунт ${user.name} активовано.`,
+      title: 'Success!',
+      content: `Account ${user.name} has been accepted successfully.`,
     });
   };
 
   return (
     <Container>
       <Modal
-        title="Підтвердіть дію"
-        okText={'Відхилити'}
-        cancelText={`Назад`}
+        title="Confirm the action"
+        okText={'Reject'}
+        cancelText={`Back`}
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <p>Опишіть, чому акаунт буде відхилено 👇</p>
+        <p>Describe why the account will be rejected 👇</p>
         <Form
           labelCol={{
             span: 4,
@@ -226,10 +223,10 @@ export function AdminScreen() {
           }}
           size={'small'}
         >
-          <Form.Item label="Причина: ">
+          <Form.Item label="Reason for rejection: ">
             <TextArea
               rows={4}
-              placeholder={`До ${MAX_FORM_LENGTH} символів`}
+              placeholder={`Up to ${MAX_FORM_LENGTH} symbols`}
               maxLength={MAX_FORM_LENGTH}
             />
           </Form.Item>
@@ -238,7 +235,7 @@ export function AdminScreen() {
       <Outlet />
       <Row>
         <Col span={18} offset={4}>
-          <Title>Аккаунти, очікуючі підтвердження</Title>
+          <Title>Accounts awaiting verification</Title>
           <Table<User> columns={columns} dataSource={dataSource} />
         </Col>
       </Row>

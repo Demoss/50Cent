@@ -1,6 +1,6 @@
 export const enum roles {
-  creditor = 'Позичальник',
-  investor = 'Інвестор',
+  creditor = 'Consumer',
+  investor = 'Investor',
 }
 
 export type UI_ROLES = roles | undefined;

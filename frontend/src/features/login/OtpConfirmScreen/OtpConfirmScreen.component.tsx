@@ -32,18 +32,20 @@ export const OtpConfirmScreen = () => {
 
   return (
     <PageContainer>
-      <PageTitle>Введіть код з застосунку Google Authenticator</PageTitle>
+      <PageTitle>
+        Enter the confirmation code from Google Authenticator App
+      </PageTitle>
       <form onSubmit={form.handleSubmit}>
         <Form.Item validateStatus={form.errors.code ? 'error' : 'success'}>
           <Input
-            placeholder="Код"
+            placeholder="Cpde"
             value={form.values.code > 0 ? form.values.code : ''}
             name="code"
             onChange={form.handleChange}
           />
         </Form.Item>
         <Form.Item>
-          <RedButton type="submit">Підтвердити</RedButton>
+          <RedButton type="submit">Confirm</RedButton>
         </Form.Item>
       </form>
     </PageContainer>
