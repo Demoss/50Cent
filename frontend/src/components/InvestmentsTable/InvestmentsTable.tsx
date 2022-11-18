@@ -8,25 +8,25 @@ import { LoanWithKeys } from '@/api/credit/getCredits/apiTypes';
 
 const columns: ColumnsType<Omit<LoanWithKeys, 'ID'>> = [
   {
-    title: 'Необхідна сума та ставка',
+    title: 'Required amount and rate',
     dataIndex: 'CreditSum',
     key: 'CreditSum',
     width: '20%',
     render: (_, el) => (
       <>
-        {el.CreditSum} під {el.CreditRate}%
+        {el.CreditSum} with {el.CreditRate}%
       </>
     ),
   },
   {
-    title: 'Срок кредиту',
+    title: 'Term of the loan',
     dataIndex: 'creditTerm',
     key: 'CreditTerm',
     width: '15%',
-    render: (term) => <>{term} місяців</>,
+    render: (term) => <>{term} months</>,
   },
   {
-    title: 'Рейтинг позичальника',
+    title: 'Borrower rate',
     dataIndex: 'CreditRate',
     key: 'CreditRate',
     defaultSortOrder: 'descend',
@@ -37,20 +37,20 @@ const columns: ColumnsType<Omit<LoanWithKeys, 'ID'>> = [
     ),
   },
   {
-    title: 'На що підуть гроші?',
+    title: 'What wil be the money used for?',
     dataIndex: 'CreditTitle',
     key: 'CreditTitle',
     width: '20%',
   },
   {
-    title: 'Опис',
+    title: 'Description',
     dataIndex: 'CreditDesc',
     key: 'CreditDesc',
     sortDirections: ['descend'],
     width: '25%',
   },
   {
-    title: 'Дія',
+    title: 'Action',
     dataIndex: 'CreditAction',
     key: 'CreditAction',
     width: '10%',

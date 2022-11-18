@@ -51,16 +51,16 @@ export const CreditScreen = () => {
       <CreditFormContainer>
         <StepsContainer>
           <Steps size="small" current={1}>
-            <Step title="Відіслати документи" />
-            <Step title="Заповнити форму" />
-            <Step title="Вашу заявку буде розміщено на 50 cent" />
+            <Step title="Submit docunets" />
+            <Step title="Fill in the form" />
+            <Step title="Your application will be placed on 50 Cent." />
           </Steps>
         </StepsContainer>
         <CreditFormStyled onSubmit={creditForm.handleSubmit}>
           <Form.Item
             validateStatus={creditForm.errors.creditSum ? 'error' : 'success'}
             help={creditForm.errors.creditSum}
-            label="Необхідна сума грошей, ₴: "
+            label="The required amount of money, $: "
             labelCol={{ span: 6 }}
           >
             <Input
@@ -74,12 +74,12 @@ export const CreditScreen = () => {
           <Form.Item
             validateStatus={creditForm.errors.creditTitle ? 'error' : 'success'}
             help={creditForm.errors.creditTitle}
-            label="Заголовок позики: "
+            label="Title of the loan: "
             labelCol={{ span: 6 }}
           >
             <Input
               size="large"
-              placeholder="Купити морозильник в кав'ярню"
+              placeholder="Buy a freezer in a coffee shop"
               name="creditTitle"
               value={creditForm.values.creditTitle}
               onChange={creditForm.handleChange}
@@ -88,12 +88,12 @@ export const CreditScreen = () => {
           <Form.Item
             validateStatus={creditForm.errors.creditDesc ? 'error' : 'success'}
             help={creditForm.errors.creditDesc}
-            label="Детальний опис позики: "
+            label="Detailed description of the loan: "
             labelCol={{ span: 6 }}
           >
             <TextArea
               size="large"
-              placeholder="У моїй кав'ярні спека, потрібно охолодити..."
+              placeholder="My coffee shop needs to buy a freezer to..."
               name="creditDesc"
               value={creditForm.values.creditDesc}
               onChange={creditForm.handleChange}
@@ -102,7 +102,7 @@ export const CreditScreen = () => {
           <Form.Item
             validateStatus={creditForm.errors.creditTerm ? 'error' : 'success'}
             help={creditForm.errors.creditTerm}
-            label="Термін кредиту(місяців): "
+            label="Term of the loan: "
             labelCol={{ span: 6 }}
           >
             <Input
@@ -116,7 +116,9 @@ export const CreditScreen = () => {
           <Form.Item
             validateStatus={creditForm.errors.creditRate ? 'error' : 'success'}
             help={creditForm.errors.creditRate}
-            label="Бажаний річний %: "
+            label="Desired Annual %
+            (0.5% service fee will be
+             added to this percentage): "
             labelCol={{ span: 6 }}
           >
             <Input
@@ -128,20 +130,20 @@ export const CreditScreen = () => {
             />
           </Form.Item>
           <Form.Item>
-            <RedButton type="submit">Подати заяву</RedButton>
+            <RedButton type="submit">Submit an application</RedButton>
           </Form.Item>
         </CreditFormStyled>
         <Divider />
       </CreditFormContainer>
       <InstructionContainer>
-        <Instruction>Інструкція</Instruction>
-        <InstructionText>Заповнення форми кредиту</InstructionText>
+        <Instruction>Instruction</Instruction>
+        <InstructionText>Filling out the loan form</InstructionText>
         <InstructionText>
-          Після заповнення цієї форми, Вашу заяву на кредит буде розміщено на
-          вкладці "шукають інвестицій". Інакше кажучи, кожен охочий інвестор
-          буде бачити Вашу заяву та зможе проінвестувати в неї, якщо йому
-          підійдуть умови. До зазначеного вами відсотку буде додано 0.5% -
-          комісія 50 cent.
+          After filling out this form, your loan application will be placed on
+          the "looking for investments" tab. In other words, every willing
+          investor will see your statement and will be able to invest in it, if
+          the conditions suit him. 0.5% will be added to the percentage
+          specified by you - a commission of 50 cents.
         </InstructionText>
       </InstructionContainer>
     </Layout>
