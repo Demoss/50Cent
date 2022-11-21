@@ -7,11 +7,13 @@ import (
 	"50Cent/backend/internal/infrastructure/email"
 	"50Cent/backend/internal/repositories"
 	"50Cent/backend/internal/service"
+	"fmt"
 )
 
 func Run() error {
 	cfg := config.GetConfig()
 
+	fmt.Println(cfg)
 	db, err := database.NewPostgresDB(cfg)
 	if err != nil {
 		panic(err)
