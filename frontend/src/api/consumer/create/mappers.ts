@@ -8,7 +8,7 @@ export function mapRequest(request: CreateRequest): CreateRequestApi {
   return {
     name: request.name,
     surname: request.surname,
-    middleName: request.middleName,
+    middle_name: request.middle_name,
     photo: request.photo,
     work_file: request.work_file,
     id_file: request.id_file,

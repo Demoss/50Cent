@@ -12,4 +12,5 @@ type Investor struct {
 	IDFile     multipart.FileHeader
 	UserID     uint
 	Balance    float64
+	Role       string
 }

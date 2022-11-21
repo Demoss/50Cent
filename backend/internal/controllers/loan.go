@@ -3,6 +3,8 @@ package controllers
 import (
 	"50Cent/backend/internal/constants"
 	"50Cent/backend/internal/helper"
+	"50Cent/backend/internal/query"
+
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -180,7 +182,126 @@ func (h *Controller) getLoanByID(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, &loan)
+	returnedInvestorMoney := loan.CreditSum * loan.CreditRate / 100
+
+	loanResponse := query.GetLoanByIDResponse{
+		CreditSum:             loan.CreditSum,
+		CreditTitle:           loan.CreditTitle,
+		CreditDescription:     loan.CreditDescription,
+		CreditTerm:            loan.CreditTerm,
+		CreditRate:            loan.CreditRate,
+		ReturnedInvestorMoney: returnedInvestorMoney,
+	}
+	c.JSON(http.StatusOK, loanResponse)
+}
+
+// @Summary                     Get accepted loans
+// @Tags                        Loans
+// @Description                 Get loans accepted by investor, searched by consumer Id
+// @ID                          getacceptedloan
+// @Accept                      json
+// @Produce                     json
+// @Param                       id path      int  true  "Loan ID"
+// @securityDefinitions.apikey  ApiKeyAuth
+// @Success                     200  {object}  statusResponse
+// @Failure                     400  {object}  errorResponse
+// @Failure                     500  {object}  errorResponse
+// @Router                      /loans/acceptedloans [get]
+// @Security                    ApiKeyAuth
+func (h *Controller) getAcceptedLoans(c *gin.Context) {
+	consumerID, err := helper.GetConsumerIDFromCtx(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "didn't find consumer with this id")
+		return
+	}
+
+	acceptedLoans, err := h.services.Loan.GetAcceptedLoan(c, consumerID)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "didn't find loan of consumer in accepted loans")
+		return
+	}
+
+	investorsID, err := h.services.Loan.GetInvestorFromLoan(c, acceptedLoans)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "didn't find investor's id")
+		return
+	}
+
+	loans := make([]query.GetConsumerLoansResponse, len(*acceptedLoans))
+
+	for i, currentAcceptedLoan := range *acceptedLoans {
+		loans[i].ID = currentAcceptedLoan.ID
+		loans[i].CreditSum = currentAcceptedLoan.CreditSum
+		loans[i].CreditTerm = currentAcceptedLoan.CreditTerm
+		loans[i].CreditTitle = currentAcceptedLoan.CreditTitle
+		loans[i].ReturnedAmount = currentAcceptedLoan.ReturnedAmount
+		loans[i].AcceptedAt = currentAcceptedLoan.AcceptedAt
+	}
+
+	for _, currentLoanInvestor := range *investorsID {
+		loans[0].InvestorID = currentLoanInvestor
+	}
+
+	c.JSON(http.StatusOK, loans)
+}
+
+func (h *Controller) getContrOffersByConsumer(c *gin.Context) {
+	consumerID, err := helper.GetConsumerIDFromCtx(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "didn't find consumer with such id")
+		return
+	}
+
+	offeredLoans, err := h.services.Loan.GetCounterOfferedLoans(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "didn't find loan of consumer in counteroffers")
+		return
+	}
+
+	loans := make([]query.GetContrOffersResponse, 0, 100)
+
+	for i, currentOfferedLoan := range *offeredLoans {
+		if currentOfferedLoan.ConsumerID != consumerID {
+			continue
+		}
+
+		loans[i].ID = currentOfferedLoan.ID
+		loans[i].CreditTitle = currentOfferedLoan.CreditTitle
+		loans[i].CreditSum = currentOfferedLoan.CreditSum
+		loans[i].CreditRate = currentOfferedLoan.CreditRate
+		loans[i].CreditNewRate = currentOfferedLoan.CreditNewRate
+		loans[i].CreditTerm = currentOfferedLoan.CreditTerm
+		loans[i].CreditNewTerm = currentOfferedLoan.CreditNewTerm
+	}
+
+	c.JSON(http.StatusOK, loans)
+}
+
+func (h *Controller) getAllUnOfferedLoans(c *gin.Context) {
+	consumerID, err := helper.GetConsumerIDFromCtx(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "didn't find this consumer")
+		return
+	}
+
+	unOfferedLoans, err := h.services.Loan.GetAllUnofferedLoans(c, consumerID)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "didn't find loan of consumer in allunfoffered loans")
+		return
+	}
+
+	loans := make([]query.GetAllUnOfferedLoansResponse, len(*unOfferedLoans))
+
+	for i, el := range *unOfferedLoans {
+		loans[i].CreditTitle = el.CreditTitle
+		loans[i].CreditSum = el.CreditSum
+		loans[i].CreditRate = el.CreditRate
+		loans[i].CreditTerm = el.CreditTerm
+	}
+
+	c.JSON(http.StatusOK, loans)
 }
 
 // @Summary                     Update Loan
@@ -199,6 +320,16 @@ func (h *Controller) getLoanByID(c *gin.Context) {
 // @Security                    ApiKeyAuth
 func (h *Controller) updateLoan(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	consumerID, err := helper.GetConsumerIDFromCtx(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid loan id")
@@ -222,7 +353,7 @@ func (h *Controller) updateLoan(c *gin.Context) {
 		ConsumerID:        c.GetUint("ConsumerID"),
 	}
 
-	if err := h.services.Loan.Update(c, id, &loan); err != nil {
+	if err := h.services.Loan.Update(c, id, &loan, consumerID); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "You can not update this loan")
 		return
 	}
@@ -250,7 +381,13 @@ func (h *Controller) deleteLoan(c *gin.Context) {
 		return
 	}
 
-	if err := h.services.Loan.Delete(c, id); err != nil {
+	consumerID, err := helper.GetConsumerIDFromCtx(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := h.services.Loan.Delete(c, id, consumerID); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "You can not delete")
 		return
 	}
@@ -373,7 +510,7 @@ func (h *Controller) loanCounteroffer(c *gin.Context) {
 		LoanID:     uint(id),
 	}
 
-	if err := h.services.Counteroffer(c, &loanCounteroffer); err != nil {
+	if err := h.services.Loan.Counteroffer(c, &loanCounteroffer); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}

@@ -1,3 +1,6 @@
+import { useCurrentUser } from '@/hooks';
+import { useGetUserToken } from '@/hooks/auth/useGetUserToken';
+import { appStorage } from '@/services/appStorage';
 import { useNavigate } from 'react-router-dom';
 import {
   PageContainer,
@@ -7,21 +10,26 @@ import {
 } from '../Obtain.styles';
 
 export const ObtainScreen = () => {
+  const { token } = useGetUserToken();
+  token && appStorage.setApiKey(token);
+  const { currentUser } = useCurrentUser();
+
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate('/payment');
+    if (currentUser?.role === 'consumer') navigate('/consumer');
+    else if (currentUser?.role === 'investor') navigate('investor');
   };
 
   return (
     <PageContainer>
-      <PageTitle>We have received your data ✅</PageTitle>
+      <PageTitle>Ми отримали ваші дані✅</PageTitle>
       <PageSubtitle>
-        As soon as we check everything, you will receive a notification by
-        e-mail and in your personal account. After that, you will be able to
-        take out a loan.
+        Як тільки ми все перевіримо - Вам прийде сповіщення на e-mail та у
+        особистий кабінет. Після цього, для вас будуть доступні всі можливості
+        сайту.
       </PageSubtitle>
       <ButtonStyled type="primary" onClick={handleClick} danger>
-        Continue
+        Домашня сторінка
       </ButtonStyled>
     </PageContainer>
   );

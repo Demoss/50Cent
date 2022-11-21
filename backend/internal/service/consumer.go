@@ -1,14 +1,17 @@
 package service
 
 import (
+	"context"
+	"errors"
+	"fmt"
+	"mime/multipart"
+	"time"
+
 	"50Cent/backend/config"
+	"50Cent/backend/internal/constants"
 	"50Cent/backend/internal/domain"
 	"50Cent/backend/internal/models"
 	"50Cent/backend/internal/repositories"
-	"context"
-	"errors"
-	"mime/multipart"
-	"time"
 )
 
 type ConsumerService struct {
@@ -65,7 +68,7 @@ func (s *ConsumerService) ConsumerRegistration(ctx context.Context, consumer *do
 		return err
 	}
 
-	if err := s.AddFileToConsumer(ctx, modelConsumer, &consumer.WorkFile, models.WorkFIle); err != nil {
+	if err := s.AddFileToConsumer(ctx, modelConsumer, &consumer.WorkFile, models.WorkFile); err != nil {
 		return err
 	}
 
@@ -143,6 +146,20 @@ func (s *ConsumerService) ApproveConsumerByID(ctx context.Context, id uint) erro
 	return nil
 }
 
+func (s *ConsumerService) DeclineConsumerByID(ctx context.Context, id uint) error {
+	consumer, err := s.consumerRepo.GetConsumerByUserID(ctx, uint64(id))
+	if err != nil {
+		return err
+	}
+
+	err = s.consumerRepo.DeleteConsumer(ctx, consumer)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (s *ConsumerService) GetAllUnverifiedConsumers(ctx context.Context) ([]models.Consumer, error) {
 	return s.consumerRepo.GetAllUnverifiedConsumers(ctx)
 }
@@ -186,7 +203,21 @@ func (s *ConsumerService) AddPaymentConfirm(ctx context.Context, accountID strin
 	}
 
 	consumer.StripeConfirmed = true
-	if err := s.consumerRepo.Save(ctx, consumer); err != nil {
+
+	err = s.consumerRepo.Save(ctx, consumer)
+	if err != nil {
+		return err
+	}
+
+	user, err := s.authRepo.GetUserByID(ctx, consumer.UserID)
+	if err != nil {
+		return err
+	}
+
+	user.Role = constants.Consumer
+
+	err = s.authRepo.Update(ctx, user)
+	if err != nil {
 		return err
 	}
 
@@ -281,4 +312,113 @@ func (s *ConsumerService) addRequiredPayment(ctx context.Context, id uint) (*dom
 	}
 
 	return &payout, nil
+}
+
+func (s *ConsumerService) UpdateConsumer(ctx context.Context, consumer *models.Consumer, id uint64, files *domain.Consumer) error {
+	consumerToUpdate, err := s.consumerRepo.GetConsumerByUserID(ctx, id)
+	if err != nil {
+		return nil
+	}
+
+	consumerToUpdate.Name = consumer.Name
+	consumerToUpdate.MiddleName = consumer.MiddleName
+	consumerToUpdate.Surname = consumer.Surname
+
+	updateErr := s.consumerRepo.UpdateConsumer(ctx, consumerToUpdate)
+	if updateErr != nil {
+		fmt.Println("failed to update consumer", err)
+	}
+
+	if len(files.Photo.Header) > 0 {
+		consumerPhoto := &domain.Consumer{
+			Photo: files.Photo,
+		}
+
+		if err := s.DeleteFileFromConsumer(ctx, consumerPhoto, "photo"); err != nil {
+			return err
+		}
+
+		if err := s.UpdateConsumerFiles(ctx, consumerPhoto, id); err != nil {
+			return err
+		}
+	}
+
+	if len(files.IDFile.Header) > 0 {
+		consumerIDFile := &domain.Consumer{
+			IDFile: files.IDFile,
+		}
+
+		if err := s.DeleteFileFromConsumer(ctx, consumerIDFile, "id_file"); err != nil {
+			return err
+		}
+
+		if err := s.UpdateConsumerFiles(ctx, consumerIDFile, id); err != nil {
+			return err
+		}
+	}
+
+	if len(files.WorkFile.Header) > 0 {
+		consumerWorkFile := &domain.Consumer{
+			WorkFile: files.WorkFile,
+		}
+
+		if err := s.DeleteFileFromConsumer(ctx, consumerWorkFile, "work_file"); err != nil {
+			return err
+		}
+
+		if err := s.UpdateConsumerFiles(ctx, consumerWorkFile, id); err != nil {
+			return err
+		}
+	}
+
+	if len(files.PropertyFile.Header) > 0 {
+		consumerPropFile := &domain.Consumer{
+			PropertyFile: files.PropertyFile,
+		}
+
+		if err := s.DeleteFileFromConsumer(ctx, consumerPropFile, "property_file"); err != nil {
+			return err
+		}
+
+		if err := s.UpdateConsumerFiles(ctx, consumerPropFile, id); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (s *ConsumerService) UpdateConsumerFiles(ctx context.Context, consumer *domain.Consumer, id uint64) error {
+	modelConsumer, err := s.consumerRepo.GetConsumerByUserID(ctx, id)
+
+	if err != nil {
+		return err
+	}
+
+	if err := s.AddFileToConsumer(ctx, modelConsumer, &consumer.Photo, models.Photo); err != nil {
+		return err
+	}
+
+	if err := s.AddFileToConsumer(ctx, modelConsumer, &consumer.IDFile, models.IDFile); err != nil {
+		return err
+	}
+
+	if err := s.AddFileToConsumer(ctx, modelConsumer, &consumer.WorkFile, models.WorkFile); err != nil {
+		return err
+	}
+
+	if err := s.AddFileToConsumer(ctx, modelConsumer, &consumer.WorkFile, models.PropertyFile); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *ConsumerService) DeleteFileFromConsumer(ctx context.Context, consumer *domain.Consumer, fileName string) error {
+	err := s.uploadRepo.DeleteFile(ctx, fileName)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

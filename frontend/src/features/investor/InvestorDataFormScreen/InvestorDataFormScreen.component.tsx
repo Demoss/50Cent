@@ -1,30 +1,35 @@
 import React from 'react';
 import { useFormik } from 'formik';
+import { Form, Input, message, Button, Upload } from 'antd';
+import { UploadOutlined, UserOutlined } from '@ant-design/icons';
+import { RcFile } from 'antd/lib/upload';
+
+import { Api } from '@/api';
+import { ButtonStyled } from './InvestorDataFormScreen.styles';
 import { PageContainer, PageSubtitle, PageTitle } from '../Investor.styles';
 import { InvestorDataForm } from './InvestorDataFormScreen.types';
 import { investorDataFormValidationSchema } from './InvestorFormValidation';
-import { Form, Input, message, Button, Upload } from 'antd';
-import { Api } from '@/api';
 
-import { UploadOutlined, UserOutlined } from '@ant-design/icons';
-import { RcFile } from 'antd/lib/upload';
-import { useNavigate } from 'react-router-dom';
-import { ButtonStyled } from './InvestorDataFormScreen.styles';
+function Redirect(url: string) {
+  window.location.href = url;
+  return null;
+}
 
 export const InvestorDataFormScreen: React.FC = () => {
-  const navigate = useNavigate();
   const form = useFormik<InvestorDataForm>({
     initialValues: {
       name: '',
       surname: '',
       middleName: '',
-      photo: undefined,
       idFile: undefined,
+      photo: undefined,
     },
     validationSchema: investorDataFormValidationSchema,
     validateOnChange: false,
 
-    async onSubmit(values) {
+    async onSubmit(values, errors) {
+      console.log(errors);
+
       try {
         await Api.registerInvestorForm({
           name: values.name,
@@ -33,7 +38,12 @@ export const InvestorDataFormScreen: React.FC = () => {
           photo: values.photo as RcFile,
           idFile: values.idFile as RcFile,
         });
-        navigate('/obtain');
+
+        await Api.registerInvestorStripe()
+          .then((response) => Redirect(response.url))
+          .catch((error) =>
+            message.error('Помилка при спробі додавання оплати.'),
+          );
       } catch (error) {
         return message.error("Something goes's wrong");
       }
@@ -42,8 +52,8 @@ export const InvestorDataFormScreen: React.FC = () => {
 
   return (
     <PageContainer>
-      <PageTitle>Please fill out the form👇</PageTitle>
-      <PageSubtitle>We need this data. It won’t be shared.</PageSubtitle>
+      <PageTitle>Будь ласка, заповність форму👇</PageTitle>
+      <PageSubtitle>Нам потрібні ці дані</PageSubtitle>
 
       <form onSubmit={form.handleSubmit}>
         <Form.Item
@@ -52,7 +62,7 @@ export const InvestorDataFormScreen: React.FC = () => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Name"
+            placeholder="Ім'я"
             name="name"
             value={form.values.name}
             onChange={form.handleChange}
@@ -65,7 +75,7 @@ export const InvestorDataFormScreen: React.FC = () => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Surname"
+            placeholder="Прізвище"
             name="surname"
             value={form.values.surname}
             onChange={form.handleChange}
@@ -78,7 +88,7 @@ export const InvestorDataFormScreen: React.FC = () => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Parental name"
+            placeholder="По батькові"
             name="middleName"
             value={form.values.middleName}
             onChange={form.handleChange}
@@ -92,8 +102,10 @@ export const InvestorDataFormScreen: React.FC = () => {
             }}
           >
             <span style={{ color: 'red' }}>*</span>
-            Photo:
-            <Button icon={<UploadOutlined />}>Click to upload</Button>
+            Фото:
+            <Button icon={<UploadOutlined />}>
+              Натисність, щоб завантажити
+            </Button>
           </Upload>
         </Form.Item>
         <Form.Item rules={[{ required: true }]}>
@@ -104,18 +116,22 @@ export const InvestorDataFormScreen: React.FC = () => {
             }}
           >
             <span style={{ color: 'red' }}>*</span>
-            ID card:
-            <Button icon={<UploadOutlined />}>Click to continue</Button>
+            Паспорт:
+            <Button icon={<UploadOutlined />}>
+              Натисність, щоб завантажити
+            </Button>
           </Upload>
         </Form.Item>
 
         <Form.Item>
           <ButtonStyled
             type="primary"
-            onClick={() => form.handleSubmit()}
+            onClick={() => {
+              form.handleSubmit();
+            }}
             danger
           >
-            Continue
+            Продовжити
           </ButtonStyled>
         </Form.Item>
       </form>

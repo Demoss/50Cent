@@ -94,3 +94,12 @@ func (r *UploadRepository) GetUserFilesLinks(ctx context.Context, userID uint) (
 
 	return fileTypeToLink, nil
 }
+
+func (r *UploadRepository) DeleteFile(ctx context.Context, fileType string) error {
+	err := r.db.WithContext(ctx).Where("file_type = ?", fileType).Delete(&models.UserFile{}).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

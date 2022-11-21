@@ -1,60 +1,53 @@
 import { FC, useState } from 'react';
 import { Table } from 'antd';
 import type { ColumnsType, TablePaginationConfig } from 'antd/lib/table';
+import { Link } from 'react-router-dom';
 
-import { EstimateContainer } from './InvestmentsTable.styles';
 import { useAllCredits } from '@/hooks/credits';
 import { LoanWithKeys } from '@/api/credit/getCredits/apiTypes';
 
 const columns: ColumnsType<Omit<LoanWithKeys, 'ID'>> = [
   {
-    title: 'Required amount and rate',
+    title: 'Необхідна сума та ставка',
     dataIndex: 'CreditSum',
     key: 'CreditSum',
-    width: '20%',
+    width: '25%',
     render: (_, el) => (
       <>
-        {el.CreditSum} with {el.CreditRate}%
+        ${Math.round(el.CreditSum)} під {el.CreditRate}%
       </>
     ),
   },
   {
-    title: 'Term of the loan',
-    dataIndex: 'creditTerm',
+    title: 'Срок кредиту',
+    dataIndex: 'СreditTerm',
     key: 'CreditTerm',
     width: '15%',
-    render: (term) => <>{term} months</>,
+    render: (_, el) => <>{el.CreditTerm} місяців</>,
   },
   {
-    title: 'Borrower rate',
-    dataIndex: 'CreditRate',
-    key: 'CreditRate',
-    defaultSortOrder: 'descend',
-    width: '10%',
-    sorter: (a, b) => a.CreditRate - b.CreditRate,
-    render: (_, { CreditRate }) => (
-      <EstimateContainer estimate={CreditRate}>{CreditRate}</EstimateContainer>
-    ),
-  },
-  {
-    title: 'What wil be the money used for?',
+    title: 'На що підуть гроші?',
     dataIndex: 'CreditTitle',
     key: 'CreditTitle',
     width: '20%',
+    render: (CreditTitle) => <>{CreditTitle}</>,
   },
   {
-    title: 'Description',
-    dataIndex: 'CreditDesc',
-    key: 'CreditDesc',
+    title: 'Опис',
+    dataIndex: 'CreditDescription',
+    key: 'CreditDescription',
     sortDirections: ['descend'],
-    width: '25%',
+    width: '30%',
+    sorter: (a, b) => a.CreditDescription.length - b.CreditDescription.length,
   },
   {
-    title: 'Action',
-    dataIndex: 'CreditAction',
-    key: 'CreditAction',
+    title: 'Дія',
+    dataIndex: 'CreditID',
+    key: 'CreditID',
     width: '10%',
-    render: (text) => <a href={'/'}>{text}</a>,
+    render: (CreditID) => (
+      <Link to={`/credit/get/${CreditID}`}>Детальніше</Link>
+    ),
   },
 ];
 

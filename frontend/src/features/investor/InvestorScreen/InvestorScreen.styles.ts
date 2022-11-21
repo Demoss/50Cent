@@ -1,8 +1,8 @@
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const InvestorHomeContainer = styled.div`
   background-color: var(--secondary-color);
-  height: 320px;
   padding: 0 100px;
 `;
 
@@ -36,4 +36,11 @@ export const SubTitleContainer = styled.p`
   font-size: 22px;
   line-height: 30px;
   letter-spacing: 1px;
+`;
+export const NavLinkStyled = styled(NavLink)`
+  background-color: var(--header-color);
+  color: var(--footer-color);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 5px 10px;
 `;

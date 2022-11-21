@@ -1,9 +1,8 @@
 package repositories
 
 import (
-	"context"
-
 	"50Cent/backend/internal/models"
+	"context"
 
 	"gorm.io/gorm"
 )
@@ -23,8 +22,7 @@ func (r *ConfirmationCodeRepository) Create(ctx context.Context, code *models.Co
 func (r *ConfirmationCodeRepository) GetConfirmationCode(ctx context.Context, user *models.User) (*models.ConfirmationCode, error) {
 	var code models.ConfirmationCode
 
-	err := r.db.WithContext(ctx).Where("user_ID = ?", user.ID).First(&code).Error
-
+	err := r.db.WithContext(ctx).Where("user_ID = ?", user.ID).Last(&code).Error
 	if err != nil {
 		return nil, err
 	}
@@ -38,10 +36,20 @@ func (r *ConfirmationCodeRepository) DeleteConfirmationCode(ctx context.Context,
 		return err
 	}
 
-	err = r.db.WithContext(ctx).Delete(code).Error
-	if err != nil {
+	if err := r.db.WithContext(ctx).Delete(code).Error; err != nil {
 		return err
 	}
 
-	return err
+	return nil
+}
+
+func (r *ConfirmationCodeRepository) CheckIfExists(ctx context.Context, user *models.User) (bool, error) {
+	var exists bool
+
+	err := r.db.WithContext(ctx).Model(&models.ConfirmationCode{}).Select("count(*) > 0").Where("user_ID = ?", user.ID).Find(&exists).Error
+	if err != nil {
+		return false, err
+	}
+
+	return exists, nil
 }

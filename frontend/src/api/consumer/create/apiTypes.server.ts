@@ -1,13 +1,11 @@
-import { UploadFile } from 'antd/lib/upload/interface';
-
 export interface CreateRequestApi {
   name: string;
   surname: string;
-  middleName: string;
-  photo?: UploadFile | null;
-  work_file?: UploadFile | null;
-  id_file?: UploadFile | null;
-  property_file?: UploadFile | null;
+  middle_name: string;
+  photo?: File | null;
+  work_file?: File | null;
+  id_file?: File | null;
+  property_file?: File | null;
 }
 
 export interface CreateResponseApi {

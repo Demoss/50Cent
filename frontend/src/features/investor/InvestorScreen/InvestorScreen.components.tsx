@@ -9,18 +9,24 @@ import {
   InvestorHomeContainer,
   SubTitleContainer,
   TitleContainer,
+  NavLinkStyled,
 } from './InvestorScreen.styles';
 
 export function InvestorScreen() {
+  console.log();
+
   return (
     <Layout>
       <InvestorHomeContainer>
         <Row justify="space-between" align="middle">
           <Col span={12}>
-            <TitleContainer>Start investing and earning!</TitleContainer>
+            <TitleContainer>Починайте інвестувати та заробляти!</TitleContainer>
             <SubTitleContainer>
-              All active applications for investment are posted on this page👇
+              На цій сторінці розміщено всі активні заяви на інвестиції👇
             </SubTitleContainer>
+            <NavLinkStyled to="cabinet" className={'btn-cabinet'}>
+              Кабінет Iнвестора
+            </NavLinkStyled>
           </Col>
           <Col span={12}>
             <Row justify="end">
@@ -33,14 +39,14 @@ export function InvestorScreen() {
       <InvestmentsContainer>
         <Row>
           <TitleContainer>
-            The most profitable offers for investments{' '}
+            Найвигідніші пропозиції для інвестицій{' '}
           </TitleContainer>
           <InvestmentsTable />
         </Row>
       </InvestmentsContainer>
 
       <QuestionContainer>
-        <TitleContainer>Do you have any more questions?</TitleContainer>
+        <TitleContainer>Залишились запитання?</TitleContainer>
         <InvestorQuestion />
       </QuestionContainer>
     </Layout>

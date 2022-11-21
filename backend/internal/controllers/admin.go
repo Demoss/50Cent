@@ -88,24 +88,54 @@ func (h *Controller) approveConsumer(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"Consumer with the following user ID has been successfully approved: ": userID})
 }
 
-// @Summary      Decline user with given ID
+// @Summary      Decline consumer with given ID
 // @Tags         Admin
-// @Description  Decline account of user with given ID
-// @ID           admin-decline-user
+// @Description  Decline account of consumer with given ID
+// @ID           admin-decline-consumer
 // @Produce      json
 // @Param        id   path      int  true  "Account ID"
-// @Param        accountType   path      string  true  "Account type(either 'consumers' or 'investors')"
 // @Success      200  {object}  map[string]any
 // @Failure      400  {object}  errorResponse
 // @Failure      500  {object}  errorResponse
-// @Router       /admin/actions/users/{accountType}/{id}/decline [post]
+// @Router       /admin/actions/users/consumers/{id}/decline [post]
 // @Security     ApiKeyAuth
-func (h *Controller) declineUser(c *gin.Context) {
+func (h *Controller) declineConsumer(c *gin.Context) {
 	userID, err := findUserIDFromURL(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"User with the following user ID has been successfully declined: ": userID})
+	if err := h.services.Consumer.DeclineConsumerByID(c, userID); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"ID": userID, "message": "Consumer with the following user ID has been successfully declined."})
+}
+
+// @Summary      Decline investor with given ID
+// @Tags         Admin
+// @Description  Decline account of investor with given ID
+// @ID           admin-decline-investor
+// @Produce      json
+// @Param        id   path      int  true  "Account ID"
+// @Success      200  {object}  map[string]any
+// @Failure      400  {object}  errorResponse
+// @Failure      500  {object}  errorResponse
+// @Router       /admin/actions/users/investors/{id}/decline [post]
+// @Security     ApiKeyAuth
+func (h *Controller) declineInvestor(c *gin.Context) {
+	userID, err := findUserIDFromURL(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := h.services.Investor.DeclineInvestorByID(c, userID); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"ID": userID, "message": "Investor with the following user ID has been successfully declined."})
 }

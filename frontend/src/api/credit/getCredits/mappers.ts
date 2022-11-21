@@ -9,9 +9,10 @@ export function mapResponse(
     data: responseApi.Data.map((el, index) => {
       const a = {
         key: `${index}`,
+        CreditID: el.ID,
         CreditSum: el.CreditSum,
         CreditTitle: el.CreditTitle,
-        CreditDesc: el.CreditDesc,
+        CreditDescription: el.CreditDescription,
         CreditTerm: el.CreditTerm,
         CreditRate: el.CreditRate,
         ReturnedAmount: el.ReturnedAmount,
@@ -20,7 +21,7 @@ export function mapResponse(
         AcceptedAt: el.AcceptedAt,
         ConsumerID: el.ConsumerID,
         InvestorID: el.InvestorID,
-        CreditAction: 'Detailed',
+        CreditAction: 'Дeтальніше',
       };
 
       return a;

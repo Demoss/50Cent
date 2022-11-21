@@ -6,3 +6,4 @@ export * from './loginConfirmPhone/apiTypes';
 export * from './loginConfirmEmail/apiTypes';
 export * from './loginConfirmOtp/apiTypes';
 export * from './registerOtp/apiTypes';
+export * from './addPaymentComplete/apiTypes';

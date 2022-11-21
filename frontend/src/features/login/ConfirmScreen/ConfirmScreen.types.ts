@@ -1,3 +1,3 @@
 export interface ConfirmForm {
-  code: number;
+  code: string;
 }

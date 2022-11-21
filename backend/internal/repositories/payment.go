@@ -79,7 +79,7 @@ func (r *PaymentRepository) CreatePrice(amount int64, action Action) (string, er
 	priceParams := &stripe.PriceParams{
 		Currency:   stripe.String(string(stripe.CurrencyUSD)),
 		Product:    stripe.String(productID),
-		UnitAmount: stripe.Int64(amount),
+		UnitAmount: stripe.Int64(amount * 100),
 	}
 
 	p, err := price.New(priceParams)
@@ -104,7 +104,7 @@ func (r *PaymentRepository) CreatePayment(priceID, accountID string, appFee int6
 		SuccessURL: stripe.String(r.cfg.Stripe.PaymentSuccessURL),
 		CancelURL:  stripe.String(r.cfg.Stripe.PaymentCancelURL),
 		PaymentIntentData: &stripe.CheckoutSessionPaymentIntentDataParams{
-			ApplicationFeeAmount: stripe.Int64(appFee),
+			ApplicationFeeAmount: stripe.Int64(appFee * 100),
 			OnBehalfOf:           stripe.String(accountID),
 			TransferData: &stripe.CheckoutSessionPaymentIntentDataTransferDataParams{
 				Destination: stripe.String(accountID),

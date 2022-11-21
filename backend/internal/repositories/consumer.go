@@ -74,6 +74,10 @@ func (r *ConsumerRepository) UpdateConsumer(ctx context.Context, con *models.Con
 	return r.db.WithContext(ctx).Save(&con).Error
 }
 
+func (r *ConsumerRepository) DeleteConsumer(ctx context.Context, con *models.Consumer) error {
+	return r.db.WithContext(ctx).Delete(&con).Error
+}
+
 func (r *ConsumerRepository) GetAllUnverifiedConsumers(ctx context.Context) ([]models.Consumer, error) {
 	var consumers []models.Consumer
 

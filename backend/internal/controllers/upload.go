@@ -21,7 +21,6 @@ import (
 // @Router       /upload/personal [post]
 
 func (h *Controller) personaIDUpload(c *gin.Context) {
-	// waiting some magic about token parsing and basic User recognition
 	var form command.Form
 
 	if err := c.ShouldBind(&form); err != nil {
@@ -52,7 +51,6 @@ func (h *Controller) personaIDUpload(c *gin.Context) {
 // @Router       /upload/general [post]
 
 func (h *Controller) generalUpload(c *gin.Context) {
-	// waiting some magic about token parsing and basic User recognition
 	var form command.Form
 
 	if err := c.ShouldBind(&form); err != nil {

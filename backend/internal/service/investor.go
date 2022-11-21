@@ -2,15 +2,16 @@ package service
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"mime/multipart"
 	"time"
 
 	"50Cent/backend/config"
+	"50Cent/backend/internal/constants"
 	"50Cent/backend/internal/domain"
 	"50Cent/backend/internal/models"
 	"50Cent/backend/internal/repositories"
-
-	"errors"
-	"mime/multipart"
 )
 
 type InvestorService struct {
@@ -51,6 +52,13 @@ func (s *InvestorService) InvestorRegistration(ctx context.Context, investor *do
 		return err
 	}
 
+	user.Role = constants.Investor
+
+	err = s.authRepo.Update(ctx, user)
+	if err != nil {
+		return err
+	}
+
 	investor.UserID = user.ID
 
 	err = s.investorRepo.CreateInvestor(ctx, domainInvestorToDB(investor))
@@ -73,6 +81,71 @@ func (s *InvestorService) InvestorRegistration(ctx context.Context, investor *do
 
 	return nil
 }
+
+func (s *InvestorService) UpdateInvestor(ctx context.Context, investor *models.Investor, id uint64, files *domain.Investor) error {
+	investorToUpdate, err := s.investorRepo.GetInvestorByUserID(ctx, id)
+	if err != nil {
+		return nil
+	}
+
+	investorToUpdate.Name = investor.Name
+	investorToUpdate.MiddleName = investor.MiddleName
+	investorToUpdate.Surname = investor.Surname
+
+	updateErr := s.investorRepo.UpdateInvestor(ctx, investorToUpdate)
+	if updateErr != nil {
+		fmt.Println("failed to update investor", err)
+	}
+
+	if len(files.Photo.Header) > 0 {
+		investorPhoto := &domain.Investor{
+			Photo: files.Photo,
+		}
+
+		if err := s.DeleteFileFromInvestor(ctx, investorPhoto, "photo"); err != nil {
+			return err
+		}
+
+		if err := s.UpdateInvestorFiles(ctx, investorPhoto, id); err != nil {
+			return err
+		}
+	}
+
+	if len(files.IDFile.Header) > 0 {
+		investorIDFile := &domain.Investor{
+			IDFile: files.IDFile,
+		}
+
+		if err := s.DeleteFileFromInvestor(ctx, investorIDFile, "id_file"); err != nil {
+			return err
+		}
+
+		if err := s.UpdateInvestorFiles(ctx, investorIDFile, id); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (s *InvestorService) UpdateInvestorFiles(ctx context.Context, investor *domain.Investor, id uint64) error {
+	modelInvestor, err := s.investorRepo.GetInvestorByUserID(ctx, id)
+
+	if err != nil {
+		return err
+	}
+
+	if err := s.AddFileToInvestor(ctx, modelInvestor, &investor.Photo, models.Photo); err != nil {
+		return err
+	}
+
+	if err := s.AddFileToInvestor(ctx, modelInvestor, &investor.IDFile, models.IDFile); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (s *InvestorService) ApproveInvestorByID(ctx context.Context, id uint) error {
 	investor, err := s.investorRepo.GetInvestorByUserID(ctx, uint64(id))
 	if err != nil {
@@ -88,6 +161,21 @@ func (s *InvestorService) ApproveInvestorByID(ctx context.Context, id uint) erro
 
 	return nil
 }
+
+func (s *InvestorService) DeclineInvestorByID(ctx context.Context, id uint) error {
+	investor, err := s.investorRepo.GetInvestorByUserID(ctx, uint64(id))
+	if err != nil {
+		return err
+	}
+
+	err = s.investorRepo.DeleteInvestor(ctx, investor)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (s *InvestorService) GetAllUnverifiedInvestors(ctx context.Context) ([]models.Investor, error) {
 	return s.investorRepo.GetAllUnverifiedInvestors(ctx)
 }
@@ -119,9 +207,17 @@ func (s *InvestorService) AddFileToInvestor(ctx context.Context, investor *model
 	return nil
 }
 
+func (s *InvestorService) DeleteFileFromInvestor(ctx context.Context, investor *domain.Investor, fileName string) error {
+	err := s.uploadRepo.DeleteFile(ctx, fileName)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (s *InvestorService) GetInvestorByUserID(ctx context.Context, userID uint64) (*models.Investor, error) {
 	investor, err := s.investorRepo.GetInvestorByUserID(ctx, userID)
-
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +274,21 @@ func (s *InvestorService) AddPaymentConfirm(ctx context.Context, accountID strin
 	}
 
 	investor.StripeConfirmed = true
-	if err := s.investorRepo.Save(ctx, investor); err != nil {
+
+	err = s.investorRepo.Save(ctx, investor)
+	if err != nil {
+		return err
+	}
+
+	user, err := s.authRepo.GetUserByID(ctx, investor.UserID)
+	if err != nil {
+		return err
+	}
+
+	user.Role = constants.Investor
+
+	err = s.authRepo.Update(ctx, user)
+	if err != nil {
 		return err
 	}
 
@@ -206,10 +316,10 @@ func (s *InvestorService) GetBalanceHistory(ctx context.Context, id uint) ([]dom
 	return balances, nil
 }
 
-func (s *InvestorService) GetPotentialPayouts(ctx context.Context, id uint) ([]domain.Payout, error) {
+func (s *InvestorService) GetPotentialPayouts(ctx context.Context, id uint) (float64, error) {
 	payoutModels, err := s.payoutRepo.GetByInvestorID(ctx, id)
 	if err != nil {
-		return nil, err
+		return 0, err
 	}
 
 	payouts := make([]domain.Payout, 0, len(payoutModels))
@@ -223,16 +333,16 @@ func (s *InvestorService) GetPotentialPayouts(ctx context.Context, id uint) ([]d
 		payouts = append(payouts, payout)
 	}
 
-	if payoutModels[len(payoutModels)-1].CreatedAt.Month() != time.Now().Month() {
+	if len(payoutModels) == 0 || payoutModels[len(payoutModels)-1].CreatedAt.Month() != time.Now().Month() {
 		payment, err := s.addPotentialPayout(ctx, id)
 		if err != nil {
-			return nil, err
+			return 0, err
 		}
 
 		payouts = append(payouts, *payment)
 	}
 
-	return payouts, nil
+	return payouts[len(payouts)-1].Amount, nil
 }
 
 func (s *InvestorService) addPotentialPayout(ctx context.Context, id uint) (*domain.Payout, error) {

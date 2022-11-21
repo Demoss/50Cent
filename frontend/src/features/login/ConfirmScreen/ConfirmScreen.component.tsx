@@ -18,7 +18,7 @@ export const ConfirmScreen = () => {
 
   const form = useFormik<ConfirmForm>({
     initialValues: {
-      code: 0,
+      code: '',
     },
     validationSchema: ConfirmValidationSchema,
     validateOnChange: false,
@@ -26,7 +26,7 @@ export const ConfirmScreen = () => {
       try {
         await Api.confirmRegistration({
           email: searchParams.get('email') || '',
-          code: +values.code,
+          code: values.code,
         });
         console.log('success');
         navigate('/login');
@@ -38,23 +38,23 @@ export const ConfirmScreen = () => {
 
   return (
     <PageContainer>
-      <PageTitle>Enter the code from the mail</PageTitle>
+      <PageTitle>Введіть код з пошти</PageTitle>
       <PageSubtitle>
-        Didn't receive the code?&nbsp;
-        <Link to={routes.login.registration.absolute()}>Send again.</Link>
+        Не прийшов код?&nbsp;
+        <Link to={routes.login.registration.absolute()}>Відправити ще раз</Link>
       </PageSubtitle>
 
       <form onSubmit={form.handleSubmit}>
         <Form.Item validateStatus={form.errors.code ? 'error' : 'success'}>
           <Input
-            placeholder="Code"
-            value={form.values.code > 0 ? form.values.code : ''}
+            placeholder="Код"
+            value={form.values.code !== '' ? form.values.code : ''}
             name="code"
             onChange={form.handleChange}
           />
         </Form.Item>
         <Form.Item>
-          <RedButton type="submit">Continue</RedButton>
+          <RedButton type="submit">Продовжити</RedButton>
         </Form.Item>
       </form>
     </PageContainer>

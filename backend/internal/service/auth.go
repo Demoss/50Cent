@@ -20,6 +20,7 @@ import (
 	"50Cent/backend/config"
 
 	"50Cent/backend/internal/command"
+	"50Cent/backend/internal/constants"
 	"50Cent/backend/internal/domain"
 	"50Cent/backend/internal/models"
 	"50Cent/backend/internal/repositories"
@@ -86,11 +87,15 @@ func (s *AuthService) Login(ctx context.Context, email string, password string) 
 		return "", nil, err
 	}
 
+	if !user.IsVerified {
+		return "", nil, errors.New("email is not confirmed")
+	}
+
 	if user.Password != s.generatePasswordHash(password) {
 		return "", nil, errors.New("password or email is not correct")
 	}
 
-	token, err := s.GenerateToken(email, user.ID, true)
+	token, err := s.GenerateToken(email, user.ID, user.Role, true)
 	if err != nil {
 		return "", nil, errors.New("failed to generate temporary token")
 	}
@@ -117,9 +122,9 @@ func (s *AuthService) ExternalLogin(ctx context.Context, email string) (tok stri
 		return "", nil, err
 	}
 
-	token, err := s.GenerateToken(email, user.ID, true)
+	token, err := s.GenerateToken(email, user.ID, user.Role, false)
 	if err != nil {
-		return "", nil, errors.New("failed to generate temporary token")
+		return "", nil, errors.New("failed to generate token")
 	}
 
 	typesMFA := make([]string, 0, 3)
@@ -191,7 +196,7 @@ func (s *AuthService) LoginConfirmPhone(ctx context.Context, email string, code 
 		return "", er
 	}
 
-	token, err := s.GenerateToken(email, user.ID, false)
+	token, err := s.GenerateToken(email, user.ID, user.Role, false)
 	if err != nil {
 		return "", errors.New("failed to generate token")
 	}
@@ -219,7 +224,7 @@ func (s *AuthService) LoginConfirmEmail(ctx context.Context, email string, code 
 		return "", err
 	}
 
-	token, err := s.GenerateToken(email, user.ID, false)
+	token, err := s.GenerateToken(email, user.ID, user.Role, false)
 	if err != nil {
 		return "", errors.New("failed to generate token")
 	}
@@ -227,12 +232,12 @@ func (s *AuthService) LoginConfirmEmail(ctx context.Context, email string, code 
 	return token, nil
 }
 
-func (s *AuthService) LoginConfirmOTP(ctx context.Context, email string, userID uint, code string) (string, error) {
+func (s *AuthService) LoginConfirmOTP(ctx context.Context, email string, userID uint, role string, code string) (string, error) {
 	if err := s.checkOTP(ctx, email, code); err != nil {
 		return "", err
 	}
 
-	token, err := s.GenerateToken(email, userID, false)
+	token, err := s.GenerateToken(email, userID, role, false)
 	if err != nil {
 		return "", errors.New("failed to generate token")
 	}
@@ -240,7 +245,7 @@ func (s *AuthService) LoginConfirmOTP(ctx context.Context, email string, userID 
 	return token, nil
 }
 
-func (s *AuthService) GenerateToken(email string, userID uint, isTemporary bool) (string, error) {
+func (s *AuthService) GenerateToken(email string, userID uint, role string, isTemporary bool) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims, ok := token.Claims.(jwt.MapClaims)
@@ -250,6 +255,7 @@ func (s *AuthService) GenerateToken(email string, userID uint, isTemporary bool)
 
 	claims["email"] = email
 	claims["userID"] = userID
+	claims["role"] = role
 
 	if isTemporary {
 		claims["exp"] = time.Now().Add(time.Second * time.Duration(s.cfg.Auth.JWT.TemporaryExpire)).Unix()
@@ -267,7 +273,7 @@ func (s *AuthService) GenerateToken(email string, userID uint, isTemporary bool)
 	return tokenString, nil
 }
 
-func (s *AuthService) ParseToken(tokenString string) (tok string, userID uint, isTemporary bool, err error) {
+func (s *AuthService) ParseToken(tokenString string) (tok string, userID uint, role string, isTemporary bool, err error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
@@ -277,17 +283,17 @@ func (s *AuthService) ParseToken(tokenString string) (tok string, userID uint, i
 	})
 
 	if err != nil {
-		return "", 0, false, err
+		return "", 0, "", false, err
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		id, _ := strconv.ParseUint(fmt.Sprintf("%.f", claims["userID"]), 10, 32)
 		userID := uint(id)
 
-		return claims["email"].(string), userID, claims["isTemporary"].(bool), nil
+		return claims["email"].(string), userID, claims["role"].(string), claims["isTemporary"].(bool), nil
 	}
 
-	return "", 0, false, fmt.Errorf("token is not valid")
+	return "", 0, "", false, fmt.Errorf("token is not valid")
 }
 
 func (s *AuthService) generatePasswordHash(password string) string {
@@ -303,6 +309,7 @@ func domainUserToDB(user *domain.User) *models.User {
 		Password:   user.Password,
 		Phone:      user.Phone,
 		IsVerified: user.IsVerified,
+		Role:       user.Role,
 	}
 }
 
@@ -338,6 +345,7 @@ func (s *AuthService) GetUserByID(ctx context.Context, userID uint) (*domain.Use
 		IsVerified: dbUser.IsVerified,
 		Email:      dbUser.Email,
 		Phone:      dbUser.Phone,
+		Role:       dbUser.Role,
 	}
 
 	return domainUser, nil
@@ -432,6 +440,7 @@ func (s *AuthService) GetUserByEmail(ctx context.Context, email string) (*domain
 		Password:   dbUser.Password,
 		IsVerified: dbUser.IsVerified,
 		Email:      dbUser.Email,
+		Role:       dbUser.Role,
 	}
 
 	return domainUser, nil
@@ -441,6 +450,7 @@ func (s *AuthService) GetUserByEmail(ctx context.Context, email string) (*domain
 func domainAdminToDB(admin *domain.Admin) *models.Admin {
 	return &models.Admin{
 		UserID: admin.UserID,
+		Role:   constants.Admin,
 	}
 }
 
@@ -473,7 +483,7 @@ func (s *AuthService) RegisterOTP(ctx context.Context, userID uint) ([]byte, err
 
 func (s *AuthService) generateCodeSecret(email string) (code []byte, secret string, err error) {
 	key, err := totp.Generate(totp.GenerateOpts{
-		Issuer:      "50Cent/.com",
+		Issuer:      "50cent.com",
 		AccountName: email,
 	})
 	if err != nil {
@@ -571,6 +581,18 @@ func (s *AuthService) SetConfirmationCode(ctx context.Context, email string, met
 		Code:      code,
 		ExpiredAt: time.Now().Add(time.Second * time.Duration(s.cfg.Auth.ConfirmationCode.Expire)),
 		UserID:    user.ID,
+	}
+
+	exists, err := s.confirmationCodeRepo.CheckIfExists(ctx, user)
+	if err != nil {
+		return err
+	}
+
+	if exists {
+		err = s.confirmationCodeRepo.DeleteConfirmationCode(ctx, user)
+		if err != nil {
+			return err
+		}
 	}
 
 	err = s.confirmationCodeRepo.Create(ctx, &codeModel)

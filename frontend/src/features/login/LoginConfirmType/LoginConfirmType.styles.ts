@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const RedButton = styled.div`
   background-color: var(--red-button);
   width: 100%;
-  height: 150px;
+  height: 50px;
   color: white;
   border: 1px solid #ff4d4f;
   box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.043);

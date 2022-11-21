@@ -6,7 +6,7 @@ export interface Loan {
   ID: number;
   CreditSum: number;
   CreditTitle: string;
-  CreditDesc: string;
+  CreditDescription: string;
   CreditTerm: number;
   CreditRate: number;
   ReturnedAmount: number;

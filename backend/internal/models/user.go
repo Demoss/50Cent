@@ -16,5 +16,6 @@ type User struct {
 	IsVerified bool   `gorm:"type:boolean; default:false"`
 	HasMFA     uint   `gorm:"type:uint; default:3"`
 	Secret     string `gorm:"type:varchar(200)"`
+	Role       string `gorm:"type:varchar(200); default:user"`
 	Files      []UserFile
 }

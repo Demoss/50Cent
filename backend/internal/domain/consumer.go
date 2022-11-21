@@ -14,4 +14,5 @@ type Consumer struct {
 	PropertyFile multipart.FileHeader
 	UserID       uint
 	Balance      float64
+	Role         string
 }

@@ -1,27 +1,59 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Button, Layout, Row, Col, Space } from 'antd';
 import {
   UserOutlined,
   SettingOutlined,
   WalletOutlined,
   TransactionOutlined,
+  LogoutOutlined,
 } from '@ant-design/icons';
 
-import { IUser } from '@/models/user.interface';
 import logo from '../../images/logo-test.png';
 import { HeaderStyles } from './Header.styles';
-import './Header.css';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { routes } from '@/routing';
+import { useCurrentUser } from '@/hooks';
+import { admin, consumer, investor, user } from '@/constants/constants';
+import { appStorage } from '@/services/appStorage/appStorage.service';
+import { Api } from '@/api';
 
 const { Header } = Layout;
 const { ImgContainer, UserTypeContainer } = HeaderStyles;
 
 const HeaderComponent: FC = () => {
-  const user: IUser = {
-    username: '',
-    type: '',
+  const navigate = useNavigate();
+
+  const getInvestorInfo = async () => {
+    const investor = await Api.getCurrentInvestor();
+    navigate(`/investor/update/${investor.ID}`);
   };
+
+  const getConsumerInfo = async () => {
+    const consumer = await Api.getCurrentConsumer();
+    navigate(`/consumer/update/${consumer.ID}`);
+  };
+
+  const logButton = () => {
+    return currentUser ? (
+      <Button
+        onClick={() => {
+          appStorage.setApiKey('');
+          navigate(routes.login.absolute(), { replace: true });
+          window.location.reload();
+        }}
+      >
+        <LogoutOutlined />
+        Вийти
+      </Button>
+    ) : (
+      <Button>
+        <UserOutlined />
+        <NavLink to={routes.login.absolute()}>Увійти</NavLink>
+      </Button>
+    );
+  };
+
+  const { currentUser } = useCurrentUser();
 
   return (
     <Header>
@@ -29,7 +61,7 @@ const HeaderComponent: FC = () => {
         <Col span={12} className="logo-container">
           <Row align="middle">
             <ImgContainer src={logo} alt="logo" />
-            <span>Loans that won’t make you poor </span>
+            <span>Позики, які не зроблять тебе бомжем</span>
           </Row>
         </Col>
 
@@ -37,47 +69,74 @@ const HeaderComponent: FC = () => {
           <Row justify="end">
             <Space>
               <Col>
-                {user.type ? (
+                {currentUser?.role ? (
                   <UserTypeContainer>
-                    {user.type}: {user.username}
+                    {currentUser?.role === 'user'
+                      ? user
+                      : currentUser?.role === 'investor'
+                      ? investor
+                      : currentUser?.role === 'consumer'
+                      ? consumer
+                      : admin}
                   </UserTypeContainer>
                 ) : (
-                  <Button>
-                    <UserOutlined />
-                    <NavLink to={routes.login.absolute()}>Sign in </NavLink>
-                  </Button>
+                  logButton()
                 )}
               </Col>
 
               <Col>
                 <Button>
-                  {user.username ? (
-                    user.type === 'User' ? (
+                  {currentUser?.email ? (
+                    currentUser.role === 'investor' ? (
                       <>
                         <SettingOutlined />
-                        Change accout type
+                        Змінити тип акаунту
                       </>
-                    ) : (
+                    ) : currentUser.role === 'consumer' ? (
                       <>
-                        <WalletOutlined />
-                        Take a loan
+                        <Link to={routes.credit.absolute()}>
+                          <WalletOutlined />
+                          Взяти кредит
+                        </Link>
                       </>
-                    )
+                    ) : null
                   ) : (
                     <NavLink to={routes.login.registration.absolute()}>
-                      Sign up
+                      Зареєструватись
                     </NavLink>
                   )}
                 </Button>
               </Col>
+              {currentUser && (
+                <Button
+                  onClick={() => {
+                    appStorage.setApiKey('');
+                    navigate(routes.login.absolute(), { replace: true });
+                    window.location.reload();
+                  }}
+                >
+                  <LogoutOutlined />
+                  Вийти
+                </Button>
+              )}
 
-              {user.username ? (
+              {currentUser && currentUser.role !== 'user' && (
                 <Col>
-                  <Button type="primary" danger size="large">
+                  <Button
+                    type="primary"
+                    danger
+                    size="large"
+                    onClick={
+                      currentUser?.role === 'investor'
+                        ? getInvestorInfo
+                        : getConsumerInfo
+                    }
+                  >
                     <UserOutlined />
+                    Змінити профіль
                   </Button>
                 </Col>
-              ) : null}
+              )}
 
               {/*TOD0: Find icon translate and change*/}
               <Col>

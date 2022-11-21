@@ -1,4 +1,4 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { LockOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
 import { Form, Input, message } from 'antd';
 import { useFormik } from 'formik';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -18,7 +18,6 @@ import { Api } from '@/api';
 import { routes } from '@/routing';
 import { ConfirmScreen } from '../ConfirmScreen';
 import { FacebookLoginButton } from '../FacebookLogin/FacebookLogin';
-import { GithubLoginButton } from '../GithubLogin';
 
 export const RegistrationScreen = () => {
   const [, setSearchParams] = useSearchParams();
@@ -58,10 +57,10 @@ export const RegistrationScreen = () => {
         <ConfirmScreen />
       ) : (
         <>
-          <PageTitle>Create an account</PageTitle>
+          <PageTitle>Створити аккаунт</PageTitle>
           <PageSubtitle>
-            Already have an account?&nbsp;
-            <Link to={routes.login.absolute()}>Sign in</Link>
+            Вже є аккаунт?&nbsp;
+            <Link to={routes.login.absolute()}>Увійти</Link>
           </PageSubtitle>
 
           <form onSubmit={form.handleSubmit}>
@@ -85,7 +84,7 @@ export const RegistrationScreen = () => {
               <Input
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
-                placeholder="Password"
+                placeholder="Пароль"
                 name="password"
                 value={form.values.password}
                 onChange={form.handleChange}
@@ -97,7 +96,7 @@ export const RegistrationScreen = () => {
               help={form.errors.phone}
             >
               <Input
-                prefix={<LockOutlined className="site-form-item-icon" />}
+                prefix={<PhoneOutlined className="site-form-item-icon" />}
                 type="phone"
                 placeholder="Телефон"
                 name="phone"
@@ -109,21 +108,20 @@ export const RegistrationScreen = () => {
             <Form.Item required={true}>
               <label>
                 <input type="checkbox" required />
-                &nbsp; I agree to the Terms of Use and
+                &nbsp; Я погоджуюсь з Умовами користування та
                 <br />
-                Privacy policy
+                Політикою конфіденційності
               </label>
             </Form.Item>
 
             <Form.Item>
-              <RedButton type="submit">Continue</RedButton>
+              <RedButton type="submit">Продовжити</RedButton>
             </Form.Item>
           </form>
-          <ExternalLoginTitle>Sign up with:</ExternalLoginTitle>
+          <ExternalLoginTitle>Зареєструватися через:</ExternalLoginTitle>
           <ExternalLoginButtonsContainer>
             <GoogleLoginButton />
             <FacebookLoginButton />
-            <GithubLoginButton />
           </ExternalLoginButtonsContainer>
         </>
       )}

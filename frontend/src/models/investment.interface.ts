@@ -17,3 +17,10 @@ export interface IInvestment {
   creditEstimate: number;
   creditAction?: string;
 }
+
+export interface IvestmentResponse {
+  key: string;
+  creditTotalPayment: number | string;
+  creditRespRate: number;
+  creditMonthPayment: number | string;
+}

@@ -9,11 +9,11 @@ import (
 	"log"
 	"net/http"
 
-	"50Cent/backend/internal/service"
-
 	"50Cent/backend/internal/command"
+	"50Cent/backend/internal/constants"
 	"50Cent/backend/internal/domain"
 	"50Cent/backend/internal/helper"
+	"50Cent/backend/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -461,7 +461,7 @@ func (h *Controller) loginConfirmOTP(c *gin.Context) {
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 	}
 
-	token, err := h.services.Auth.LoginConfirmOTP(c, user.Email, user.ID, input.Code)
+	token, err := h.services.Auth.LoginConfirmOTP(c, user.Email, user.ID, user.Role, input.Code)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -573,7 +573,7 @@ func (h *Controller) changePassword(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        input  body      command.Registration  true  "Email and passwords for admin"
-// @Success      200    {object}  statusResponse
+// @Success      200    {object}  LoginConfirmResponse
 // @Failure      400    {object}  errorResponse
 // @Failure      500    {object}  errorResponse
 // @Router       /admin/registration [post]
@@ -589,6 +589,7 @@ func (h *Controller) adminRegistration(c *gin.Context) {
 		Email:    input.Email,
 		Password: input.Password,
 		Phone:    input.Phone,
+		Role:     constants.Admin,
 	}
 
 	userID, err := h.services.Auth.Registration(c, user)
@@ -600,14 +601,24 @@ func (h *Controller) adminRegistration(c *gin.Context) {
 	// add userId to admins table, so we can identify admin later
 	admin := &domain.Admin{
 		UserID: userID,
+		Role:   constants.Admin,
 	}
 
-	if err := h.services.Auth.AdminRegistration(c, admin); err != nil {
+	err = h.services.Auth.AdminRegistration(c, admin)
+	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{Status: "created"})
+	token, err := h.services.Auth.GenerateToken(user.Email, userID, constants.Admin, false)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, LoginConfirmResponse{
+		Token: token,
+	})
 }
 
 // @Summary      Register new consumer
@@ -655,12 +666,12 @@ func (h *Controller) consumerRegistration(c *gin.Context) {
 		PropertyFile: input.PropertyFile,
 	}
 
-	if err := h.services.ConsumerRegistration(c, consumer); err != nil {
+	if err = h.services.ConsumerRegistration(c, consumer); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{Status: "Added consumer to user"})
+	c.JSON(http.StatusOK, statusResponse{Status: "Add user to consumer"})
 }
 
 // @Summary      Register stripe account for existing consumer
@@ -727,12 +738,12 @@ func (h *Controller) investorRegistration(c *gin.Context) {
 		IDFile:     input.IDFile,
 	}
 
-	if err := h.services.InvestorRegistration(c, investor); err != nil {
+	if err = h.services.InvestorRegistration(c, investor); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, statusResponse{Status: "Added investor to user"})
+	c.JSON(http.StatusOK, statusResponse{Status: "Add user to investor"})
 }
 
 // @Summary      Register stripe account for existing investor
@@ -761,6 +772,41 @@ func (h *Controller) investorAddPayment(c *gin.Context) {
 	c.JSON(http.StatusOK, addPaymentResponse{URL: url})
 }
 
+// @Summary      AddPaymentSuccess
+// @Tags         Investor/Consumer
+// @Description  Change user's role from user to consumer/investor
+// @ID           consumer/investorRegistration
+// @Accept       json
+// @Produce      json
+// @Success      200    {object}  LoginConfirmResponse
+// @Failure      400    {object}  errorResponse
+// @Failure      500    {object}  errorResponse
+// @Router       /auth/registration/investor/addPaymentSuccess [post]
+
+func (h *Controller) addPaymentComplete(c *gin.Context) {
+	userID, err := helper.GetIDFromCtx(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	user, err := h.services.Auth.GetUserByID(c, userID)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	token, err := h.services.Auth.GenerateToken(user.Email, userID, user.Role, false)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, LoginConfirmResponse{
+		Token: token,
+	})
+}
+
 func (h *Controller) getCurrentUser(c *gin.Context) {
 	user, err := h.GetUser(c)
 	if err != nil {
@@ -784,4 +830,21 @@ func (h *Controller) GetUser(c *gin.Context) (user *domain.User, err error) {
 	}
 
 	return user, nil
+}
+
+func (h *Controller) getMe(c *gin.Context) {
+	user, err := h.GetUser(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, err.Error())
+		return
+	}
+
+	GetMeUser := &domain.GetMeUser{
+		ID:    user.ID,
+		Email: user.Email,
+		Phone: user.Phone,
+		Role:  user.Role,
+	}
+
+	c.JSON(http.StatusOK, GetMeUser)
 }

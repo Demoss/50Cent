@@ -5,6 +5,9 @@ import (
 	"50Cent/backend/internal/helper"
 	"context"
 	"errors"
+
+	"fmt"
+	"math"
 	"time"
 
 	"50Cent/backend/internal/domain"
@@ -50,11 +53,12 @@ func (s *LoanService) Create(ctx context.Context, loan *domain.Loan) error {
 	model := models.Loan{
 		CreditSum:         totalPrice,
 		CreditTitle:       loan.CreditTitle,
-		CreditDescription: loan.CreditTitle,
+		CreditDescription: loan.CreditDescription,
 		CreditTerm:        loan.CreditTerm,
 		CreditRate:        loan.CreditRate,
 		ConsumerID:        loan.ConsumerID,
 	}
+	fmt.Println(model.CreditDescription)
 
 	return s.loanRepo.Create(ctx, &model)
 }
@@ -434,6 +438,72 @@ func (s *LoanService) GetAll(ctx context.Context, page, pageSize int) (*domain.L
 	return &loanResponse, nil
 }
 
+func (s *LoanService) GetAcceptedLoan(ctx context.Context, consumerID uint) (*[]domain.Loan, error) {
+	allLoans, err := s.loanRepo.GetAcceptedLoan(ctx, consumerID)
+	if err != nil {
+		return nil, err
+	}
+
+	loans := make([]domain.Loan, len(*allLoans))
+
+	for i, modelItem := range *allLoans {
+		currentModel := modelItem
+		loans[i] = *convertLoan(&currentModel)
+	}
+
+	return &loans, err
+}
+
+func (s *LoanService) GetCounterOfferedLoans(ctx context.Context) (*[]domain.CounterOffers, error) {
+	allCounterOffers, err := s.loanRepo.GetAllCounterOffers(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	offeredLoans := make([]domain.CounterOffers, 100)
+
+	for i, modelItem := range *allCounterOffers {
+		offeredLoans[i].ID = modelItem.ID
+		offeredLoans[i].ConsumerID = modelItem.Loan.ConsumerID
+		offeredLoans[i].CreditSum = modelItem.Loan.CreditSum
+		offeredLoans[i].CreditTitle = modelItem.Loan.CreditTitle
+		offeredLoans[i].CreditNewRate = modelItem.CreditRate
+		offeredLoans[i].CreditRate = modelItem.Loan.CreditRate
+		offeredLoans[i].CreditNewTerm = modelItem.CreditTerm
+		offeredLoans[i].CreditTerm = modelItem.Loan.CreditTerm
+	}
+
+	return &offeredLoans, err
+}
+
+func (s *LoanService) GetAllUnofferedLoans(ctx context.Context, consumerID uint) (*[]domain.Loan, error) {
+	allUnOfferedLoans, err := s.loanRepo.GetUnOfferedLoansByConsumerID(ctx, consumerID)
+	if err != nil {
+		return nil, err
+	}
+
+	unOfferedLoans := make([]domain.Loan, len(*allUnOfferedLoans))
+
+	for i, modelItem := range unOfferedLoans {
+		unOfferedLoans[i].CreditTitle = modelItem.CreditTitle
+		unOfferedLoans[i].CreditDescription = modelItem.CreditDescription
+		unOfferedLoans[i].CreditRate = modelItem.CreditRate
+		unOfferedLoans[i].CreditTerm = modelItem.CreditTerm
+	}
+
+	return &unOfferedLoans, err
+}
+
+func (s *LoanService) GetInvestorFromLoan(ctx context.Context, loans *[]domain.Loan) (*[]uint, error) {
+	InvestorsID := make([]uint, 100)
+
+	for i, currentLoan := range *loans {
+		InvestorsID[i] = currentLoan.InvestorID
+	}
+
+	return &InvestorsID, nil
+}
+
 func (s *LoanService) GetByID(ctx context.Context, id uint64) (*domain.Loan, error) {
 	model, err := s.loanRepo.GetByID(ctx, id)
 	if err != nil {
@@ -465,10 +535,18 @@ func (s *LoanService) GetTransactionsByLoanID(ctx context.Context, id uint) ([]d
 	return transactions, nil
 }
 
-func (s *LoanService) Update(ctx context.Context, id uint64, loan *domain.Loan) error {
+func (s *LoanService) Update(ctx context.Context, id uint64, loan *domain.Loan, consumerID uint) error {
 	model, err := s.loanRepo.GetByID(ctx, id)
 	if err != nil {
 		return nil
+	}
+
+	if model.ConsumerID != consumerID {
+		return errors.New("you don`t have access to this loan")
+	}
+
+	if model.IsAccepted {
+		return errors.New("you can't modify accepted loan")
 	}
 
 	model.CreditSum = loan.CreditSum
@@ -480,7 +558,16 @@ func (s *LoanService) Update(ctx context.Context, id uint64, loan *domain.Loan) 
 	return s.loanRepo.Update(ctx, model)
 }
 
-func (s *LoanService) Delete(ctx context.Context, id uint64) error {
+func (s *LoanService) Delete(ctx context.Context, id uint64, consumerID uint) error {
+	loan, err := s.loanRepo.GetByID(ctx, id)
+	if err != nil {
+		return err
+	}
+
+	if loan.ConsumerID != consumerID {
+		return errors.New("it`s not your loan")
+	}
+
 	return s.loanRepo.Delete(ctx, id)
 }
 
@@ -506,4 +593,33 @@ func convertLoan(model *models.Loan) *domain.Loan {
 		ConsumerID:        model.ConsumerID,
 		InvestorID:        investorID,
 	}
+}
+
+func (s *LoanService) GetLoansByInvestor(ctx context.Context, id uint64) ([]domain.LoanWithConsumer, error) {
+	loansModel, err := s.loanRepo.GetAllByInvestorIDWithConsumer(ctx, uint(id))
+	if err != nil {
+		return nil, err
+	}
+
+	loans := make([]domain.LoanWithConsumer, 0, len(loansModel))
+
+	for _, model := range loansModel {
+		loan := domain.LoanWithConsumer{
+			ID:                model.ID,
+			CreditSum:         model.CreditSum,
+			CreditTitle:       model.CreditTitle,
+			CreditDescription: model.CreditDescription,
+			CreditTerm:        model.CreditTerm,
+			CreditRate:        model.CreditRate,
+			ReturnedAmount:    math.Round(((float64(model.ReturnedAmount)/model.CreditSum)*100)*100) / 100,
+			IsReturned:        model.IsReturned,
+			IsAccepted:        model.IsAccepted,
+			LatestPaymount:    model.AcceptedAt.AddDate(0, int(model.CreditTerm), 0),
+			ConsumerName:      model.Name,
+			ConsumerSurname:   model.Surname,
+		}
+		loans = append(loans, loan)
+	}
+
+	return loans, nil
 }

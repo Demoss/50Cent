@@ -7,11 +7,15 @@ import {
   PageSubtitle,
   PageContainer,
 } from '../Login.styles';
-import { LoginConfirmForm } from './LoginConfirmScreen.types';
+import {
+  LoginConfirmForm,
+  LoginConfirmToken,
+} from './LoginConfirmScreen.types';
 import { ConfirmValidationSchema } from './LoginConfirmScreen.validation';
 import { Api } from '@/api';
 import { routes } from '@/routing';
 import { appStorage } from '@/services/appStorage';
+import jwt_decode from 'jwt-decode';
 
 export const LoginConfirmScreen = () => {
   const navigate = useNavigate();
@@ -33,10 +37,14 @@ export const LoginConfirmScreen = () => {
           : 'loginConfirmOtp';
       Api[method]({ code: values.code })
         .then((response) => {
+          const token: LoginConfirmToken = jwt_decode(response.token);
+          message.success('Code sent');
           appStorage.setApiKey(response.token);
-          message
-            .success('Code sent')
-            .then((r) => navigate(routes.home.absolute()));
+          if (token.role === 'user') {
+            navigate('/login/userType', { replace: true });
+          } else {
+            navigate(`/${token.role}`, { replace: true });
+          }
         })
         .catch(() => {
           message.error('Code is incorrect');
@@ -46,23 +54,23 @@ export const LoginConfirmScreen = () => {
 
   return (
     <PageContainer>
-      <PageTitle>Enter the confirmation code</PageTitle>
+      <PageTitle>Введіть отриманий код підтвердження входу</PageTitle>
       <PageSubtitle>
-        Didn't receive the code?&nbsp;
-        <Link to={routes.login.absolute()}>Send again.</Link>
+        Не прийшов код?&nbsp;
+        <Link to={routes.login.absolute()}>Повторити спробу</Link>
       </PageSubtitle>
 
       <form onSubmit={form.handleSubmit}>
         <Form.Item validateStatus={form.errors.code ? 'error' : 'success'}>
           <Input
-            placeholder="Code"
+            placeholder="Код"
             value={form.values.code > 0 ? form.values.code : ''}
             name="code"
             onChange={form.handleChange}
           />
         </Form.Item>
         <Form.Item>
-          <RedButton type="submit">Continue</RedButton>
+          <RedButton type="submit">Продовжити</RedButton>
         </Form.Item>
       </form>
     </PageContainer>

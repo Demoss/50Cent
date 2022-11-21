@@ -1,6 +1,6 @@
 export const enum roles {
-  creditor = 'Consumer',
-  investor = 'Investor',
+  creditor = 'Позичальник',
+  investor = 'Інвестор',
 }
 
 export type UI_ROLES = roles | undefined;
@@ -13,4 +13,9 @@ export interface User {
   passport: string;
   workplace: string;
   property: string;
+}
+
+export const enum adminActions {
+  approve = 'активовано',
+  reject = 'відхилено',
 }
