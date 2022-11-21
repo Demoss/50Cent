@@ -45,6 +45,7 @@ func NewAwsS3Repo(cfg *config.Config) *AwsS3Repo {
 	kilobyte := 1024
 	maxPartSize := int64(5 * kilobyte * kilobyte)
 	maxRetries := 3
+	fmt.Println(cfg)
 
 	return &AwsS3Repo{bucketName: cfg.AWS.BucketName, config: activeConfig, client: nil, maxPartSize: maxPartSize, maxRetries: maxRetries}
 }
