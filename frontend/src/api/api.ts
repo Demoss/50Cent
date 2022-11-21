@@ -19,7 +19,7 @@ function createApi(getAxiosInstance: GetApiFunc) {
 
 export const Api = createApi(async () => {
   const apiToken = (await appStorage.getApiToken()) || '';
-  const baseURL = `http://35.85.42.210/api/v1`;
+  const baseURL = `https://www.dev.artem.premia.vhost.kiev.ua/api/v1`;
 
   return createAxiosInstance({ apiToken, baseURL });
 });
