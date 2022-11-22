@@ -4,6 +4,7 @@ import (
 	"50Cent/backend/internal/constants"
 	"50Cent/backend/internal/helper"
 	"50Cent/backend/internal/query"
+	"fmt"
 
 	"encoding/json"
 	"net/http"
@@ -406,6 +407,7 @@ func (h *Controller) deleteLoan(c *gin.Context) {
 // @Failure                     500  {object}  errorResponse
 // @Router                      /stripe/webhook [post]
 func (h *Controller) stripeWebhook(c *gin.Context) {
+	fmt.Println("im i here?")
 	endpointSecret := h.cfg.Stripe.WebhookKey
 
 	body, err := c.GetRawData()
@@ -420,6 +422,7 @@ func (h *Controller) stripeWebhook(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(event.Type)
 	switch event.Type {
 	case constants.StripeAccountUpdated:
 		var account stripe.Account
