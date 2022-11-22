@@ -57,10 +57,10 @@ export const RegistrationScreen = () => {
         <ConfirmScreen />
       ) : (
         <>
-          <PageTitle>Створити аккаунт</PageTitle>
+          <PageTitle>Create an account</PageTitle>
           <PageSubtitle>
-            Вже є аккаунт?&nbsp;
-            <Link to={routes.login.absolute()}>Увійти</Link>
+            Already have an account?&nbsp;
+            <Link to={routes.login.absolute()}>Sign in</Link>
           </PageSubtitle>
 
           <form onSubmit={form.handleSubmit}>
@@ -84,7 +84,7 @@ export const RegistrationScreen = () => {
               <Input
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
-                placeholder="Пароль"
+                placeholder="Password"
                 name="password"
                 value={form.values.password}
                 onChange={form.handleChange}
@@ -98,7 +98,7 @@ export const RegistrationScreen = () => {
               <Input
                 prefix={<PhoneOutlined className="site-form-item-icon" />}
                 type="phone"
-                placeholder="Телефон"
+                placeholder="Phone number"
                 name="phone"
                 value={form.values.phone}
                 onChange={form.handleChange}
@@ -108,17 +108,15 @@ export const RegistrationScreen = () => {
             <Form.Item required={true}>
               <label>
                 <input type="checkbox" required />
-                &nbsp; Я погоджуюсь з Умовами користування та
-                <br />
-                Політикою конфіденційності
+                &nbsp; I agree to the Terms of Use and Privacy policy
               </label>
             </Form.Item>
 
             <Form.Item>
-              <RedButton type="submit">Продовжити</RedButton>
+              <RedButton type="submit">Continue</RedButton>
             </Form.Item>
           </form>
-          <ExternalLoginTitle>Зареєструватися через:</ExternalLoginTitle>
+          <ExternalLoginTitle>Sign Up with:</ExternalLoginTitle>
           <ExternalLoginButtonsContainer>
             <GoogleLoginButton />
             <FacebookLoginButton />

@@ -17,13 +17,11 @@ export const OtpRegistrationScreen = () => {
   return (
     <PageContainer>
       <Container>
-        <PageTitle>
-          Відскануйте QR-код за допомогою Google Authenticator
-        </PageTitle>
+        <PageTitle>Scan QR-code with Google Authenticator</PageTitle>
         {image && <img src={image} alt={'QR-code'} />}
         <ButtonContainer>
           <Link to={routes.login.confirmOtp.absolute()}>
-            <RedButton>Код відскановано</RedButton>
+            <RedButton>Code scanned</RedButton>
           </Link>
         </ButtonContainer>
       </Container>

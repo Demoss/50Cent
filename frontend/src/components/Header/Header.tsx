@@ -61,7 +61,7 @@ const HeaderComponent: FC = () => {
         <Col span={12} className="logo-container">
           <Row align="middle">
             <ImgContainer src={logo} alt="logo" />
-            <span>Позики, які не зроблять тебе бомжем</span>
+            <span>Loans that won’t make you poor</span>
           </Row>
         </Col>
 
@@ -80,7 +80,9 @@ const HeaderComponent: FC = () => {
                       : admin}
                   </UserTypeContainer>
                 ) : (
+
                   logButton()
+
                 )}
               </Col>
 
@@ -90,19 +92,21 @@ const HeaderComponent: FC = () => {
                     currentUser.role === 'investor' ? (
                       <>
                         <SettingOutlined />
-                        Змінити тип акаунту
+                        Change accout type
                       </>
                     ) : currentUser.role === 'consumer' ? (
                       <>
+
                         <Link to={routes.credit.absolute()}>
                           <WalletOutlined />
-                          Взяти кредит
+                          Take a loan
                         </Link>
+
                       </>
                     ) : null
                   ) : (
                     <NavLink to={routes.login.registration.absolute()}>
-                      Зареєструватись
+                      Sign Up
                     </NavLink>
                   )}
                 </Button>

@@ -92,22 +92,22 @@ export function AdminScreen() {
   const columns: ColumnsType<User> = [
     {
       key: 'role',
-      title: 'Роль',
+      title: 'Role',
       dataIndex: 'role',
     },
     {
       key: 'name',
-      title: 'Імя',
+      title: 'Full name',
       dataIndex: 'name',
     },
     {
       key: 'photo',
-      title: 'Фото',
+      title: 'Photo',
       render: (_, record: User) => {
         return (
           <span>
             <a target={`_blank`} href={record.photo}>
-              Фото
+              Photo
             </a>
           </span>
         );
@@ -115,12 +115,12 @@ export function AdminScreen() {
     },
     {
       key: 'passport',
-      title: 'Паспорт',
+      title: 'ID card',
       render: (_, record: User) => {
         return (
           <span>
             <a target={`_blank`} href={record.passport}>
-              Паспорт
+              ID card
             </a>
           </span>
         );
@@ -128,49 +128,51 @@ export function AdminScreen() {
     },
     {
       key: 'workplace',
-      title: 'Довідка з місця роботи',
+      title: 'Workplace',
       render: (_, record: User) => {
         return (
           <span>
+
             {record.workplace ? (
               <a target={`_blank`} href={record.workplace}>
-                Місце роботи
+                Workplace
               </a>
             ) : (
-              <p>Користувач не вніс довідку про місце роботи.</p>
+              <p>User put in the documents.</p>
             )}
+
           </span>
         );
       },
     },
     {
       key: 'property',
-      title: 'Майно',
+      title: 'Property',
       render: (_, record: User) => {
         return (
           <span>
+
             {record.property ? (
               <a target={`_blank`} href={record.property}>
-                Майно
+                Property
               </a>
             ) : (
-              <p>Користувач не вніс довідку про навяне майно.</p>
+              <p>User put in the property documents.</p>
             )}
+
           </span>
         );
       },
     },
     {
       key: 'action',
-      title: 'Дія',
+      title: 'Action',
       render: (_, record: User) => (
         <span>
-          <ApproveAction onClick={onUserApprove(record)}>
-            Підтвердити
-          </ApproveAction>
+          <ApproveAction onClick={onUserApprove(record)}>Accept</ApproveAction>
           <Divider type="vertical" />
 
-          <RejectAction onClick={onUserReject(record)}>Скасувати</RejectAction>
+          <RejectAction onClick={onUserReject(record)}>Reject</RejectAction>
         </span>
       ),
     },
@@ -179,17 +181,21 @@ export function AdminScreen() {
   const [dataSource, setDataSource] = useState([] as User[]);
   const success = (user: User, action: adminActions) => {
     Modal.success({
-      title: 'Успішно!',
-      content: `Аккаунт ${user.name} ${action}.`,
+
+      title: 'Success!',
+      content: `Account ${user.name} has been successfully activated.`,
+
     });
   };
 
   return (
     <Container>
+
+
       <Outlet />
       <Row>
         <Col span={18} offset={4}>
-          <Title>Аккаунти, очікуючі підтвердження</Title>
+          <Title>Accounts awaiting verification</Title>
           <Table<User> columns={columns} dataSource={dataSource} />
         </Col>
       </Row>

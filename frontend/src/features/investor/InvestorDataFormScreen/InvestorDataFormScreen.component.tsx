@@ -52,8 +52,8 @@ export const InvestorDataFormScreen: React.FC = () => {
 
   return (
     <PageContainer>
-      <PageTitle>Будь ласка, заповність форму👇</PageTitle>
-      <PageSubtitle>Нам потрібні ці дані</PageSubtitle>
+      <PageTitle>Please fill out the form👇👇</PageTitle>
+      <PageSubtitle>We need this data. It won’t be shared.</PageSubtitle>
 
       <form onSubmit={form.handleSubmit}>
         <Form.Item
@@ -62,7 +62,7 @@ export const InvestorDataFormScreen: React.FC = () => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Ім'я"
+            placeholder="Name"
             name="name"
             value={form.values.name}
             onChange={form.handleChange}
@@ -75,7 +75,7 @@ export const InvestorDataFormScreen: React.FC = () => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Прізвище"
+            placeholder="Surname"
             name="surname"
             value={form.values.surname}
             onChange={form.handleChange}
@@ -88,7 +88,7 @@ export const InvestorDataFormScreen: React.FC = () => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="По батькові"
+            placeholder="Parental name"
             name="middleName"
             value={form.values.middleName}
             onChange={form.handleChange}
@@ -102,10 +102,8 @@ export const InvestorDataFormScreen: React.FC = () => {
             }}
           >
             <span style={{ color: 'red' }}>*</span>
-            Фото:
-            <Button icon={<UploadOutlined />}>
-              Натисність, щоб завантажити
-            </Button>
+            Photo:
+            <Button icon={<UploadOutlined />}>Click, to upload</Button>
           </Upload>
         </Form.Item>
         <Form.Item rules={[{ required: true }]}>
@@ -116,10 +114,8 @@ export const InvestorDataFormScreen: React.FC = () => {
             }}
           >
             <span style={{ color: 'red' }}>*</span>
-            Паспорт:
-            <Button icon={<UploadOutlined />}>
-              Натисність, щоб завантажити
-            </Button>
+            ID Card:
+            <Button icon={<UploadOutlined />}>Click, to upload</Button>
           </Upload>
         </Form.Item>
 
@@ -131,7 +127,7 @@ export const InvestorDataFormScreen: React.FC = () => {
             }}
             danger
           >
-            Продовжити
+            Continue
           </ButtonStyled>
         </Form.Item>
       </form>
