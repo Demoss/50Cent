@@ -55,10 +55,10 @@ export const LoginScreen = () => {
 
   return (
     <PageContainer>
-      <PageTitle>Увійти</PageTitle>
+      <PageTitle>Sign In</PageTitle>
       <PageSubtitle>
-        Немає аккаунту?&nbsp;
-        <Link to={routes.login.registration.absolute()}>Створити</Link>
+        Don’t have an account?&nbsp;
+        <Link to={routes.login.registration.absolute()}>Sign up</Link>
       </PageSubtitle>
 
       <form onSubmit={form.handleSubmit}>
@@ -83,7 +83,7 @@ export const LoginScreen = () => {
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
             name="password"
-            placeholder="Пароль"
+            placeholder="Password"
             value={form.values.password}
             onChange={form.handleChange}
           />
@@ -99,19 +99,19 @@ export const LoginScreen = () => {
                   form.setFieldValue('remember', e.target.checked)
                 }
               />
-              &nbsp;Не виходити з системи після закриття сесії
+              &nbsp;Do not log out after closing the session
             </label>
             <br />
             <br />
-            Забув(-ла) пароль?
+            Forgot your password?
           </Form.Item>
         </Form.Item>
 
         <Form.Item>
-          <RedButton type="submit">Продовжити</RedButton>
+          <RedButton type="submit">Continue</RedButton>
         </Form.Item>
       </form>
-      <ExternalLoginTitle>Зареєструватися через:</ExternalLoginTitle>
+      <ExternalLoginTitle>Sign up with:</ExternalLoginTitle>
       <ExternalLoginButtonsContainer>
         <GoogleLoginButton />
         <FacebookLoginButton />

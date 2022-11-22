@@ -20,7 +20,7 @@ export function mapResponse(
         AcceptedAt: el.AcceptedAt,
         ConsumerID: el.ConsumerID,
         InvestorID: el.InvestorID,
-        CreditAction: 'Дeтальніше',
+        CreditAction: 'Detailed',
       };
 
       return a;

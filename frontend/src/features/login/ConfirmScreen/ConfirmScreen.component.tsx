@@ -38,10 +38,10 @@ export const ConfirmScreen = () => {
 
   return (
     <PageContainer>
-      <PageTitle>Введіть код з пошти</PageTitle>
+      <PageTitle>Enter the code from the mail</PageTitle>
       <PageSubtitle>
-        Не прийшов код?&nbsp;
-        <Link to={routes.login.registration.absolute()}>Відправити ще раз</Link>
+        Didn't receive the code?&nbsp;
+        <Link to={routes.login.registration.absolute()}> Send again</Link>
       </PageSubtitle>
 
       <form onSubmit={form.handleSubmit}>
@@ -54,7 +54,7 @@ export const ConfirmScreen = () => {
           />
         </Form.Item>
         <Form.Item>
-          <RedButton type="submit">Продовжити</RedButton>
+          <RedButton type="submit">Continue</RedButton>
         </Form.Item>
       </form>
     </PageContainer>

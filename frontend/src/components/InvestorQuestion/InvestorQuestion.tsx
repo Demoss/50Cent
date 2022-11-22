@@ -17,9 +17,9 @@ const InvestorQuestion = () => {
               />
             </Col>
             <Col>
-              <h2>Онлайн підтримка</h2>
-              <p>Якшо шось не зрозуміло - напишіть в нашу техпідтримку. </p>
-              <a href="/">написати в підтримку </a>
+              <h2>Online support</h2>
+              <p>Our support will answer all your quetions. </p>
+              <a href="/">write in support</a>
             </Col>
           </Row>
         </Col>
@@ -33,8 +33,8 @@ const InvestorQuestion = () => {
             </Col>
             <Col>
               <h2>FAQ</h2>
-              <p>Якшо шось не зрозуміло - напишіть в нашу техпідтримку. </p>
-              <a href="/">написати в підтримку </a>
+              <p>Visit out frequently asked questions page </p>
+              <a href="/">visit FAQ </a>
             </Col>
           </Row>
         </Col>
@@ -50,9 +50,9 @@ const InvestorQuestion = () => {
               />
             </Col>
             <Col>
-              <h2>Про нас</h2>
-              <p>Якшо шось не зрозуміло - напишіть в нашу техпідтримку. </p>
-              <a href="/">написати в підтримку </a>
+              <h2>About us</h2>
+              <p>Visit the about us page to get more info </p>
+              <a href="/">About us</a>
             </Col>
           </Row>
         </Col>

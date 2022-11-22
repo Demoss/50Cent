@@ -14,13 +14,14 @@ export const ObtainScreen = () => {
 
   return (
     <PageContainer>
-      <PageTitle>Ми отримали ваші дані✅</PageTitle>
+      <PageTitle>We have received your data ✅</PageTitle>
       <PageSubtitle>
-        Як тільки ми все перевіримо - Вам прийде сповіщення на e-mail та у
-        особистий кабінет. Після цього, Ви зомжете взяти позику.
+        As soon as we check everything, you will receive a notification by
+        e-mail and in your personal account. After that, you can start
+        investing.
       </PageSubtitle>
       <ButtonStyled type="primary" onClick={handleClick} danger>
-        Продовжити
+        Continue
       </ButtonStyled>
     </PageContainer>
   );

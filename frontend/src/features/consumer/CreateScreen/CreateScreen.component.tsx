@@ -44,10 +44,10 @@ export const CreateScreen = () => {
 
   return (
     <PageContainer>
-      <PageTitle>Будь ласка, заповніть форму</PageTitle>
+      <PageTitle>Please fill out the form👇</PageTitle>
       <PageSubtitle>
-        Нам потрібні ці дані, щоб вірно оцінити Ваш
-        <br /> кредитний рейтинг. Ми не розповсюджуємо <br /> ці дані
+        We need this data to accurately assess your credit rating. We do not
+        share this data.
       </PageSubtitle>
 
       <form onSubmit={form.handleSubmit}>
@@ -57,7 +57,7 @@ export const CreateScreen = () => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Ім'я"
+            placeholder="Name"
             name="name"
             value={form.values.name}
             onChange={form.handleChange}
@@ -69,7 +69,7 @@ export const CreateScreen = () => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Прізвище"
+            placeholder="Surname"
             name="surname"
             value={form.values.surname}
             onChange={form.handleChange}
@@ -81,7 +81,7 @@ export const CreateScreen = () => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="По батькові"
+            placeholder="Parental name"
             name="middleName"
             value={form.values.middleName}
             onChange={form.handleChange}
@@ -95,7 +95,7 @@ export const CreateScreen = () => {
           }}
           fileList={form.values.photo ? [form.values.photo] : []}
         >
-          Фотографія:
+          Photo:
           <Button icon={<UploadOutlined />}> Select File</Button>
         </Upload>
         <Upload
@@ -106,7 +106,7 @@ export const CreateScreen = () => {
           }}
           fileList={form.values.work_file ? [form.values.work_file] : []}
         >
-          Довідка про місце роботи:
+          Certificate of employment:
           <Button icon={<UploadOutlined />}> Select File</Button>
         </Upload>
         <Upload
@@ -117,7 +117,7 @@ export const CreateScreen = () => {
           }}
           fileList={form.values.id_file ? [form.values.id_file] : []}
         >
-          Паспорт:
+          ID Card:
           <Button icon={<UploadOutlined />}> Select File</Button>
         </Upload>
         <Upload
@@ -130,12 +130,12 @@ export const CreateScreen = () => {
             form.values.property_file ? [form.values.property_file] : []
           }
         >
-          Документи про наявне майно:
+          Documents for existing property:
           <Button icon={<UploadOutlined />}> Select File</Button>
         </Upload>
 
         <Form.Item>
-          <RedButton type="submit">Продовжити</RedButton>
+          <RedButton type="submit">Continue</RedButton>
         </Form.Item>
       </form>
     </PageContainer>

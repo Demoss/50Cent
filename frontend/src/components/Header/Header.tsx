@@ -29,7 +29,7 @@ const HeaderComponent: FC = () => {
         <Col span={12} className="logo-container">
           <Row align="middle">
             <ImgContainer src={logo} alt="logo" />
-            <span>Позики, які не зроблять тебе бомжем</span>
+            <span>Loans that won’t make you poor</span>
           </Row>
         </Col>
 
@@ -44,7 +44,7 @@ const HeaderComponent: FC = () => {
                 ) : (
                   <Button>
                     <UserOutlined />
-                    <NavLink to={routes.login.absolute()}>Увійти</NavLink>
+                    <NavLink to={routes.login.absolute()}>Sign In</NavLink>
                   </Button>
                 )}
               </Col>
@@ -55,17 +55,17 @@ const HeaderComponent: FC = () => {
                     user.type === 'користувач' ? (
                       <>
                         <SettingOutlined />
-                        Змінити тип акаунту
+                        Change accout type
                       </>
                     ) : (
                       <>
                         <WalletOutlined />
-                        Взяти кредит
+                        Take a loan
                       </>
                     )
                   ) : (
                     <NavLink to={routes.login.registration.absolute()}>
-                      Зареєструватись
+                      Sign Up
                     </NavLink>
                   )}
                 </Button>
