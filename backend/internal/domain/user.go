@@ -6,4 +6,12 @@ type User struct {
 	IsVerified bool
 	Email      string
 	Phone      string
+	Role       string
+}
+
+type GetMeUser struct {
+	ID    uint   `json:"id"  gorm:"primaryKey"`
+	Email string `json:"email"`
+	Phone string `json:"phone"`
+	Role  string `json:"role"`
 }

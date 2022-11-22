@@ -85,3 +85,7 @@ func (r *InvestorRepository) Save(ctx context.Context, investor *models.Investor
 func (r *InvestorRepository) UpdateInvestor(ctx context.Context, investor *models.Investor) error {
 	return r.db.WithContext(ctx).Save(&investor).Error
 }
+
+func (r *InvestorRepository) DeleteInvestor(ctx context.Context, investor *models.Investor) error {
+	return r.db.WithContext(ctx).Delete(&investor).Error
+}

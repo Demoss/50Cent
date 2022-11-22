@@ -25,6 +25,7 @@ export const routes = {
   },
   investor: {
     absolute: () => '/investor',
+    relative: () => 'cabinet',
     registration: {
       absolute: () => '/investor/registration',
       relative: () => 'registration',
@@ -38,6 +39,14 @@ export const routes = {
   },
   consumer: {
     absolute: () => '/consumer',
+    cabinet: {
+      absolute: () => '/consumer/cabinet',
+      relative: () => 'cabinet',
+      registration: {
+        absolute: () => '/consumer/registration',
+        relative: () => 'registration',
+      },
+    },
   },
   obtain: {
     absolute: () => '/obtain',

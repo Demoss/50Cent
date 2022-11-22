@@ -1,6 +1,6 @@
 export interface ConfirmRequest {
   email: string;
-  code: number;
+  code: string;
 }
 
 export interface ConfirmResponse {

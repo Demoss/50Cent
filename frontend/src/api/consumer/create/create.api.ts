@@ -10,7 +10,7 @@ export const createApi = async (
   const form = new FormData();
   form.append('name', requestApi.name);
   form.append('surname', requestApi.surname);
-  form.append('middleName', requestApi.middleName);
+  form.append('middle_name', requestApi.middle_name);
   form.append('photo', requestApi.photo as RcFile);
   form.append('work_file', requestApi.work_file as RcFile);
   form.append('id_file', requestApi.id_file as RcFile);

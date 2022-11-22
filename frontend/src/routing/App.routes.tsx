@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { InvestorRoutes, LoginRoutes } from '@/features';
+import { InvestorRoutes } from '@/features/investor/Investor.routes';
 import { routes } from './routes';
 import { LayoutComponent } from '@/components';
 import { HomePage } from '@/features/home';
@@ -10,6 +10,7 @@ import { ConsumerRoutes } from '@/features/consumer';
 import { AdminRoutes } from '@/features/admin/Admin.routes';
 import { CreditRoutes } from '@/features/credit';
 import ProtectedRoute from '@/routing/protected.Routes';
+import { LoginRoutes } from '@/features/login/Login.routes';
 
 export function AppRoutes() {
   return (
@@ -20,27 +21,46 @@ export function AppRoutes() {
           path={`${routes.login.absolute()}/*`}
           element={<LoginRoutes />}
         />
-        <Route element={<ProtectedRoute />}>
+
+        <Route path={`${routes.admin.absolute()}`} element={<AdminRoutes />} />
+
+        <Route
+          path={`${routes.investor.absolute()}/*`}
+          element={<InvestorRoutes />}
+        />
+
+        <Route element={<ProtectedRoute onlyAdmin={false} />}>
           <Route
-            path={`${routes.investor.absolute()}/*`}
-            element={<InvestorRoutes />}
+            path={`${routes.credit.absolute()}/*`}
+            element={<CreditRoutes />}
           />
         </Route>
-        <Route
-          path={`${routes.credit.absolute()}/*`}
-          element={<CreditRoutes />}
-        />
-        <Route path={`${routes.admin.absolute()}`} element={<AdminRoutes />} />
+
+        <Route element={<ProtectedRoute onlyAdmin={false} />}>
+          <Route
+            path={`${routes.obtain.absolute()}/*`}
+            element={<ObtainRoutes />}
+          />
+        </Route>
+
+        <Route element={<ProtectedRoute onlyAdmin={true} />}>
+          <Route
+            path={`${routes.admin.absolute()}`}
+            element={<AdminRoutes />}
+          />
+        </Route>
+
         <Route
           path={`${routes.obtain.absolute()}/*`}
           element={<ObtainRoutes />}
         />
-      </Route>
-      <Route element={<ProtectedRoute />}>
-        <Route
-          path={`${routes.consumer.absolute()}/*`}
-          element={<ConsumerRoutes />}
-        />
+
+        <Route element={<ProtectedRoute onlyAdmin={false} />}>
+          <Route
+            path={`${routes.consumer.absolute()}/*`}
+            element={<ConsumerRoutes />}
+          />
+        </Route>
       </Route>
     </Routes>
   );

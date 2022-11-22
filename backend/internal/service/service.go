@@ -15,15 +15,15 @@ import (
 type Auth interface {
 	Registration(ctx context.Context, user *domain.User) (uint, error)
 	Confirm(ctx context.Context, email string, code string) error
-	GenerateToken(email string, userID uint, isTemporary bool) (string, error)
-	ParseToken(token string) (string, uint, bool, error)
+	GenerateToken(email string, userID uint, role string, isTemporary bool) (string, error)
+	ParseToken(token string) (string, uint, string, bool, error)
 	Login(ctx context.Context, email string, password string) (string, []string, error)
 	ExternalLogin(ctx context.Context, email string) (string, []string, error)
 	LoginPhone(ctx context.Context, email string) error
 	LoginEmail(ctx context.Context, email string) error
 	LoginConfirmPhone(ctx context.Context, email string, code string) (string, error)
 	LoginConfirmEmail(ctx context.Context, email string, code string) (string, error)
-	LoginConfirmOTP(ctx context.Context, email string, userID uint, code string) (string, error)
+	LoginConfirmOTP(ctx context.Context, email string, userID uint, role string, code string) (string, error)
 	UpdatePassword(ctx context.Context, email, password string) error
 	GetUserByID(ctx context.Context, userID uint) (*domain.User, error)
 	GetUserByEmail(ctx context.Context, email string) (*domain.User, error)
@@ -47,18 +47,23 @@ type Loan interface {
 	Create(ctx context.Context, loan *domain.Loan) error
 	Accept(ctx context.Context, loanID uint64, investorID uint) (string, error)
 	Repay(ctx context.Context, loanID uint64, consumerID uint) (string, error)
-	Delete(ctx context.Context, id uint64) error
+	Delete(ctx context.Context, id uint64, consumerID uint) error
 	GetAll(ctx context.Context, page, pageSize int) (*domain.LoanResponse, error)
 	GetByID(ctx context.Context, id uint64) (*domain.Loan, error)
-	Update(ctx context.Context, id uint64, loan *domain.Loan) error
+	Update(ctx context.Context, id uint64, loan *domain.Loan, consumerID uint) error
 	PaymentSuccess(ctx context.Context, sessionID string) error
 	PaymentFailed(ctx context.Context, sessionID string) error
 	CheckoutSessionCompleted(ctx context.Context, sessionID string, paymentID string) error
+	GetAcceptedLoan(ctx context.Context, ConsumerID uint) (*[]domain.Loan, error)
+	GetInvestorFromLoan(ctx context.Context, acceptedLoans *[]domain.Loan) (*[]uint, error)
 	GetTransactionsByLoanID(ctx context.Context, id uint) ([]domain.Transaction, error)
 	Counteroffer(ctx context.Context, loan *domain.LoanCounteroffer) error
 	CounterofferAccept(ctx context.Context, consumerID, offerID uint) error
 	CounterofferReject(ctx context.Context, offerID, consumerID uint) error
 	GetAllCounteroffers(ctx context.Context, loanID uint) ([]domain.LoanCounteroffer, error)
+	GetCounterOfferedLoans(ctx context.Context) (*[]domain.CounterOffers, error)
+	GetAllUnofferedLoans(ctx context.Context, consumerID uint) (*[]domain.Loan, error)
+	GetLoansByInvestor(ctx context.Context, id uint64) ([]domain.LoanWithConsumer, error)
 }
 
 type Consumer interface {
@@ -68,9 +73,13 @@ type Consumer interface {
 	AddPayment(ctx context.Context, userID uint64) (string, error)
 	AddPaymentConfirm(ctx context.Context, accountID string, detailsSubmitted bool) error
 	ApproveConsumerByID(ctx context.Context, ID uint) error
+	DeclineConsumerByID(ctx context.Context, id uint) error
 	GetAllUnverifiedConsumers(ctx context.Context) ([]models.Consumer, error)
 	GetRequiredPayments(ctx context.Context, id uint) ([]domain.Payout, error)
 	GetBalanceHistory(ctx context.Context, id uint) ([]domain.Balance, error)
+	UpdateConsumer(ctx context.Context, consumer *models.Consumer, id uint64, files *domain.Consumer) error
+	UpdateConsumerFiles(ctx context.Context, consumer *domain.Consumer, id uint64) error
+	DeleteFileFromConsumer(ctx context.Context, consumer *domain.Consumer, fileName string) error
 }
 
 type Investor interface {
@@ -80,9 +89,13 @@ type Investor interface {
 	AddPayment(ctx context.Context, userID uint64) (string, error)
 	AddPaymentConfirm(ctx context.Context, accountID string, detailsSubmitted bool) error
 	ApproveInvestorByID(ctx context.Context, ID uint) error
+	DeclineInvestorByID(ctx context.Context, id uint) error
 	GetAllUnverifiedInvestors(ctx context.Context) ([]models.Investor, error)
-	GetPotentialPayouts(ctx context.Context, id uint) ([]domain.Payout, error)
+	GetPotentialPayouts(ctx context.Context, id uint) (float64, error)
 	GetBalanceHistory(ctx context.Context, id uint) ([]domain.Balance, error)
+	UpdateInvestor(ctx context.Context, investor *models.Investor, id uint64, files *domain.Investor) error
+	DeleteFileFromInvestor(ctx context.Context, investor *domain.Investor, fileName string) error
+	UpdateInvestorFiles(ctx context.Context, investor *domain.Investor, id uint64) error
 }
 
 type Admin interface {

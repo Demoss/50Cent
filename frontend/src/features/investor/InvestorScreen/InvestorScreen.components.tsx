@@ -9,9 +9,12 @@ import {
   InvestorHomeContainer,
   SubTitleContainer,
   TitleContainer,
+  NavLinkStyled,
 } from './InvestorScreen.styles';
 
 export function InvestorScreen() {
+  console.log();
+
   return (
     <Layout>
       <InvestorHomeContainer>
@@ -21,6 +24,9 @@ export function InvestorScreen() {
             <SubTitleContainer>
               All active applications for investment are posted on this page👇👇
             </SubTitleContainer>
+            <NavLinkStyled to="cabinet" className={'btn-cabinet'}>
+              Кабінет Iнвестора
+            </NavLinkStyled>
           </Col>
           <Col span={12}>
             <Row justify="end">

@@ -24,7 +24,7 @@ func (h *Controller) AuthMiddleware(c *gin.Context) {
 		return
 	}
 
-	_, userID, isTemporary, err := h.services.Auth.ParseToken(headerParts[1])
+	email, userID, role, isTemporary, err := h.services.Auth.ParseToken(headerParts[1])
 	if err != nil {
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return
@@ -36,7 +36,8 @@ func (h *Controller) AuthMiddleware(c *gin.Context) {
 	}
 
 	c.Set("userID", userID)
-
+	c.Set("email", email)
+	c.Set("role", role)
 	c.Next()
 }
 
@@ -53,13 +54,15 @@ func (h *Controller) LoginMiddleware(c *gin.Context) {
 		return
 	}
 
-	_, userID, _, err := h.services.Auth.ParseToken(headerParts[1])
+	email, userID, role, _, err := h.services.Auth.ParseToken(headerParts[1])
 	if err != nil {
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return
 	}
 
 	c.Set("userID", userID)
+	c.Set("email", email)
+	c.Set("role", role)
 	c.Next()
 }
 
@@ -75,6 +78,8 @@ func (h *Controller) AdminAuthMiddleware(c *gin.Context) {
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return
 	}
+
+	c.Next()
 }
 
 func (h *Controller) CheckAccessLoanMiddleware(c *gin.Context) {
@@ -90,85 +95,93 @@ func (h *Controller) CheckAccessLoanMiddleware(c *gin.Context) {
 		return
 	}
 
+	role, err := helper.GetRoleFromCtx(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
 	loan, err := h.services.Loan.GetByID(c, id)
 	if err != nil || loan == nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	if userID != loan.ConsumerID && userID != loan.InvestorID {
+	switch role {
+	case constants.Consumer:
+		consumer, err := h.services.GetConsumerByUserID(c, uint64(userID))
+		if err != nil {
+			newErrorResponse(c, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		if loan.ConsumerID != consumer.ID {
+			newErrorResponse(c, http.StatusBadRequest, "you don't have access to this loan")
+			return
+		}
+
+		c.Set("ConsumerID", loan.ConsumerID)
+	case constants.Investor:
+		investor, err := h.services.GetInvestorByUserID(c, uint64(userID))
+		if err != nil {
+			newErrorResponse(c, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		if loan.InvestorID != investor.ID {
+			newErrorResponse(c, http.StatusBadRequest, "you don't have access to this loan")
+			return
+		}
+
+		c.Set("InvestorID", loan.InvestorID)
+	}
+
+	c.Next()
+}
+
+func (h *Controller) CheckAdminRoleMiddleware(c *gin.Context) {
+	role, err := helper.GetRoleFromCtx(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, err.Error())
+		return
+	}
+
+	if role != constants.Admin {
 		newErrorResponse(c, http.StatusUnauthorized, "you're not authorized to do this action")
 		return
 	}
 
-	c.Set("ConsumerID", loan.ConsumerID)
+	c.Next()
 }
 
-func (h *Controller) CheckAccessProfileMiddleware(c *gin.Context) {
-	userID, err := helper.GetIDFromCtx(c)
+func (h *Controller) CheckInvestorRoleMiddleware(c *gin.Context) {
+	role, err := helper.GetRoleFromCtx(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return
 	}
 
-	userType := c.Param("type")
-
-	if userType == "" {
-		newErrorResponse(c, http.StatusBadRequest, "invalid type")
+	if role != constants.Investor {
+		newErrorResponse(c, http.StatusUnauthorized, "you're not authorized to do this action")
 		return
 	}
 
-	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid id")
-		return
-	}
-
-	switch userType {
-	case constants.Consumer:
-		consumer, err := h.services.Consumer.GetConsumerByID(c, id)
-
-		if err != nil || consumer == nil {
-			newErrorResponse(c, http.StatusUnauthorized, err.Error())
-			return
-		}
-
-		if consumer.UserID != userID {
-			newErrorResponse(c, http.StatusUnauthorized, "you're not authorized to do this action")
-			return
-		}
-	case constants.Investor:
-		return
-	}
+	c.Next()
 }
 
-// Verification consumer or investor
-func (h *Controller) VerifyConsumerMiddleware(c *gin.Context) {
-	userID, err := helper.GetIDFromCtx(c)
+func (h *Controller) CheckConsumerRoleMiddleware(c *gin.Context) {
+	role, err := helper.GetRoleFromCtx(c)
 	if err != nil {
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return
 	}
 
-	consumer, _ := h.services.GetConsumerByUserID(c, uint64(userID))
-	if consumer != nil && consumer.UserID == userID {
-		newErrorResponse(c, http.StatusBadRequest, "consumer already exists")
-		return
-	}
-}
-
-func (h *Controller) VerifyInvestorMiddleware(c *gin.Context) {
-	userID, err := helper.GetIDFromCtx(c)
-	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, err.Error())
+	if role != constants.Consumer {
+		newErrorResponse(c, http.StatusUnauthorized, "you're not authorized to do this action")
 		return
 	}
 
-	investor, _ := h.services.GetInvestorByUserID(c, uint64(userID))
-	if investor != nil && investor.UserID == userID {
-		newErrorResponse(c, http.StatusBadRequest, "investor already exists")
-		return
-	}
+	c.Next()
 }
 
 func (h *Controller) VerifyConsumerExistsMiddleware(c *gin.Context) {

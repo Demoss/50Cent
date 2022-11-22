@@ -9,7 +9,7 @@ type FileType string
 const (
 	General      FileType = "general"
 	Photo        FileType = "photo"
-	WorkFIle     FileType = "work_file"
+	WorkFile     FileType = "work_file"
 	IDFile       FileType = "id_file"
 	PropertyFile FileType = "property_file"
 )

@@ -30,6 +30,7 @@ export const FacebookLoginButton = () => {
     <FacebookLogin
       textButton=""
       appId={Config.FACEBOOK_CLIENT_ID}
+      redirectUri={Config.REDIRECT_URI}
       callback={callback}
       cssClass="externalLoginButton facebookButton"
     />

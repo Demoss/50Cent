@@ -7,4 +7,5 @@ type Admin struct {
 	gorm.Model
 	UserID uint
 	User   User
+	Role   string `gorm:"type:varchar(200); default:admin"`
 }

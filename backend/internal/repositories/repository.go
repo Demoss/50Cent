@@ -13,6 +13,7 @@ import (
 	"gorm.io/gorm"
 )
 
+//go:generate mockgen -source=repository.go -destination=mock/mock.go
 type Auth interface {
 	Create(ctx context.Context, user *models.User) (uint, error)
 	GetUserByID(ctx context.Context, userID uint) (*models.User, error)
@@ -30,6 +31,7 @@ type Upload interface {
 	AddFileToConsumer(ctx context.Context, file *models.UserFile) error
 	AddFileToInvestor(ctx context.Context, file *models.UserFile) error
 	GetUserFilesLinks(ctx context.Context, userID uint) (map[models.FileType]string, error)
+	DeleteFile(ctx context.Context, fileName string) error
 }
 
 type Loan interface {
@@ -40,6 +42,11 @@ type Loan interface {
 	Delete(ctx context.Context, id uint64) error
 	Update(ctx context.Context, loan *models.Loan) error
 	GetByID(ctx context.Context, id uint64) (*models.Loan, error)
+	GetLoanByConsumerID(ctx context.Context, consumerID uint) (*models.Loan, error)
+	GetAcceptedLoan(ctx context.Context, consumerID uint) (*[]models.Loan, error)
+	GetUnOfferedLoansByConsumerID(ctx context.Context, consumerID uint) (*[]models.Loan, error)
+	GetAllCounterOffers(ctx context.Context) (*[]models.LoanCounteroffer, error)
+	GetAllByInvestorIDWithConsumer(ctx context.Context, id uint) ([]models.GetLoanByInvestorID, error)
 }
 
 type Consumer interface {
@@ -50,6 +57,7 @@ type Consumer interface {
 	GetConsumerByStripeID(ctx context.Context, stripeID string) (*models.Consumer, error)
 	Save(ctx context.Context, consumer *models.Consumer) error
 	UpdateConsumer(ctx context.Context, consumer *models.Consumer) error
+	DeleteConsumer(ctx context.Context, con *models.Consumer) error
 	GetAllUnverifiedConsumers(ctx context.Context) ([]models.Consumer, error)
 }
 
@@ -69,6 +77,7 @@ type Investor interface {
 	GetInvestorByStripeID(ctx context.Context, accountID string) (*models.Investor, error)
 	Save(ctx context.Context, investor *models.Investor) error
 	UpdateInvestor(ctx context.Context, investor *models.Investor) error
+	DeleteInvestor(ctx context.Context, investor *models.Investor) error
 	GetAllUnverifiedInvestors(ctx context.Context) ([]models.Investor, error)
 }
 
@@ -76,6 +85,7 @@ type ConfirmationCode interface {
 	Create(ctx context.Context, code *models.ConfirmationCode) error
 	GetConfirmationCode(ctx context.Context, user *models.User) (*models.ConfirmationCode, error)
 	DeleteConfirmationCode(ctx context.Context, user *models.User) error
+	CheckIfExists(ctx context.Context, user *models.User) (bool, error)
 }
 
 type Payment interface {

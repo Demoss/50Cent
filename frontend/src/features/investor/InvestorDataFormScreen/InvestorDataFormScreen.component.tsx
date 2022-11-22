@@ -1,30 +1,35 @@
 import React from 'react';
 import { useFormik } from 'formik';
+import { Form, Input, message, Button, Upload } from 'antd';
+import { UploadOutlined, UserOutlined } from '@ant-design/icons';
+import { RcFile } from 'antd/lib/upload';
+
+import { Api } from '@/api';
+import { ButtonStyled } from './InvestorDataFormScreen.styles';
 import { PageContainer, PageSubtitle, PageTitle } from '../Investor.styles';
 import { InvestorDataForm } from './InvestorDataFormScreen.types';
 import { investorDataFormValidationSchema } from './InvestorFormValidation';
-import { Form, Input, message, Button, Upload } from 'antd';
-import { Api } from '@/api';
 
-import { UploadOutlined, UserOutlined } from '@ant-design/icons';
-import { RcFile } from 'antd/lib/upload';
-import { useNavigate } from 'react-router-dom';
-import { ButtonStyled } from './InvestorDataFormScreen.styles';
+function Redirect(url: string) {
+  window.location.href = url;
+  return null;
+}
 
 export const InvestorDataFormScreen: React.FC = () => {
-  const navigate = useNavigate();
   const form = useFormik<InvestorDataForm>({
     initialValues: {
       name: '',
       surname: '',
       middleName: '',
-      photo: undefined,
       idFile: undefined,
+      photo: undefined,
     },
     validationSchema: investorDataFormValidationSchema,
     validateOnChange: false,
 
-    async onSubmit(values) {
+    async onSubmit(values, errors) {
+      console.log(errors);
+
       try {
         await Api.registerInvestorForm({
           name: values.name,
@@ -33,7 +38,12 @@ export const InvestorDataFormScreen: React.FC = () => {
           photo: values.photo as RcFile,
           idFile: values.idFile as RcFile,
         });
-        navigate('/obtain');
+
+        await Api.registerInvestorStripe()
+          .then((response) => Redirect(response.url))
+          .catch((error) =>
+            message.error('Помилка при спробі додавання оплати.'),
+          );
       } catch (error) {
         return message.error("Something goes's wrong");
       }
@@ -112,7 +122,9 @@ export const InvestorDataFormScreen: React.FC = () => {
         <Form.Item>
           <ButtonStyled
             type="primary"
-            onClick={() => form.handleSubmit()}
+            onClick={() => {
+              form.handleSubmit();
+            }}
             danger
           >
             Continue

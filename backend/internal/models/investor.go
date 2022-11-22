@@ -7,11 +7,12 @@ type Investor struct {
 	Name            string `gorm:"type:varchar(50)"`
 	Surname         string `gorm:"type:varchar(50)"`
 	MiddleName      string `gorm:"type:varchar(50)"`
-	UserEmail       string
+	UserEmail       string `gorm:"type:varchar(50); unique"`
 	UserID          uint
 	User            User
 	StripeID        string `gorm:"type:varchar(200)"`
 	StripeConfirmed bool   `gorm:"type:boolean; default:false"`
 	IsVerified      bool   `gorm:"type:boolean; default:false"`
 	Balance         float64
+	Role            string `gorm:"type:varchar(200); default:investor"`
 }

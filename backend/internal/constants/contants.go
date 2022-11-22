@@ -2,6 +2,7 @@ package constants
 
 const Consumer = "consumer"
 const Investor = "investor"
+const Admin = "admin"
 
 const InvestorRole = 1
 const ConsumerRole = 2

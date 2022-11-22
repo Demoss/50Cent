@@ -52,7 +52,7 @@ func (s *AdminService) GetALlUnverifiedUsers(ctx context.Context) ([]models.User
 			Name:      investor.Name + " " + investor.MiddleName + " " + investor.Surname,
 			Photo:     userFiles[models.Photo],
 			Passport:  userFiles[models.IDFile],
-			WorkPlace: userFiles[models.WorkFIle],
+			WorkPlace: userFiles[models.WorkFile],
 			Property:  userFiles[models.PropertyFile],
 		})
 	}
@@ -76,7 +76,7 @@ func (s *AdminService) GetALlUnverifiedUsers(ctx context.Context) ([]models.User
 			Name:      consumer.Name + " " + consumer.MiddleName + " " + consumer.Surname,
 			Photo:     userFiles[models.Photo],
 			Passport:  userFiles[models.IDFile],
-			WorkPlace: userFiles[models.WorkFIle],
+			WorkPlace: userFiles[models.WorkFile],
 			Property:  userFiles[models.PropertyFile],
 		})
 	}

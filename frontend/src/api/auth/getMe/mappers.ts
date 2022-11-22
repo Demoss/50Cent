@@ -6,5 +6,6 @@ export const mapResponse = (responseApi: GetMeResponseApi): GetMeResponse => ({
     id: responseApi.id,
     email: responseApi.email,
     phone: responseApi.phone,
+    role: responseApi.role,
   },
 });

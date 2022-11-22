@@ -49,10 +49,55 @@ type balancesResponse struct {
 	Balances []domain.Balance `json:"balances"`
 }
 
-type payoutsResponse struct {
+type payoutsArrayResponse struct {
 	Payouts []domain.Payout `json:"payouts"`
 }
 
+type payoutResponse struct {
+	Payouts float64 `json:"payouts"`
+}
 type loanCounteroffersResponse struct {
 	Counteroffers []domain.LoanCounteroffer `json:"loan_counteroffers"`
+}
+
+type consumerUpdatingResponse struct {
+	Name         string `json:"Name"`
+	Surname      string `json:"Surname"`
+	MiddleName   string `json:"MiddleName"`
+	Photo        string `json:"Photo"`
+	IDFile       string `json:"IDFile"`
+	WorkFile     string `json:"WorkFile"`
+	PropertyFile string `json:"PropertyFile"`
+}
+
+type investorUpdatingResponse struct {
+	Name       string `json:"Name"`
+	Surname    string `json:"Surname"`
+	MiddleName string `json:"MiddleName"`
+	Photo      string `json:"Photo"`
+	IDFile     string `json:"IDFile"`
+}
+
+type loansByInvestorIDResponse struct {
+	Loans []domain.LoanWithConsumer `json:"loans"`
+}
+
+type currentInvestorResponse struct {
+	ID         int     `json:"ID"`
+	Name       string  `json:"Name"`
+	Surname    string  `json:"Surname"`
+	MiddleName string  `json:"MiddleName"`
+	UserEmail  string  `json:"UserEmail"`
+	Balance    float64 `json:"Balance"`
+	Role       string  `json:"Role"`
+}
+
+type currentConsumerResponse struct {
+	ID         int     `json:"ID"`
+	Name       string  `json:"Name"`
+	Surname    string  `json:"Surname"`
+	MiddleName string  `json:"MiddleName"`
+	UserEmail  string  `json:"UserEmail"`
+	Balance    float64 `json:"Balance"`
+	Role       string  `json:"Role"`
 }

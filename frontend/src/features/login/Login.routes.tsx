@@ -7,6 +7,7 @@ import { LoginConfirmScreen } from './LoginConfirmScreen';
 import { RegistrationScreen } from './RegistrationScreen';
 import { OtpRegistrationScreen } from './OtpRegistrationScreen';
 import { OtpConfirmScreen } from './OtpConfirmScreen';
+import { UserTypeRegistrationScreen } from './UserTypeRegistration';
 
 export function LoginRoutes() {
   return (
@@ -27,6 +28,9 @@ export function LoginRoutes() {
         </Route>
         <Route path="registration/otp/confirm">
           <Route index element={<OtpConfirmScreen />} />
+        </Route>
+        <Route path="userType">
+          <Route index element={<UserTypeRegistrationScreen />} />
         </Route>
       </Route>
     </Routes>

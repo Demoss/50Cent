@@ -1,0 +1,1 @@
+export * from './InvestorCabinetScreen.component';

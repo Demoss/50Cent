@@ -55,7 +55,25 @@ type ConsumerRegistration struct {
 	PropertyFile multipart.FileHeader `form:"property_file"`
 }
 
+type ConsumerUpdate struct {
+	Name         string               `form:"name"`
+	Surname      string               `form:"surname"`
+	MiddleName   string               `form:"middle_name"`
+	Photo        multipart.FileHeader `form:"photo"`
+	IDFile       multipart.FileHeader `form:"id_file"`
+	WorkFile     multipart.FileHeader `form:"work_file"`
+	PropertyFile multipart.FileHeader `form:"property_file"`
+}
+
 type InvestorRegistration struct {
+	Name       string               `form:"name"`
+	Surname    string               `form:"surname"`
+	MiddleName string               `form:"middle_name"`
+	Photo      multipart.FileHeader `form:"photo"`
+	IDFile     multipart.FileHeader `form:"id_file"`
+}
+
+type InvestorUpdate struct {
 	Name       string               `form:"name"`
 	Surname    string               `form:"surname"`
 	MiddleName string               `form:"middle_name"`

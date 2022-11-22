@@ -14,3 +14,8 @@ export interface User {
   workplace: string;
   property: string;
 }
+
+export const enum adminActions {
+  approve = 'активовано',
+  reject = 'відхилено',
+}

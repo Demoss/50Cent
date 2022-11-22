@@ -55,6 +55,50 @@ func (r *LoanRepository) GetByID(ctx context.Context, id uint64) (*models.Loan, 
 	return &loan, err
 }
 
+func (r *LoanRepository) GetLoanByConsumerID(ctx context.Context, consumerID uint) (*models.Loan, error) {
+	var loans models.Loan
+
+	err := r.db.WithContext(ctx).First(&loans, consumerID).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &loans, err
+}
+
+func (r *LoanRepository) GetAcceptedLoan(ctx context.Context, consumerID uint) (*[]models.Loan, error) {
+	var loans []models.Loan
+
+	err := r.db.WithContext(ctx).Where("consumer_id = ?", consumerID).Where("is_accepted = ?", true).Where("is_returned = ?", false).Find(&loans).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &loans, err
+}
+
+func (r *LoanRepository) GetUnOfferedLoansByConsumerID(ctx context.Context, consumerID uint) (*[]models.Loan, error) {
+	var loans []models.Loan
+
+	err := r.db.WithContext(ctx).Where("consumer_id = ?", consumerID).Where("is_accepted = ?", false).Where("is_returned = ?", false).Find(&loans).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &loans, err
+}
+
+func (r *LoanRepository) GetAllCounterOffers(ctx context.Context) (*[]models.LoanCounteroffer, error) {
+	var counterLoans []models.LoanCounteroffer
+
+	err := r.db.WithContext(ctx).Find(&counterLoans).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &counterLoans, err
+}
+
 func (r *LoanRepository) GetAllByInvestorID(ctx context.Context, id uint) ([]models.Loan, error) {
 	var loans []models.Loan
 	if err := r.db.WithContext(ctx).Where("investor_id = ?", id).Where("is_accepted = ?", true).Where("is_returned = ?", false).Find(&loans).Error; err != nil {
@@ -75,4 +119,18 @@ func (r *LoanRepository) GetAllByConsumerID(ctx context.Context, id uint) ([]mod
 
 func (r *LoanRepository) Update(ctx context.Context, loan *models.Loan) error {
 	return r.db.WithContext(ctx).Save(loan).Error
+}
+
+func (r *LoanRepository) GetAllByInvestorIDWithConsumer(ctx context.Context, id uint) ([]models.GetLoanByInvestorID, error) {
+	var loans []models.Loan
+
+	var result []models.GetLoanByInvestorID
+
+	err := r.db.WithContext(ctx).Model(&loans).Where("investor_id = ?", id).Where("is_accepted = ?", true).Where("is_returned = ?", false).Select("loans.*, consumers.name, consumers.surname").Joins("left join consumers on consumers.id = loans.consumer_id").Scan(&result).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, err
 }
