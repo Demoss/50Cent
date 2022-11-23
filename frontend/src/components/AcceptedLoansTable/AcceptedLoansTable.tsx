@@ -28,8 +28,8 @@ export function AcceptedLoansTable() {
 
   const contentPayment = (
     <div style={{ width: '200px', fontSize: '14px' }}>
-      Сума включає мінімальниий внесок для погашення позики, комісію нашого
-      сервісу та комісію платіжної платформи за переказ.
+      The amount includes the minimum loan repayment fee, our service fee and
+      the payment platform fee for the transfer.
     </div>
   );
 
@@ -82,7 +82,7 @@ export function AcceptedLoansTable() {
         window.location.replace(response.url);
         console.log('url: ', response.url);
       } catch (error) {
-        message.error('Вибачте, та щось пішло не так!');
+        message.error('Sorry, something goes wrong!');
       } finally {
         setLoading(false);
         setModalAcceptVisible(false);
@@ -90,7 +90,7 @@ export function AcceptedLoansTable() {
         console.log('loanId: ', loanId);
       }
     }
-    return message.error('Будь ласка, підтвердіть вашу дію');
+    return message.error('Confirm your action, please.');
   };
   const { loans } = useLoansAccepted();
 
@@ -98,7 +98,7 @@ export function AcceptedLoansTable() {
     <>
       <Table dataSource={loans} bordered pagination={false} scroll={{ y: 240 }}>
         <Column
-          title="Позика"
+          title="Loan"
           key="CreditSum"
           render={(_, record: Loans) => {
             return (
@@ -108,12 +108,8 @@ export function AcceptedLoansTable() {
             );
           }}
         />
-        {/* <Column 
-          title="Інвестор" 
-          dataIndex="InvestorId" 
-          key="InvestorId" /> */}
         <Column
-          title="Виплачено"
+          title="Already payed"
           dataIndex="PercentOfPayment"
           key="PercentOfPayment"
           render={(_, record: Loans) => {
@@ -121,7 +117,7 @@ export function AcceptedLoansTable() {
           }}
         />
         <Column
-          title="Дата фінальної виплати"
+          title="Date of final payment"
           dataIndex="FinalPaymentDate"
           key="FinalPaymentDate"
           render={(_, record: Loans) => {
@@ -129,11 +125,11 @@ export function AcceptedLoansTable() {
           }}
         />
         <Column
-          title="Зробити внесок"
+          title="Make a payment"
           render={(_, record: Loans) => {
             return (
               <Button type="primary" danger onClick={showModal(record)}>
-                Щомісячний внесок
+                Monthly payment
               </Button>
             );
           }}
@@ -142,11 +138,11 @@ export function AcceptedLoansTable() {
 
       <Modal
         visible={visibleModalAccept}
-        title="Підтвердіть дію"
+        title="Confirm action"
         onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
-            відмінити
+            Reject
           </Button>,
           <Button
             key="submit"
@@ -156,21 +152,21 @@ export function AcceptedLoansTable() {
             disabled={disabled}
             onClick={handleSubmit}
           >
-            Зробити внесок
+            Make payment
           </Button>,
         ]}
       >
         <Form layout="vertical">
           <Form.Item>
-            Мінімальна сума Вашого внеску становить{' '}
-            <strong>{minimumPayment} грн.</strong>
+            Minimal payment due to your Loan is{' '}
+            <strong>{minimumPayment} $.</strong>
             <Popover content={contentPayment} trigger="hover">
               <InfoCircleOutlined style={{ marginLeft: '5px', color: 'red' }} />
             </Popover>
           </Form.Item>
           <Form.Item>
             <label>
-              Для підтвердження кредиту, введіть суму, що показана вище.
+              To confirm the loan, please input the sum you see on the top.
             </label>
             <Input
               type="text"
@@ -181,9 +177,9 @@ export function AcceptedLoansTable() {
           </Form.Item>
           <Form.Item style={{ textAlign: 'center' }}>
             <Checkbox checked={check} onChange={toggleChange}>
-              Я погоджуюсь з Умовами користування та
+              I agree to the Terms of Use and
               <a target={'blank'} href="https://stripe.com/privacy">
-                Політикою конфіденційності
+                Privacy policy
               </a>
             </Checkbox>
           </Form.Item>

@@ -25,7 +25,7 @@ export function InvestorScreen() {
               All active applications for investment are posted on this page👇👇
             </SubTitleContainer>
             <NavLinkStyled to="cabinet" className={'btn-cabinet'}>
-              Кабінет Iнвестора
+              Investor cabinet
             </NavLinkStyled>
           </Col>
           <Col span={12}>

@@ -132,7 +132,6 @@ export function AdminScreen() {
       render: (_, record: User) => {
         return (
           <span>
-
             {record.workplace ? (
               <a target={`_blank`} href={record.workplace}>
                 Workplace
@@ -140,7 +139,6 @@ export function AdminScreen() {
             ) : (
               <p>User put in the documents.</p>
             )}
-
           </span>
         );
       },
@@ -151,7 +149,6 @@ export function AdminScreen() {
       render: (_, record: User) => {
         return (
           <span>
-
             {record.property ? (
               <a target={`_blank`} href={record.property}>
                 Property
@@ -159,7 +156,6 @@ export function AdminScreen() {
             ) : (
               <p>User put in the property documents.</p>
             )}
-
           </span>
         );
       },
@@ -181,17 +177,13 @@ export function AdminScreen() {
   const [dataSource, setDataSource] = useState([] as User[]);
   const success = (user: User, action: adminActions) => {
     Modal.success({
-
       title: 'Success!',
       content: `Account ${user.name} has been successfully activated.`,
-
     });
   };
 
   return (
     <Container>
-
-
       <Outlet />
       <Row>
         <Col span={18} offset={4}>

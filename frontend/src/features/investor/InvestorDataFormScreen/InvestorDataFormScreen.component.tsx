@@ -42,7 +42,7 @@ export const InvestorDataFormScreen: React.FC = () => {
         await Api.registerInvestorStripe()
           .then((response) => Redirect(response.url))
           .catch((error) =>
-            message.error('Помилка при спробі додавання оплати.'),
+            message.error('Error while trying to add payment.'),
           );
       } catch (error) {
         return message.error("Something goes's wrong");

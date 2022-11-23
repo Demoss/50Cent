@@ -43,12 +43,12 @@ const HeaderComponent: FC = () => {
         }}
       >
         <LogoutOutlined />
-        Вийти
+        Sign Out
       </Button>
     ) : (
       <Button>
         <UserOutlined />
-        <NavLink to={routes.login.absolute()}>Увійти</NavLink>
+        <NavLink to={routes.login.absolute()}>Sign In</NavLink>
       </Button>
     );
   };
@@ -80,9 +80,7 @@ const HeaderComponent: FC = () => {
                       : admin}
                   </UserTypeContainer>
                 ) : (
-
                   logButton()
-
                 )}
               </Col>
 
@@ -96,12 +94,10 @@ const HeaderComponent: FC = () => {
                       </>
                     ) : currentUser.role === 'consumer' ? (
                       <>
-
                         <Link to={routes.credit.absolute()}>
                           <WalletOutlined />
                           Take a loan
                         </Link>
-
                       </>
                     ) : null
                   ) : (
@@ -120,7 +116,7 @@ const HeaderComponent: FC = () => {
                   }}
                 >
                   <LogoutOutlined />
-                  Вийти
+                  Sign Out
                 </Button>
               )}
 
@@ -137,7 +133,7 @@ const HeaderComponent: FC = () => {
                     }
                   >
                     <UserOutlined />
-                    Змінити профіль
+                    Change accout type
                   </Button>
                 </Col>
               )}

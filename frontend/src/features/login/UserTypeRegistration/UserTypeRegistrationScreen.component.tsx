@@ -31,20 +31,20 @@ export const UserTypeRegistrationScreen = () => {
 
   return (
     <PageContainer>
-      <MainTitle>Вітаємо у 50 cent! 🎉</MainTitle>
+      <MainTitle>welcome to 50! 🎉</MainTitle>
       <MainContainer>
         <PageSubTitle>
-          Як ви хочете <br /> продовжити?
+          In wich way <br /> you want to continue?
         </PageSubTitle>
         <ButtonsContainer>
           <Link to={`${routes.investor.registration.absolute()}`}>
             <RedButton>
-              <ButtonText> Інвестор </ButtonText>
+              <ButtonText> As investor </ButtonText>
             </RedButton>
           </Link>
           <Link to={`${routes.consumer.cabinet.registration.absolute()}`}>
             <RedButton>
-              <ButtonText>Позичальник</ButtonText>
+              <ButtonText>As consumer</ButtonText>
             </RedButton>
           </Link>
         </ButtonsContainer>
