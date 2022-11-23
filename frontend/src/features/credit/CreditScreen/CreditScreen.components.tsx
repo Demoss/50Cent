@@ -51,7 +51,6 @@ export const CreditScreen = () => {
       <CreditFormContainer>
         <StepsContainer>
           <Steps size="small" current={1}>
-
             <Step title="Submit docunets" />
             <Step title="Fill in the form" />
 
@@ -122,7 +121,6 @@ export const CreditScreen = () => {
             (0.5% service fee will be
 
              added to this percentage): "
-
             labelCol={{ span: 6 }}
           >
             <Input
