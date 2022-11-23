@@ -71,44 +71,43 @@ export function GetScreen() {
 
   return (
     <Container>
-      <Title>Деталі позики</Title>
+      <Title>Loan details</Title>
       <ImgContainer src={LoanImage} alt="loan-img" />
       <CheckLoan>
-        Будь ласка, ще раз ознайомтесь <br />
-        із деталями інвестиції 👇
+        Please review the details of the investment again 👇
       </CheckLoan>
       <StepsContainer>
-        Заголовок: <br />
+        Title: <br />
         <Line>{credit.data?.creditTitle}</Line>
       </StepsContainer>
 
       <StepsContainer>
-        Необхідна сума грошей: <br />
+        The required amount of money: <br />
         <Line>₴ {credit.data?.creditSum}</Line>
       </StepsContainer>
 
       <StepsContainer>
-        Відсоткова ставка: <br />
+        Interest rate: <br />
         <Line>{credit.data?.creditRate}%</Line>
       </StepsContainer>
 
       <StepsContainer>
-        Грошей отримаєте ви: <br />{' '}
-        <Line>{credit.data?.returnedInvestorMoney} ₴</Line>
+        The ammount of money you will receive : <br />{' '}
+        <Line>{credit.data?.returnedInvestorMoney} $</Line>
       </StepsContainer>
 
       <StepsContainer>
-        Термін кредиту: <br /> <Line>{credit.data?.creditTerm} міс.</Line>
+        Term of the loan: <br /> <Line>{credit.data?.creditTerm} mo.</Line>
       </StepsContainer>
 
       <StepsContainer>
-        Опис кредиту: <br />
+        Loan description: <br />
         <Line>{credit.data?.creditDescription}</Line>
       </StepsContainer>
-      <RedButton onClick={() => handleClick()}>Проінвестувати</RedButton>
+      <RedButton onClick={() => handleClick()}>Invest</RedButton>
 
       <ChangeRateButton onClick={showModal}>
-        Запропонувати іншу відсоткову ставку
+        Offer a different interest rate
       </ChangeRateButton>
       <Modal
         visible={visible}
@@ -116,10 +115,10 @@ export function GetScreen() {
         onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
-            Скасувати
+            Reject
           </Button>,
           <Button key="submit" type="primary" onClick={handleOk}>
-            Погодитись
+            Accept
           </Button>,
         ]}
       >
@@ -128,10 +127,10 @@ export function GetScreen() {
             validateStatus={creditForm.errors.creditRate ? 'error' : 'success'}
             help={creditForm.errors.creditRate}
           >
-            Введіть відсоткову ставку, на яку б ви погодились: 👇
+            Enter the interest rate that you would agree to👇
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="ставка"
+              placeholder="rate"
               name="creditRate"
               value={creditForm.values.creditRate}
               onChange={creditForm.handleChange}
@@ -141,10 +140,10 @@ export function GetScreen() {
             validateStatus={creditForm.errors.creditTerm ? 'error' : 'success'}
             help={creditForm.errors.creditTerm}
           >
-            Введіть термін кредиту, на який би ви погодились: 👇
+            Enter the term that you would agree to👇
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Введіть термін кредиту"
+              placeholder="Enter loan term"
               name="creditTerm"
               value={creditForm.values.creditTerm}
               onChange={creditForm.handleChange}

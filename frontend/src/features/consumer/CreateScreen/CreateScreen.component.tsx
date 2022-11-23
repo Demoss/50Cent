@@ -46,10 +46,10 @@ export const CreateScreen = () => {
         await Api.registerStripe()
           .then((response) => Redirect(response.url))
           .catch((err) =>
-            message.error('Сталась помилка при спробі додати оплату.'),
+            message.error('An error occurred while trying to add a payment.'),
           );
       } catch (error) {
-        message.error('Сталась помилка під час створення користувача.');
+        message.error('An error occurred while creating the user.');
       }
     },
   });
@@ -93,7 +93,6 @@ export const CreateScreen = () => {
         >
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
-
             placeholder="Parental name"
             name="middle_name"
             value={form.values.middle_name}
@@ -143,7 +142,6 @@ export const CreateScreen = () => {
           <Upload
             beforeUpload={(file) => {
               form.setFieldValue('property_file', file);
-
 
               return false;
             }}

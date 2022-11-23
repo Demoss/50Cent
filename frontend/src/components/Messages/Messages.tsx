@@ -1,27 +1,27 @@
 import { Divider, List, Typography } from 'antd';
 
 const data = [
-  '[28.03.2022] Вам запрапоновано відсоткову ставку - 12%. Для підтвердження чи відхилення перейдіть до меню вище.',
-  '[18.07.2022] Ваша заявка на позику успішно розглянута та проінвестована.',
-  '[13.06.2022] По вашій заявці на позику запропонували новий термін виплати.',
-  '[06.07.2022] Ви вчасно сплачуєте внески по кредитак, ваш рейтинг росте.',
-  '[06.07.2022] На вашу завку відгунулось декілька інвесторів. Пропонуємо провести аукціон.',
+  '[28.03.2022] You are offered an interest rate of 12%. To confirm or reject, go to the menu above.',
+  '[18.07.2022] Your loan application has been successfully processed and invested.',
+  '[13.06.2022] A new payment term was offered for your loan application.',
+  '[06.07.2022] You pay loan installments on time, your rating grows.',
+  '[06.07.2022] Several investors turned away at your behest. We offer to hold an auction.',
 
-  '[28.03.2022] Ви запрапоновували відсоткову ставку - 15%. Чекаємо підтведження від позичальника.',
-  '[18.07.2022] Ви успішно проінвестували позику від Коломиї Василя.',
-  '[13.06.2022] По заявці на позику, яку ви розглядали запропонували новий термін виплати.',
-  '[07.07.2022] Цього місяця ви отримали рекордну суму виплат від позичальників',
-  '[06.07.2022] Завкою, на яку ви відгунулись, ще декілька інвесторів зацікавились. ',
+  '[28.03.2022] You offered an interest rate of 15%. We are waiting for confirmation from the borrower.',
+  '[18.07.2022] You have successfully invested a loan from Vasyl Kolomia.',
+  '[13.06.2022] A new payment term was offered for the loan application that you were considering.',
+  '[07.07.2022] This month you received a record amount of payments from borrowers',
+  '[06.07.2022] A few more investors were interested in the store that you turned away from. ',
 
-  '[06.07.2022] Якщо ви це читаєте, припускаємо, що вам вже немає на що дивитись на нашому сайті..',
+  "[06.07.2022] If you're reading this, we're assuming you've run out of things to look at on our site.",
 ];
 
 export const Messages = () => {
   return (
     <>
-      <Divider orientation="left">Ваші сповіщення</Divider>
+      <Divider orientation="left">Your notifications</Divider>
       <List
-        header={<div>Нові повідомлення</div>}
+        header={<div>New messages</div>}
         bordered
         dataSource={data}
         renderItem={(item) => (

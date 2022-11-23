@@ -77,7 +77,7 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
           values.propertyFile) &&
           getConsumerInfo();
         if (response.status === 'Added updated to user') {
-          return message.success('Профіль успішно оновлений!');
+          return message.success('The profile has updated successfully!');
         }
       } catch (error) {
         return message.error('Something goes wrong');
@@ -89,30 +89,32 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
     <PageContainer>
       {form.values.name ? (
         <>
-          <UpdatePageTitle>Вітаємо, {form.values.name}! 😎</UpdatePageTitle>
+          <UpdatePageTitle>Wellcome, {form.values.name}! 😎</UpdatePageTitle>
           <UpdatePageContainer>
             <PhotoContainer>
               <div>
-                <PageSubtitle>Фотографія</PageSubtitle>
+                <PageSubtitle>Photo</PageSubtitle>
                 {photo && <Image width={200} src={photo} />}
               </div>
               <div>
-                <PageSubtitle>Довідка про місце роботи</PageSubtitle>
+                <PageSubtitle>Certificate of employment</PageSubtitle>
                 {idPicture && <Image width={200} src={idPicture} />}
               </div>
             </PhotoContainer>
             <PhotoContainer>
               <div>
-                <PageSubtitle>Паспорт</PageSubtitle>
+                <PageSubtitle>ID Card</PageSubtitle>
                 {workFile && <Image width={200} src={workFile} />}
               </div>
               <div>
-                <PageSubtitle>Докумени про наявне майно</PageSubtitle>
+                <PageSubtitle>Documents for existing property</PageSubtitle>
                 {Property && <Image width={200} src={Property} />}
               </div>
             </PhotoContainer>
             <div>
-              <PageSubtitle>Тут ви можете змінити свої дані</PageSubtitle>
+              <PageSubtitle>
+                You can update imforamtion about you up here
+              </PageSubtitle>
 
               <form onSubmit={form.handleSubmit}>
                 <Form.Item
@@ -121,7 +123,7 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
                 >
                   <Input
                     prefix={<UserOutlined className="site-form-item-icon" />}
-                    placeholder="Ім'я"
+                    placeholder="Name"
                     name="name"
                     value={form.values.name}
                     onChange={form.handleChange}
@@ -134,7 +136,7 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
                 >
                   <Input
                     prefix={<UserOutlined className="site-form-item-icon" />}
-                    placeholder="Прізвище"
+                    placeholder="Surname"
                     name="surname"
                     value={form.values.surname}
                     onChange={form.handleChange}
@@ -147,7 +149,7 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
                 >
                   <Input
                     prefix={<UserOutlined className="site-form-item-icon" />}
-                    placeholder="По батькові"
+                    placeholder="Parental name"
                     name="middleName"
                     value={form.values.middleName}
                     onChange={form.handleChange}
@@ -161,10 +163,8 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
                     }}
                   >
                     <span style={{ color: 'red' }}>*</span>
-                    Фотографія:{' '}
-                    <Button icon={<UploadOutlined />}>
-                      Натисність, щоб змінити
-                    </Button>
+                    Photo:{' '}
+                    <Button icon={<UploadOutlined />}>Click to replace</Button>
                   </Upload>
                 </Form.Item>
                 <Form.Item rules={[{ required: true }]}>
@@ -175,10 +175,8 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
                     }}
                   >
                     <span style={{ color: 'red' }}>*</span>
-                    Довідка про місце роботи:{' '}
-                    <Button icon={<UploadOutlined />}>
-                      Натисність, щоб змінити
-                    </Button>
+                    Certificate of employment:{' '}
+                    <Button icon={<UploadOutlined />}>Click to replace</Button>
                   </Upload>
                 </Form.Item>
                 <Form.Item rules={[{ required: true }]}>
@@ -189,10 +187,8 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
                     }}
                   >
                     <span style={{ color: 'red' }}>*</span>
-                    Паспорт:{' '}
-                    <Button icon={<UploadOutlined />}>
-                      Натисність, щоб змінити
-                    </Button>
+                    ID Card:{' '}
+                    <Button icon={<UploadOutlined />}>Click to replace</Button>
                   </Upload>
                 </Form.Item>
                 <Form.Item rules={[{ required: true }]}>
@@ -203,10 +199,8 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
                     }}
                   >
                     <span style={{ color: 'red' }}>*</span>
-                    Документи про наявне майно:{' '}
-                    <Button icon={<UploadOutlined />}>
-                      Натисність, щоб змінити
-                    </Button>
+                    Documents for existing property:{' '}
+                    <Button icon={<UploadOutlined />}>Click to replace</Button>
                   </Upload>
                 </Form.Item>
 
@@ -219,13 +213,13 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
             onClick={() => form.handleSubmit()}
             danger
           >
-            Оновити
+            Update
           </ButtonStyled>
         </>
       ) : (
         <Alert
-          message="Помилка!"
-          description="Нажаль ми не можемо знайти ваші дані..."
+          message="Error!"
+          description="Unfortunately, we can't find your data..."
           type="error"
           showIcon
         />

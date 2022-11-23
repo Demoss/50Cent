@@ -63,7 +63,7 @@ export const LoginConfirmScreen = () => {
       <form onSubmit={form.handleSubmit}>
         <Form.Item validateStatus={form.errors.code ? 'error' : 'success'}>
           <Input
-            placeholder="Код"
+            placeholder="Code"
             value={form.values.code > 0 ? form.values.code : ''}
             name="code"
             onChange={form.handleChange}

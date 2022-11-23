@@ -16,6 +16,6 @@ export interface User {
 }
 
 export const enum adminActions {
-  approve = 'активовано',
-  reject = 'відхилено',
+  approve = 'activated',
+  reject = 'rejected',
 }

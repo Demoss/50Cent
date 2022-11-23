@@ -18,14 +18,12 @@ export function InvestorCabinetScreen() {
   const { payout } = usePotentialPayout();
 
   const balance = (
-    <div style={{ width: '200px', fontSize: '14px' }}>
-      Стан Вашого балансу на поточний момент
-    </div>
+    <div style={{ width: '200px', fontSize: '14px' }}>Your current balance</div>
   );
 
   const payouts = (
     <div style={{ width: '200px', fontSize: '14px' }}>
-      Потенційна сума відсотків за виплати цього місяця
+      Potential interest amount for this month's payments
     </div>
   );
 
@@ -35,7 +33,7 @@ export function InvestorCabinetScreen() {
         <Row justify="space-between">
           <Col span={8}>
             <BalanceTitle>
-              Ваш баланс
+              Your balance
               <Popover content={balance} trigger="hover">
                 <InfoCircleOutlined style={{ marginLeft: '5px' }} />
               </Popover>
@@ -50,7 +48,7 @@ export function InvestorCabinetScreen() {
           </Col>
           <Col span={8} push={3}>
             <BalanceTitle style={{ marginLeft: '25px' }}>
-              Виплати за цей місяць
+              Payments for this month
               <Popover content={payouts} trigger="hover">
                 <InfoCircleOutlined style={{ marginLeft: '5px' }} />
               </Popover>

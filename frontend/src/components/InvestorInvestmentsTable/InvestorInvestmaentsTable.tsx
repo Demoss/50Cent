@@ -7,7 +7,7 @@ import { useInvestorCredits } from '@/hooks/credits/useInvestorCredits';
 
 const columns: ColumnsType<Omit<InvestorLoanWithKeys, 'ID'>> = [
   {
-    title: 'Позика',
+    title: 'Loan',
     dataIndex: 'CreditSum',
     key: 'CreditSum',
     width: '25%',
@@ -18,7 +18,7 @@ const columns: ColumnsType<Omit<InvestorLoanWithKeys, 'ID'>> = [
     ),
   },
   {
-    title: 'Позичальник',
+    title: 'Consumer',
     dataIndex: 'ConsumerName',
     key: 'ConsumerName',
     width: '25%',
@@ -29,14 +29,14 @@ const columns: ColumnsType<Omit<InvestorLoanWithKeys, 'ID'>> = [
     ),
   },
   {
-    title: 'Виплачено',
+    title: 'Paid',
     dataIndex: 'ReturnedAmount',
     key: 'ReturnedAmount',
     width: '30%',
     render: (_, { ReturnedAmount }) => <Progress percent={ReturnedAmount} />,
   },
   {
-    title: 'Дата фінальної виплати',
+    title: 'Date of final payment',
     dataIndex: 'LatestPaymount',
     key: 'LatestPaymount',
     width: '20%',

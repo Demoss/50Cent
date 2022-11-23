@@ -22,7 +22,7 @@ export const InvestorResponse: React.FC = () => {
   const [visibleModalAccept, setModalAcceptVisible] = useState(false);
   const [visibleModalDenied, setModalDeniedVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [confirm] = useState('Підтверджую');
+  const [confirm] = useState('Confirm');
   const [checked, setChecked] = useState(true);
   const [disabled, setDisabled] = useState(true);
   const [id, setId] = useState<number>(0);
@@ -59,7 +59,7 @@ export const InvestorResponse: React.FC = () => {
         const response = await mutationAccept.mutateAsync({ id });
         console.log(response);
       } catch (error) {
-        message.error('Вибачте, та щось пішло не так!');
+        message.error('Sorry, something goes wrong!');
       }
       setLoading(true);
       setLoading(false);
@@ -67,7 +67,7 @@ export const InvestorResponse: React.FC = () => {
       setInputValue('');
       return;
     }
-    return message.error('Введіть, будь ласка, вірне слово для підтвердження');
+    return message.error('To confirm, please input rigth word.');
   };
 
   const handleCancel = () => {
@@ -88,7 +88,7 @@ export const InvestorResponse: React.FC = () => {
   return (
     <Table dataSource={offers} pagination={false} scroll={{ y: 240 }}>
       <Column
-        title="Назва"
+        title="Name"
         dataIndex="CreditTitle"
         key="CreditTitle"
         width="8%"
@@ -97,7 +97,7 @@ export const InvestorResponse: React.FC = () => {
         }}
       />
       <Column
-        title="Розмір позики"
+        title="Loan amount"
         dataIndex="CreditSum"
         key="CreditSum"
         width="9%"
@@ -105,9 +105,9 @@ export const InvestorResponse: React.FC = () => {
           return <span>₴ {record.CreditSum}</span>;
         }}
       />
-      <ColumnGroup title="Відсоткова ставка">
+      <ColumnGroup title="Interest rate">
         <Column
-          title="Ваша ставка"
+          title="Your rate"
           dataIndex="CreditRate"
           key="CreditRate"
           width="7%"
@@ -116,7 +116,7 @@ export const InvestorResponse: React.FC = () => {
           }}
         />
         <Column
-          title="Пропозиція"
+          title="Offer"
           dataIndex="CreditNewRate"
           key="CreditNewRate"
           width="8.5%"
@@ -125,9 +125,9 @@ export const InvestorResponse: React.FC = () => {
           }}
         />
       </ColumnGroup>
-      <ColumnGroup title="Термін позики">
+      <ColumnGroup title="Loan term">
         <Column
-          title="Ваш термін"
+          title="Your term"
           dataIndex="CreditTerm"
           key="CreditTerm"
           width="7%"
@@ -136,7 +136,7 @@ export const InvestorResponse: React.FC = () => {
           }}
         />
         <Column
-          title="Пропозиція"
+          title="Offer"
           dataIndex="CreditNewTerm"
           key="CreditNewTerm"
           width="8.5%"
@@ -145,9 +145,9 @@ export const InvestorResponse: React.FC = () => {
           }}
         />
       </ColumnGroup>
-      <ColumnGroup title="Вся сума погашення позики">
+      <ColumnGroup title="The entire loan repayment amount">
         <Column
-          title="На ваших умовах"
+          title="On your cond."
           dataIndex="TotalSum"
           key="TotalSum"
           width="9%"
@@ -156,7 +156,7 @@ export const InvestorResponse: React.FC = () => {
           }}
         />
         <Column
-          title="За умовами пропозиції"
+          title="Accord. to offer"
           dataIndex="TotalNewSum"
           key="TotalNewSum"
           width="9%"
@@ -165,9 +165,9 @@ export const InvestorResponse: React.FC = () => {
           }}
         />
       </ColumnGroup>
-      <ColumnGroup title="Щомісячний внесок">
+      <ColumnGroup title="Monthly payment">
         <Column
-          title="На ваших умовах"
+          title="On your cond."
           dataIndex="MonthlyPayment"
           key="MonthlyPayment"
           width="9%"
@@ -176,7 +176,7 @@ export const InvestorResponse: React.FC = () => {
           }}
         />
         <Column
-          title="За умовпми пропозиції"
+          title="Accord. to offer"
           dataIndex="NewMonthlyPayment"
           key="NewMonthlyPayment"
           width="9%"
@@ -186,7 +186,7 @@ export const InvestorResponse: React.FC = () => {
         />
       </ColumnGroup>
       <Column
-        title="Дії"
+        title="Actiona"
         dataIndex="creditTotalPayment"
         key="creditTotalPayment"
         width="9%"
@@ -196,15 +196,15 @@ export const InvestorResponse: React.FC = () => {
               onClick={showModalAccept(record)}
               style={{ color: 'green' }}
             >
-              Прийняти
+              Accept
             </button>
             <Modal
               visible={visibleModalAccept}
-              title="Підтвердіть дію"
+              title="Congirm action"
               onCancel={handleCancel}
               footer={[
                 <Button key="back" onClick={handleCancel}>
-                  відмінити
+                  Reject
                 </Button>,
                 <Button
                   key="submit"
@@ -214,15 +214,14 @@ export const InvestorResponse: React.FC = () => {
                   disabled={disabled}
                   onClick={handleSubmit}
                 >
-                  Взяти кредит
+                  Take loan
                 </Button>,
               ]}
             >
               <Form layout="vertical">
                 <Form.Item>
                   <label>
-                    Для підтвердження кредиту, напишіть в графі нижче{' '}
-                    <strong>“Підтверджую”</strong>.
+                    To confirm the loan, type in <strong>“Confirm”</strong>.
                   </label>
                   <Input
                     type="text"
@@ -233,22 +232,21 @@ export const InvestorResponse: React.FC = () => {
                 </Form.Item>
                 <Form.Item style={{ textAlign: 'center' }}>
                   <Checkbox onChange={toggleDisable}>
-                    Я погоджуюсь з Умовами користування та Політикою
-                    конфіденційності
+                    I agree to the Terms of Use and Privacy policy
                   </Checkbox>
                 </Form.Item>
               </Form>
             </Modal>
             <Divider type="vertical" />
             <button onClick={showModalDenied(record)} style={{ color: 'red' }}>
-              Відхилити
+              Reject
             </button>
             <Modal
               visible={visibleModalDenied}
               onCancel={handleCancel}
               footer={[
                 <Button type="primary" danger onClick={onDelete}>
-                  ОК
+                  OK
                 </Button>,
               ]}
             >
@@ -259,8 +257,8 @@ export const InvestorResponse: React.FC = () => {
                   fontSize: '18px',
                 }}
               >
-                <p>Пропозицію відхилено.</p>
-                <p>Відсоткову ставку відхилено успішно.</p>
+                <p>Offer rejected.</p>
+                <p>Iterest rate successfully rejected.</p>
               </Form.Item>
             </Modal>
           </>

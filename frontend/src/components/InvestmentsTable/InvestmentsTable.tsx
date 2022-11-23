@@ -14,20 +14,16 @@ const columns: ColumnsType<Omit<LoanWithKeys, 'ID'>> = [
     width: '25%',
     render: (_, el) => (
       <>
-
         ${Math.round(el.CreditSum)} at a {el.CreditRate}%
-
       </>
     ),
   },
   {
-
     title: 'Term of the loan',
     dataIndex: 'СreditTerm',
     key: 'CreditTerm',
     width: '15%',
-    render: (_, el) => <>{el.CreditTerm} місяців</>,
-
+    render: (_, el) => <>{el.CreditTerm} months</>,
   },
   {
     title: 'What wil be the money used for?',
@@ -37,7 +33,6 @@ const columns: ColumnsType<Omit<LoanWithKeys, 'ID'>> = [
     render: (CreditTitle) => <>{CreditTitle}</>,
   },
   {
-
     title: 'Description',
     dataIndex: 'CreditDescription',
     key: 'CreditDescription',
@@ -47,14 +42,11 @@ const columns: ColumnsType<Omit<LoanWithKeys, 'ID'>> = [
     sorter: (a, b) => a.CreditDescription.length - b.CreditDescription.length,
   },
   {
-
     title: 'Action',
     dataIndex: 'CreditID',
     key: 'CreditID',
     width: '10%',
-    render: (CreditID) => (
-      <Link to={`/credit/get/${CreditID}`}>Детальніше</Link>
-    ),
+    render: (CreditID) => <Link to={`/credit/get/${CreditID}`}>Details</Link>,
   },
 ];
 
