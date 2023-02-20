@@ -39,13 +39,9 @@ export const routes = {
   },
   consumer: {
     absolute: () => '/consumer',
-    cabinet: {
-      absolute: () => '/consumer/cabinet',
-      relative: () => 'cabinet',
-      registration: {
+    registration: {
         absolute: () => '/consumer/registration',
         relative: () => 'registration',
-      },
     },
   },
   obtain: {
