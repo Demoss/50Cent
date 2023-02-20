@@ -93,7 +93,7 @@ export function GetScreen() {
 
       <StepsContainer>
         The ammount of money you will receive : <br />{' '}
-        <Line>{credit.data?.returnedInvestorMoney} $</Line>
+        <Line>₴ {credit.data?.returnedInvestorMoney}</Line>
       </StepsContainer>
 
       <StepsContainer>
