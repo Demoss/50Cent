@@ -15,11 +15,11 @@ export function mapResponse(
   responseApi: GetCreditResponseApi,
 ): GetCreditResponse {
   return {
-    creditSum: Number((Math.round(responseApi.CreditSum * 100)/ 100).toFixed(2)),
+    creditSum: responseApi.CreditSum,
     creditTitle: responseApi.CreditTitle,
     creditDescription: responseApi.CreditDescription,
     creditTerm: responseApi.CreditTerm,
     creditRate: responseApi.CreditRate,
-    returnedInvestorMoney: Number((Math.round(responseApi.ReturnedInvestorMoney * 100)/ 100).toFixed(2)),
+    returnedInvestorMoney: responseApi.ReturnedInvestorMoney,
   };
 }
