@@ -1,4 +1,4 @@
-import { Col, Layout, Popover, Row, Modal } from 'antd';
+import { Col, Layout, Popover, Row, Modal, Button } from 'antd';
 import {useSearchParams} from "react-router-dom";
 
 import { InvestorInvestmentsTable } from '@/components/InvestorInvestmentsTable/InvestorInvestmaentsTable';
@@ -9,6 +9,9 @@ import {
   InvestorHeader,
   InvestorInfo,
   InvestorTable,
+  StripeInfo,
+  StripeInfoError,
+  StripeInfoSuccess,
 } from './InvestorCabinetScreen.styles';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { useCurrentInvestor, usePotentialPayout } from '@/hooks/investor';
@@ -102,14 +105,18 @@ export function InvestorCabinetScreen() {
             title="Stripe message"
             visible={isVisible}
             onOk={handleOk}
-            confirmLoading={confirmLoading}
             onCancel={handleCancel}
+            confirmLoading={confirmLoading}
+            footer={[
+            <Button type='primary' key="submit" loading={confirmLoading} onClick={handleOk}>
+             OK
+            </Button>]}
         >
-          <p>{stripeTypeMsg === 'success' ?
-                  'Payment Successful':
+          <StripeInfo>{stripeTypeMsg === 'success' ?
+              <StripeInfoSuccess className={'stripe-msg-success'}>Payment Successfull!</StripeInfoSuccess> :
               stripeTypeMsg === 'error' ?
-                  'Payment Failure' : ''}
-          </p>
+                 <StripeInfoError className={'stripe-msg-error'}>Payment Failure!</StripeInfoError> : ''}
+          </StripeInfo>
         </Modal>
        </div>}
     </Layout>
