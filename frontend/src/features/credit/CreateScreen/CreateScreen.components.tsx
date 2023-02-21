@@ -67,7 +67,7 @@ export const CreateScreen = () => {
             help={creditForm.errors.creditSum}
             label="The required amount of money, $ "
             labelCol={{ span: 8 }}
-            labelAlign={"left"}
+            labelAlign={'left'}
           >
             <Input
               size="large"
@@ -82,7 +82,7 @@ export const CreateScreen = () => {
             help={creditForm.errors.creditTitle}
             label="Title of the loan "
             labelCol={{ span: 8 }}
-            labelAlign={"left"}
+            labelAlign={'left'}
           >
             <Input
               size="large"
@@ -97,7 +97,7 @@ export const CreateScreen = () => {
             help={creditForm.errors.creditDesc}
             label="Detailed description of the loan "
             labelCol={{ span: 8 }}
-            labelAlign={"left"}
+            labelAlign={'left'}
           >
             <TextArea
               size="large"
@@ -112,7 +112,7 @@ export const CreateScreen = () => {
             help={creditForm.errors.creditTerm}
             label="Term of the loan: "
             labelCol={{ span: 8 }}
-            labelAlign={"left"}
+            labelAlign={'left'}
           >
             <Input
               size="large"
@@ -127,7 +127,7 @@ export const CreateScreen = () => {
             help={creditForm.errors.creditRate}
             label="Desired Annual %(0.5% service fee will be added to this percentage) "
             labelCol={{ span: 8 }}
-            labelAlign={"left"}
+            labelAlign={'left'}
           >
             <Input
               size="large"
