@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"math"
 
 	"github.com/stripe/stripe-go/v72/webhook"
 
@@ -183,10 +184,11 @@ func (h *Controller) getLoanByID(c *gin.Context) {
 		return
 	}
 
-	returnedInvestorMoney := loan.CreditSum * loan.CreditRate / 100
+	returnedInvestorMoney := (math.Round(loan.CreditSum * loan.CreditRate) / 100);
+	roundedCreditSum := (math.Round(loan.CreditSum *100) / 100);
 
 	loanResponse := query.GetLoanByIDResponse{
-		CreditSum:             loan.CreditSum,
+		CreditSum:             roundedCreditSum,
 		CreditTitle:           loan.CreditTitle,
 		CreditDescription:     loan.CreditDescription,
 		CreditTerm:            loan.CreditTerm,
