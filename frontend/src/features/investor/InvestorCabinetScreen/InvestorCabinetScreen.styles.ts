@@ -24,16 +24,15 @@ export const InvestorInfo = styled.div`
 `;
 
 export const StripeInfo = styled.p`
-    text-align: center;
-    font-size: 1.3rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    transform: translateY(35%);
+  text-align: center;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transform: translateY(35%);
 `;
 
 export const StripeInfoSuccess = styled.span`
   color: var(--link-button);
- 
 `;
 
 export const StripeInfoError = styled.span`

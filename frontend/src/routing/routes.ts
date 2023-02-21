@@ -40,8 +40,8 @@ export const routes = {
   consumer: {
     absolute: () => '/consumer',
     registration: {
-        absolute: () => '/consumer/registration',
-        relative: () => 'registration',
+      absolute: () => '/consumer/registration',
+      relative: () => 'registration',
     },
   },
   obtain: {
