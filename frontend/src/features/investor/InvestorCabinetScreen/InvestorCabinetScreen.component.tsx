@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 export function InvestorCabinetScreen() {
   const { Name, Surname, MiddleName, Balance } = useCurrentInvestor();
   const { payout } = usePotentialPayout();
-
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const [searchParams, setSearchParams] = useSearchParams();
   const stripeTypeMsg = searchParams.get('type');
   const [isVisible, setIsVisible] = useState(false);
