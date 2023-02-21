@@ -1,7 +1,13 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from './App';
 
 test('renders learn react link', () => {
-  // const result = render(<App />);
-  // expect(result).toBeTruthy();
+  window.matchMedia = jest
+    .fn()
+    .mockReturnValue({ addListener: jest.fn(), removeListener: jest.fn() });
+
+  render(<App />);
+
+  const headerTitleElement = screen.getByText('Loans that won’t make you poor');
+  expect(headerTitleElement).toBeInTheDocument();
 });
