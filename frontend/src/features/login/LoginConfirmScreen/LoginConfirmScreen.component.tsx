@@ -42,6 +42,8 @@ export const LoginConfirmScreen = () => {
           appStorage.setApiKey(response.token);
           if (token.role === 'user') {
             navigate('/login/userType', { replace: true });
+          } else if (token.role === 'consumer') {
+            navigate(`/${token.role}/cabinet`, { replace: true });
           } else {
             navigate(`/${token.role}`, { replace: true });
           }

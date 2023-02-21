@@ -1,7 +1,6 @@
 @import 'antd/dist/antd.variable.css';
 
 :root {
-  --main-color: #8865a9;
   --main-color: #d3adf7;
   --red-button: #f5222d;
   --page-title-size: 38px;
@@ -31,7 +30,6 @@ header {
 #root section header {
       background-color: var(--header-color);
 }
-    
 
 footer {
   min-height: 50px;
@@ -42,10 +40,10 @@ footer {
 .ant-layout-content {
   min-height: auto;
 }
-  
-/* .ant-table-wrapper {
-    width: 100%;
-} */
+
+.ant-form-item-label{
+  white-space: break-spaces;
+}
 
 .externalLoginButton {
   display: flex;
