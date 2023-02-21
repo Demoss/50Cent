@@ -42,10 +42,11 @@ footer {
 .ant-layout-content {
   min-height: auto;
 }
-  
-/* .ant-table-wrapper {
-    width: 100%;
-} */
+
+.ant-form-item-label{
+  white-space: break-spaces;
+}
+
 
 .externalLoginButton {
   display: flex;

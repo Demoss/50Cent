@@ -58,15 +58,16 @@ export const CreateScreen = () => {
           <Steps size="small" current={1}>
             <Step title="Submit documents" />
             <Step title="Fill out the form" />
-            <Step title="Your application will be placed on 50 Cent." />
+            <Step title="Your loan will be placed on 50 Cent." />
           </Steps>
         </StepsContainer>
         <CreditFormStyled onSubmit={creditForm.handleSubmit}>
           <Form.Item
             validateStatus={creditForm.errors.creditSum ? 'error' : 'success'}
             help={creditForm.errors.creditSum}
-            label="The required amount of money, $: "
-            labelCol={{ span: 6 }}
+            label="The required amount of money, $ "
+            labelCol={{ span: 8 }}
+            labelAlign={"left"}
           >
             <Input
               size="large"
@@ -79,8 +80,9 @@ export const CreateScreen = () => {
           <Form.Item
             validateStatus={creditForm.errors.creditTitle ? 'error' : 'success'}
             help={creditForm.errors.creditTitle}
-            label="Title of the loan: "
-            labelCol={{ span: 6 }}
+            label="Title of the loan "
+            labelCol={{ span: 8 }}
+            labelAlign={"left"}
           >
             <Input
               size="large"
@@ -93,8 +95,9 @@ export const CreateScreen = () => {
           <Form.Item
             validateStatus={creditForm.errors.creditDesc ? 'error' : 'success'}
             help={creditForm.errors.creditDesc}
-            label="Detailed description of the loan: "
-            labelCol={{ span: 6 }}
+            label="Detailed description of the loan "
+            labelCol={{ span: 8 }}
+            labelAlign={"left"}
           >
             <TextArea
               size="large"
@@ -108,7 +111,8 @@ export const CreateScreen = () => {
             validateStatus={creditForm.errors.creditTerm ? 'error' : 'success'}
             help={creditForm.errors.creditTerm}
             label="Term of the loan: "
-            labelCol={{ span: 6 }}
+            labelCol={{ span: 8 }}
+            labelAlign={"left"}
           >
             <Input
               size="large"
@@ -121,10 +125,9 @@ export const CreateScreen = () => {
           <Form.Item
             validateStatus={creditForm.errors.creditRate ? 'error' : 'success'}
             help={creditForm.errors.creditRate}
-            label="Desired Annual %
-            (0.5% service fee will be
-             added to this percentage): "
-            labelCol={{ span: 6 }}
+            label="Desired Annual %(0.5% service fee will be added to this percentage) "
+            labelCol={{ span: 8 }}
+            labelAlign={"left"}
           >
             <Input
               size="large"
@@ -135,7 +138,7 @@ export const CreateScreen = () => {
             />
           </Form.Item>
           <Form.Item>
-            <RedButton type="submit">Submit an application</RedButton>
+            <RedButton type="submit">Submit a loan</RedButton>
           </Form.Item>
         </CreditFormStyled>
         <Divider />
