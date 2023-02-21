@@ -45,7 +45,7 @@ export const InvestorDataFormScreen: React.FC = () => {
             message.error('Error while trying to add payment.'),
           );
       } catch (error) {
-        return message.error("Something goes's wrong");
+        return message.error('Something goes wrong');
       }
     },
   });

@@ -1,4 +1,5 @@
-import { Col, Layout, Popover, Row } from 'antd';
+import { Col, Layout, Popover, Row, Modal, Button } from 'antd';
+import { useSearchParams } from 'react-router-dom';
 
 import { InvestorInvestmentsTable } from '@/components/InvestorInvestmentsTable/InvestorInvestmaentsTable';
 import diagram from '../../../images/diagram.png';
@@ -8,14 +9,23 @@ import {
   InvestorHeader,
   InvestorInfo,
   InvestorTable,
+  StripeInfo,
+  StripeInfoError,
+  StripeInfoSuccess,
 } from './InvestorCabinetScreen.styles';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { useCurrentInvestor, usePotentialPayout } from '@/hooks/investor';
 import { Messages } from '@/components/Messages/Messages';
+import { useEffect, useState } from 'react';
 
 export function InvestorCabinetScreen() {
   const { Name, Surname, MiddleName, Balance } = useCurrentInvestor();
   const { payout } = usePotentialPayout();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const stripeTypeMsg = searchParams.get('type');
+  const [isVisible, setIsVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
   const balance = (
     <div style={{ width: '200px', fontSize: '14px' }}>Your current balance</div>
@@ -26,6 +36,22 @@ export function InvestorCabinetScreen() {
       Potential interest amount for this month's payments
     </div>
   );
+
+  useEffect(() => {
+    if (stripeTypeMsg) setIsVisible(true);
+  }, [stripeTypeMsg]);
+
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setIsVisible(false);
+      setConfirmLoading(false);
+    }, 2000);
+  };
+
+  const handleCancel = () => {
+    setIsVisible(false);
+  };
 
   return (
     <Layout>
@@ -74,6 +100,41 @@ export function InvestorCabinetScreen() {
           </Col>
         </Row>
       </InvestorTable>
+      {stripeTypeMsg && (
+        <div>
+          <Modal
+            title="Stripe message"
+            visible={isVisible}
+            onOk={handleOk}
+            onCancel={handleCancel}
+            confirmLoading={confirmLoading}
+            footer={[
+              <Button
+                type="primary"
+                key="submit"
+                loading={confirmLoading}
+                onClick={handleOk}
+              >
+                OK
+              </Button>,
+            ]}
+          >
+            <StripeInfo>
+              {stripeTypeMsg === 'success' ? (
+                <StripeInfoSuccess className={'stripe-msg-success'}>
+                  Payment Successfull!
+                </StripeInfoSuccess>
+              ) : stripeTypeMsg === 'error' ? (
+                <StripeInfoError className={'stripe-msg-error'}>
+                  Payment Failure!
+                </StripeInfoError>
+              ) : (
+                ''
+              )}
+            </StripeInfo>
+          </Modal>
+        </div>
+      )}
     </Layout>
   );
 }

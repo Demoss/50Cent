@@ -17,7 +17,7 @@ export const ObtainScreen = () => {
   const navigate = useNavigate();
   const handleClick = () => {
     if (currentUser?.role === 'consumer') navigate('/consumer');
-    else if (currentUser?.role === 'investor') navigate('investor');
+    else if (currentUser?.role === 'investor') navigate('/investor');
   };
 
   return (

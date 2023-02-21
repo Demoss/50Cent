@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { InvestorPage } from './Investor.page';
 import { InvestorCabinetScreen } from './InvestorCabinetScreen';
-import { InvestorDataFormScreen } from './InvestorDataFormScreen/InvestorDataFormScreen.component';
+import { InvestorDataFormScreen } from '@/features/investor/InvestorDataFormScreen';
 import { InvestorScreen } from './InvestorScreen';
 import { InvestorUpdateDataFormScreen } from './InvestorUpdateDataFormScreen';
 

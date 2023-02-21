@@ -43,10 +43,10 @@ export const CreateScreen = () => {
         if (response.Loan === 'created') {
           message.success('The loan is created successfully');
         }
-        navigate(routes.investor.absolute());
+        navigate(routes.consumer.absolute());
       } catch (error) {
         console.log('error', error);
-        message.error('Erro due to creating od loan');
+        message.error('Error due to creating od loan');
       }
     },
   });

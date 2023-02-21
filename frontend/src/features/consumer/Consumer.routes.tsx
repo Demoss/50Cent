@@ -9,8 +9,7 @@ export function ConsumerRoutes() {
   return (
     <Routes>
       <Route path="" element={<ConsumerPage />}>
-        <Route index element={<CreateScreen />} />
-        <Route path="cabinet" element={<ConsumerScreen />} />
+        <Route index element={<ConsumerScreen />} />
         <Route path="registration" element={<CreateScreen />} />
         <Route path="update/:id" element={<ConsumerUpdateDataFormScreen />} />
       </Route>
