@@ -42,7 +42,7 @@ export const UserTypeRegistrationScreen = () => {
               <ButtonText> As investor </ButtonText>
             </RedButton>
           </Link>
-          <Link to={`${routes.consumer.cabinet.registration.absolute()}`}>
+          <Link to={`${routes.consumer.registration.absolute()}`}>
             <RedButton>
               <ButtonText>As consumer</ButtonText>
             </RedButton>
