@@ -103,7 +103,7 @@ export function AcceptedLoansTable() {
           render={(_, record: Loans) => {
             return (
               <span>
-                {record.CreditSum} - {record.CreditTitle}
+                $ {record.CreditSum} - {record.CreditTitle}
               </span>
             );
           }}
