@@ -4,10 +4,12 @@ import {
   PhoneOutlined,
   EyeInvisibleOutlined,
   EyeTwoTone,
+  LoadingOutlined,
 } from '@ant-design/icons';
-import { Form, Input, message } from 'antd';
+import { Form, Input, message, Spin } from 'antd';
 import { useFormik } from 'formik';
 import { Link, useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
 
 import {
   RedButton,
@@ -27,6 +29,10 @@ import { FacebookLoginButton } from '../FacebookLogin/FacebookLogin';
 
 export const RegistrationScreen = () => {
   const [, setSearchParams] = useSearchParams();
+  const [isLoging, setIsLoging] = useState(false);
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
+  );
 
   const form = useFormik<RegistrationForm>({
     initialValues: {
@@ -41,6 +47,8 @@ export const RegistrationScreen = () => {
       setSearchParams({ email: values.email });
 
       try {
+        setIsLoging(true);
+
         await Api.signup({
           email: values.email,
           password: values.password,
@@ -50,6 +58,8 @@ export const RegistrationScreen = () => {
         if (error) {
           return message.error('Try another email');
         }
+      } finally {
+        setIsLoging(false);
       }
       message.success('Congratulations! Your account is successfully created!');
 
@@ -121,7 +131,9 @@ export const RegistrationScreen = () => {
             </Form.Item>
 
             <Form.Item>
-              <RedButton type="submit">Continue</RedButton>
+              <RedButton type="submit">
+                {isLoging ? <Spin indicator={antIcon} /> : 'Continue'}
+              </RedButton>
             </Form.Item>
           </form>
           <ExternalLoginTitle>Sign Up with:</ExternalLoginTitle>

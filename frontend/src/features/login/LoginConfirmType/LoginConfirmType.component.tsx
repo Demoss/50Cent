@@ -2,7 +2,6 @@ import { message } from 'antd';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { PageTitle, PageContainer } from '../Login.styles';
-
 import { RedButton, ButtonText } from './LoginConfirmType.styles';
 import { Api } from '@/api';
 import { routes } from '@/routing';

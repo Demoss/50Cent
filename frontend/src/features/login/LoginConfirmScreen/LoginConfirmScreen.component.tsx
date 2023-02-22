@@ -1,6 +1,10 @@
-import { Form, Input, message } from 'antd';
+import { Form, Input, message, Spin } from 'antd';
 import { useFormik } from 'formik';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { LoadingOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import jwt_decode from 'jwt-decode';
+
 import {
   RedButton,
   PageTitle,
@@ -15,7 +19,6 @@ import { ConfirmValidationSchema } from './LoginConfirmScreen.validation';
 import { Api } from '@/api';
 import { routes } from '@/routing';
 import { appStorage } from '@/services/appStorage';
-import jwt_decode from 'jwt-decode';
 
 function Redirect(url: string) {
   window.location.href = url;
@@ -26,6 +29,10 @@ export const LoginConfirmScreen = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const type = searchParams.get('type');
+  const [isLoging, setIsLoging] = useState(false);
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
+  );
 
   const form = useFormik<LoginConfirmForm>({
     initialValues: {
@@ -35,6 +42,8 @@ export const LoginConfirmScreen = () => {
     validateOnChange: false,
     async onSubmit(values) {
       try {
+        setIsLoging(true);
+
         const method =
           type === 'email'
             ? 'loginConfirmEmail'
@@ -79,6 +88,8 @@ export const LoginConfirmScreen = () => {
         }
       } catch (e) {
         message.error('Code is incorrect');
+      } finally {
+        setIsLoging(false);
       }
     },
   });
@@ -101,7 +112,9 @@ export const LoginConfirmScreen = () => {
           />
         </Form.Item>
         <Form.Item>
-          <RedButton type="submit">Continue</RedButton>
+          <RedButton type="submit">
+            {isLoging ? <Spin indicator={antIcon} /> : 'Continue'}
+          </RedButton>
         </Form.Item>
       </form>
     </PageContainer>
