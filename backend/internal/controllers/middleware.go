@@ -197,11 +197,6 @@ func (h *Controller) VerifyConsumerExistsMiddleware(c *gin.Context) {
 		return
 	}
 
-	if !consumer.StripeConfirmed {
-		newErrorResponse(c, http.StatusBadRequest, "consumer doesn't have confirmed Stripe account")
-		return
-	}
-
 	c.Set("ConsumerID", consumer.ID)
 	c.Next()
 }
@@ -216,11 +211,6 @@ func (h *Controller) VerifyInvestorExistsMiddleware(c *gin.Context) {
 	investor, err := h.services.GetInvestorByUserID(c, uint64(userID))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "investor doesn't exist")
-		return
-	}
-
-	if !investor.StripeConfirmed {
-		newErrorResponse(c, http.StatusBadRequest, "investor doesn't have confirmed Stripe account")
 		return
 	}
 

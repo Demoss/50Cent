@@ -18,7 +18,7 @@ export interface IInvestment {
   creditAction?: string;
 }
 
-export interface IvestmentResponse {
+export interface InvestmentResponse {
   key: string;
   creditTotalPayment: number | string;
   creditRespRate: number;

@@ -52,6 +52,13 @@ func (s *ConsumerService) ConsumerRegistration(ctx context.Context, consumer *do
 		return err
 	}
 
+	user.Role = constants.Consumer
+
+    err = s.authRepo.Update(ctx, user)
+    if err != nil {
+    	return err
+    }
+
 	consumer.UserID = user.ID
 
 	err = s.consumerRepo.CreateConsumer(ctx, domainConsumerToDB(consumer))

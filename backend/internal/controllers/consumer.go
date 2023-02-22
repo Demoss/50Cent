@@ -150,12 +150,13 @@ func (h *Controller) getCurrentConsumer(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, currentConsumerResponse{
-		ID:         int(consumerID),
-		Name:       consumer.Name,
-		Surname:    consumer.Surname,
-		MiddleName: consumer.MiddleName,
-		UserEmail:  consumer.UserEmail,
-		Balance:    consumer.Balance,
-		Role:       consumer.Role,
+		ID:          int(consumerID),
+		Name:        consumer.Name,
+		Surname:     consumer.Surname,
+		MiddleName:  consumer.MiddleName,
+		UserEmail:   consumer.UserEmail,
+		Balance:     consumer.Balance,
+		Role:        consumer.Role,
+		IsConfirmed: consumer.StripeConfirmed,
 	})
 }
