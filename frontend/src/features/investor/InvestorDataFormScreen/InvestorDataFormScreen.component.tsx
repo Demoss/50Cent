@@ -46,12 +46,18 @@ export const InvestorDataFormScreen: React.FC = () => {
           middleName: values.middleName,
           photo: values.photo as RcFile,
           idFile: values.idFile as RcFile,
-        });
+        }).catch(err => {
+           if(err.response?.data.message === 'file too large') {
+             message.error('File too large to upload');
+             // TODO:fix redirect
+             window.location.reload();
+           }
+         });
 
         await Api.registerInvestorStripe()
           .then((response) => Redirect(response.url))
           .catch((error) =>
-            message.error('Error while trying to add payment.'),
+                message.error('Error while trying to add payment.'),
           );
       } catch (error) {
         return message.error('Something goes wrong');

@@ -1,5 +1,7 @@
 import { Col, Layout, Popover, Row, Modal, Button } from 'antd';
 import { useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 import { InvestorInvestmentsTable } from '@/components/InvestorInvestmentsTable/InvestorInvestmaentsTable';
 import diagram from '../../../images/diagram.png';
@@ -13,10 +15,8 @@ import {
   StripeInfoError,
   StripeInfoSuccess,
 } from './InvestorCabinetScreen.styles';
-import { InfoCircleOutlined } from '@ant-design/icons';
 import { useCurrentInvestor, usePotentialPayout } from '@/hooks/investor';
 import { Messages } from '@/components/Messages/Messages';
-import { useEffect, useState } from 'react';
 
 export function InvestorCabinetScreen() {
   const { Name, Surname, MiddleName, Balance } = useCurrentInvestor();
