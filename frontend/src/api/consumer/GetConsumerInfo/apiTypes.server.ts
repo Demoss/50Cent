@@ -10,5 +10,4 @@ export interface GetConsumerInfoResponseApi {
   IDFile: string;
   WorkFile: string;
   PropertyFile: string;
-
 }

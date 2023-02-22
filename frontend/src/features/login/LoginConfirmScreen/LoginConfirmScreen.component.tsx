@@ -22,7 +22,6 @@ function Redirect(url: string) {
   return null;
 }
 
-
 export const LoginConfirmScreen = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -37,47 +36,49 @@ export const LoginConfirmScreen = () => {
     async onSubmit(values) {
       try {
         const method =
-            type === 'email'
-                ? 'loginConfirmEmail'
-                : type === 'phone'
-                    ? 'loginConfirmPhone'
-                    : 'loginConfirmOtp';
+          type === 'email'
+            ? 'loginConfirmEmail'
+            : type === 'phone'
+            ? 'loginConfirmPhone'
+            : 'loginConfirmOtp';
 
         const response = await Api[method]({ code: values.code });
         const token: LoginConfirmToken = jwt_decode(response.token);
         message.success('Code sent');
         await appStorage.setApiKey(response.token);
 
-       if(token.role === 'investor'){
+        if (token.role === 'investor') {
           const investor = await Api.getCurrentInvestor();
-          if(!investor.IsConfirmed) {
+          if (!investor.IsConfirmed) {
             message.warn('You did not add payment to your account!');
             await Api.registerInvestorStripe()
-                .then((response) => Redirect(response.url))
-                .catch((error) =>
-                    message.error('Error while trying to add payment.'),
-                );
+              .then((response) => Redirect(response.url))
+              .catch((error) =>
+                message.error('Error while trying to add payment.'),
+              );
           } else {
             navigate(`/${token.role}/cabinet`, { replace: true });
           }
-       }else if(token.role === 'consumer') {
-         const consumer = await Api.getCurrentConsumer();
+        } else if (token.role === 'consumer') {
+          const consumer = await Api.getCurrentConsumer();
 
-         if (!consumer.IsConfirmed) {
-           message.warn('You did not add payment to your account!');
-           await Api.registerStripe()
-               .then((response) => Redirect(response.url))
-               .catch((err) =>
-                   message.error('An error occurred while trying to add a payment.'),
-               );
-         } else {
-           navigate(`/${token.role}`, {replace: true});
-         }
-       } else {
-         navigate('/login/userType', { replace: true });
-       }
-      }catch (e) {
-          message.error('Code is incorrect');
+          if (!consumer.IsConfirmed) {
+            message.warn('You did not add payment to your account!');
+            await Api.registerStripe()
+              .then((response) => Redirect(response.url))
+              .catch((err) =>
+                message.error(
+                  'An error occurred while trying to add a payment.',
+                ),
+              );
+          } else {
+            navigate(`/${token.role}`, { replace: true });
+          }
+        } else {
+          navigate('/login/userType', { replace: true });
+        }
+      } catch (e) {
+        message.error('Code is incorrect');
       }
     },
   });
