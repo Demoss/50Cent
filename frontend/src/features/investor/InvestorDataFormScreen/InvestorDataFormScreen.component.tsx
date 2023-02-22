@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
-import { Form, Input, message, Button, Upload } from 'antd';
-import { UploadOutlined, UserOutlined } from '@ant-design/icons';
-import { RcFile } from 'antd/lib/upload';
+import { Form, Input, message, Button, Upload, Spin } from 'antd';
+import {
+  LoadingOutlined,
+  UploadOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 
+import { RcFile } from 'antd/lib/upload';
 import { Api } from '@/api';
 import { ButtonStyled } from './InvestorDataFormScreen.styles';
 import { PageContainer, PageSubtitle, PageTitle } from '../Investor.styles';
@@ -16,6 +20,11 @@ function Redirect(url: string) {
 }
 
 export const InvestorDataFormScreen: React.FC = () => {
+  const [isLoging, setIsLoging] = useState(false);
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
+  );
+
   const form = useFormik<InvestorDataForm>({
     initialValues: {
       name: '',
@@ -27,10 +36,10 @@ export const InvestorDataFormScreen: React.FC = () => {
     validationSchema: investorDataFormValidationSchema,
     validateOnChange: false,
 
-    async onSubmit(values, errors) {
-      console.log(errors);
-
+    async onSubmit(values) {
       try {
+        setIsLoging(true);
+
         await Api.registerInvestorForm({
           name: values.name,
           surname: values.surname,
@@ -46,6 +55,8 @@ export const InvestorDataFormScreen: React.FC = () => {
           );
       } catch (error) {
         return message.error('Something goes wrong');
+      } finally {
+        setIsLoging(false);
       }
     },
   });
@@ -127,7 +138,7 @@ export const InvestorDataFormScreen: React.FC = () => {
             }}
             danger
           >
-            Continue
+            {isLoging ? <Spin indicator={antIcon} /> : 'Continue'}
           </ButtonStyled>
         </Form.Item>
       </form>

@@ -1,7 +1,11 @@
 import { useFormik } from 'formik';
-import { CreateForm } from './CreateScreen.types';
-import { Api } from '@/api';
-import { Button, Form, Input, message, Upload } from 'antd';
+import { Button, Form, Input, message, Spin, Upload } from 'antd';
+import React, { useState } from 'react';
+import {
+  LoadingOutlined,
+  UploadOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 
 import {
   PageContainer,
@@ -10,8 +14,8 @@ import {
   RedButton,
 } from './Create.styles';
 import { CreateFormValidationSchema } from '@/features/consumer/CreateScreen/CreateScreen.validation';
-import { UploadOutlined, UserOutlined } from '@ant-design/icons';
-import React from 'react';
+import { CreateForm } from './CreateScreen.types';
+import { Api } from '@/api';
 
 function Redirect(url: string) {
   window.location.href = url;
@@ -19,6 +23,11 @@ function Redirect(url: string) {
 }
 
 export const CreateScreen = () => {
+  const [isLoging, setIsLoging] = useState(false);
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
+  );
+
   const form = useFormik<CreateForm>({
     initialValues: {
       name: '',
@@ -33,6 +42,8 @@ export const CreateScreen = () => {
     validateOnChange: false,
     async onSubmit(values) {
       try {
+        setIsLoging(true);
+
         await Api.create({
           name: values.name,
           surname: values.surname,
@@ -50,6 +61,8 @@ export const CreateScreen = () => {
           );
       } catch (error) {
         message.error('An error occurred while creating the user.');
+      } finally {
+        setIsLoging(false);
       }
     },
   });
@@ -152,7 +165,9 @@ export const CreateScreen = () => {
           </Upload>
         </Form.Item>
         <Form.Item>
-          <RedButton type="submit">Continue</RedButton>
+          <RedButton type="submit">
+            {isLoging ? <Spin indicator={antIcon} /> : 'Continue'}
+          </RedButton>
         </Form.Item>
       </form>
     </PageContainer>

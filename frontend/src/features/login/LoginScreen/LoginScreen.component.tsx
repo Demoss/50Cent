@@ -3,10 +3,13 @@ import {
   UserOutlined,
   EyeInvisibleOutlined,
   EyeTwoTone,
+  LoadingOutlined,
 } from '@ant-design/icons';
-import { Form, Input, message } from 'antd';
+import { Form, Input, message, Spin } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { appStorage } from '@/services/appStorage';
+import { useState } from 'react';
+import { useFormik } from 'formik';
 
 import {
   RedButton,
@@ -16,7 +19,6 @@ import {
   ExternalLoginTitle,
   ExternalLoginButtonsContainer,
 } from '../Login.styles';
-import { useFormik } from 'formik';
 import { LoginForm } from './LoginScreen.types';
 import { LoginFormValidationSchema } from './LoginScreen.validation';
 import { Api } from '@/api';
@@ -27,6 +29,10 @@ import { GithubLoginButton } from '../GithubLogin';
 
 export const LoginScreen = () => {
   const navigate = useNavigate();
+  const [isLoging, setIsLoging] = useState(false);
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
+  );
 
   const form = useFormik<LoginForm>({
     initialValues: {
@@ -40,6 +46,7 @@ export const LoginScreen = () => {
 
     async onSubmit(values) {
       try {
+        setIsLoging(true);
         const response = await Api.login({
           email: values.email,
           password: values.password,
@@ -54,6 +61,8 @@ export const LoginScreen = () => {
         navigate(`./confirmType?${params}`);
       } catch (error) {
         return message.error("Houston, we've got a problem...");
+      } finally {
+        setIsLoging(false);
       }
     },
   });
@@ -108,14 +117,13 @@ export const LoginScreen = () => {
               />
               &nbsp;Do not log out after closing the session
             </label>
-            <br />
-            <br />
-            Forgot your password?
           </Form.Item>
         </Form.Item>
 
         <Form.Item>
-          <RedButton type="submit">Continue</RedButton>
+          <RedButton type="submit">
+            {isLoging ? <Spin indicator={antIcon} /> : 'Continue'}
+          </RedButton>
         </Form.Item>
       </form>
       <ExternalLoginTitle>Sign up with:</ExternalLoginTitle>
