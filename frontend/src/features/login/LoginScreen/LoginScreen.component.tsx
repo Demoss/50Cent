@@ -1,4 +1,9 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  LockOutlined,
+  UserOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+} from '@ant-design/icons';
 import { Form, Input, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { appStorage } from '@/services/appStorage';
@@ -79,11 +84,13 @@ export const LoginScreen = () => {
           validateStatus={form.errors.password ? 'error' : 'success'}
           help={form.errors.password}
         >
-          <Input
+          <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
             name="password"
             placeholder="Password"
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+            }
             value={form.values.password}
             onChange={form.handleChange}
           />

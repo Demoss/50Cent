@@ -2,7 +2,6 @@ import { Api } from '@/api/api';
 import { routes } from '@/routing/routes';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { PageContainer } from '../Login.styles';
 
 import {
   RedButton,
@@ -12,6 +11,7 @@ import {
   PageSubTitle,
   ButtonsContainer,
 } from './UserTypeRegistrationScreen';
+import { PageContainer } from '../Login.styles';
 
 export const UserTypeRegistrationScreen = () => {
   const navigate = useNavigate();
