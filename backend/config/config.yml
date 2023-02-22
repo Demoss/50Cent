@@ -34,10 +34,11 @@ twilio:
 
 stripe:
   key: "stripeKey"
-  refreshURL: "http://localhost:3000/refresh"
-  returnURL: "http://localhost:3000/return"
+  refreshURL: "http://localhost:3000/login"
+  returnURL: "http://localhost:3000/obtain"
   loanID: "loanID"
   repayLoanID: "repayLoanID"
   paymentSuccessURL: "paymentSuccessURL"
   paymentCancelURL: "paymentCancelURL"
   webhookKey: "webhookKey"
+
