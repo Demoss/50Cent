@@ -6,4 +6,5 @@ export interface InvestorModelResponse {
   UserEmail: string;
   Balance: number;
   Role: string;
+  IsConfirmed: boolean;
 }
