@@ -90,11 +90,11 @@ func (h *Controller) getInvestorInfo(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, investorUpdatingResponse{
-		Name:       investor.Name,
-		Surname:    investor.Surname,
-		MiddleName: investor.MiddleName,
-		Photo:      userFiles["photo"],
-		IDFile:     userFiles["id_file"],
+		Name:        investor.Name,
+		Surname:     investor.Surname,
+		MiddleName:  investor.MiddleName,
+		Photo:       userFiles["photo"],
+		IDFile:      userFiles["id_file"],
 	})
 }
 
@@ -174,5 +174,6 @@ func (h *Controller) getCurrentInvestor(c *gin.Context) {
 		UserEmail:  investor.UserEmail,
 		Balance:    investor.Balance,
 		Role:       investor.Role,
+		IsConfirmed: investor.StripeConfirmed,
 	})
 }
