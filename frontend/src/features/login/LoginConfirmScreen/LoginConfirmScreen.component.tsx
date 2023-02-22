@@ -17,6 +17,12 @@ import { routes } from '@/routing';
 import { appStorage } from '@/services/appStorage';
 import jwt_decode from 'jwt-decode';
 
+function Redirect(url: string) {
+  window.location.href = url;
+  return null;
+}
+
+
 export const LoginConfirmScreen = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -29,28 +35,50 @@ export const LoginConfirmScreen = () => {
     validationSchema: ConfirmValidationSchema,
     validateOnChange: false,
     async onSubmit(values) {
-      const method =
-        type === 'email'
-          ? 'loginConfirmEmail'
-          : type === 'phone'
-          ? 'loginConfirmPhone'
-          : 'loginConfirmOtp';
-      Api[method]({ code: values.code })
-        .then((response) => {
-          const token: LoginConfirmToken = jwt_decode(response.token);
-          message.success('Code sent');
-          appStorage.setApiKey(response.token);
-          if (token.role === 'user') {
-            navigate('/login/userType', { replace: true });
-          } else if (token.role === 'consumer') {
-            navigate(`/${token.role}/cabinet`, { replace: true });
+      try {
+        const method =
+            type === 'email'
+                ? 'loginConfirmEmail'
+                : type === 'phone'
+                    ? 'loginConfirmPhone'
+                    : 'loginConfirmOtp';
+
+        const response = await Api[method]({ code: values.code });
+        const token: LoginConfirmToken = jwt_decode(response.token);
+        message.success('Code sent');
+        await appStorage.setApiKey(response.token);
+
+       if(token.role === 'investor'){
+          const investor = await Api.getCurrentInvestor();
+          if(!investor.IsConfirmed) {
+            message.warn('You did not add payment to your account!');
+            await Api.registerInvestorStripe()
+                .then((response) => Redirect(response.url))
+                .catch((error) =>
+                    message.error('Error while trying to add payment.'),
+                );
           } else {
-            navigate(`/${token.role}`, { replace: true });
+            navigate(`/${token.role}/cabinet`, { replace: true });
           }
-        })
-        .catch(() => {
+       }else if(token.role === 'consumer') {
+         const consumer = await Api.getCurrentConsumer();
+
+         if (!consumer.IsConfirmed) {
+           message.warn('You did not add payment to your account!');
+           await Api.registerStripe()
+               .then((response) => Redirect(response.url))
+               .catch((err) =>
+                   message.error('An error occurred while trying to add a payment.'),
+               );
+         } else {
+           navigate(`/${token.role}`, {replace: true});
+         }
+       } else {
+         navigate('/login/userType', { replace: true });
+       }
+      }catch (e) {
           message.error('Code is incorrect');
-        });
+      }
     },
   });
 
