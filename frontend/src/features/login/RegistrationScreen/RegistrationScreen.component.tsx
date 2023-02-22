@@ -1,4 +1,10 @@
-import { LockOutlined, UserOutlined, PhoneOutlined } from '@ant-design/icons';
+import {
+  LockOutlined,
+  UserOutlined,
+  PhoneOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+} from '@ant-design/icons';
 import { Form, Input, message } from 'antd';
 import { useFormik } from 'formik';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -81,10 +87,12 @@ export const RegistrationScreen = () => {
               validateStatus={form.errors.password ? 'error' : 'success'}
               help={form.errors.password}
             >
-              <Input
+              <Input.Password
                 prefix={<LockOutlined className="site-form-item-icon" />}
-                type="password"
                 placeholder="Password"
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
                 name="password"
                 value={form.values.password}
                 onChange={form.handleChange}
