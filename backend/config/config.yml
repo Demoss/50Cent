@@ -1,44 +1,43 @@
 app:
-  port: ":8000"
+  port: ':8000'
 
 postgreSQL:
-  username: "postgres"
-  host: "db"
-  port: "5432"
-  database: "postgres"
-  sslmode: "disable"
-  password: "qwerty"
+  username: 'postgres'
+  host: 'db'
+  port: '5432'
+  database: 'postgres'
+  sslmode: 'disable'
+  password: 'qwerty'
 
 auth:
   jwt:
-    secret: "sgkfdjgiodsio4wu59834ufhf2q4hvqh984phq43u"
+    secret: 'sgkfdjgiodsio4wu59834ufhf2q4hvqh984phq43u'
     expire: 3600
     temporaryExpire: 600
-  salt: "kfainecuignyxwamg7nqoc8w7gnxrgnerkh"
+  salt: 'kfainecuignyxwamg7nqoc8w7gnxrgnerkh'
   confirmationCode:
     expire: 3600
 
 awsS3:
-  awsAccessKeyId: "awsAccessKeyId"
-  awsSecretAccessKey: "awsSecretAccessKey"
-  awsRegion: "awsRegion"
-  awsBucketName: "awsBucketName"
+  awsAccessKeyId: 'awsAccessKeyId'
+  awsSecretAccessKey: 'awsSecretAccessKey'
+  awsRegion: 'awsRegion'
+  awsBucketName: 'awsBucketName'
 
 sendGrid:
-  key: "sendGridAccessKey"
+  key: 'sendGridAccessKey'
 
 twilio:
-  accountSid: "accountSid"
-  authToken: "authToken"
-  from: "from"
+  accountSid: 'accountSid'
+  authToken: 'authToken'
+  from: 'from'
 
 stripe:
-  key: "stripeKey"
-  refreshURL: "http://localhost:3000/login"
-  returnURL: "http://localhost:3000/obtain"
-  loanID: "loanID"
-  repayLoanID: "repayLoanID"
-  paymentSuccessURL: "paymentSuccessURL"
-  paymentCancelURL: "paymentCancelURL"
-  webhookKey: "webhookKey"
-
+  key: 'stripeKey'
+  refreshURL: 'http://localhost:3000/login'
+  returnURL: 'http://localhost:3000/obtain'
+  loanID: 'loanID'
+  repayLoanID: 'repayLoanID'
+  paymentSuccessURL: 'paymentSuccessURL'
+  paymentCancelURL: 'paymentCancelURL'
+  webhookKey: 'webhookKey'
