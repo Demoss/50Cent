@@ -6,4 +6,5 @@ export interface ConsumerModel {
   UserEmail: string;
   Balance: number;
   Role: string;
+  IsConfirmed: boolean;
 }

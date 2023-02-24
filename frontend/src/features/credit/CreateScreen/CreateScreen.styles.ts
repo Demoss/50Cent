@@ -42,12 +42,12 @@ export const StepsContainer = styled.div`
 `;
 
 export const RedButton = styled.button`
-  margin-left: 200px;
   background-color: #f5222d;
   width: 134px;
-  height: 38.8px;
   color: white;
   border: 1px solid #ff4d4f;
   box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.043);
   border-radius: 2px;
+  padding: 10px;
+  margin-left: 270px;
 `;

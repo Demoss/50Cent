@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
+import { useParams } from 'react-router-dom';
+import { Form, Input, message, Button, Upload, Image, Alert, Spin } from 'antd';
+import {
+  LoadingOutlined,
+  UploadOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+
 import { PageContainer, PageSubtitle } from '../Consumer.styles';
 import { ConsumerUpdateDataForm } from './ConsumerUpdateDataFormScreen.types';
 import { consumerDataFormValidationSchema } from './ConsumerUpdateFormValidation';
-import { Form, Input, message, Button, Upload, Image, Alert } from 'antd';
 import { Api } from '@/api';
-
-import { UploadOutlined, UserOutlined } from '@ant-design/icons';
 import { RcFile } from 'antd/lib/upload';
-import { useParams } from 'react-router-dom';
 import {
   ButtonStyled,
   PhotoContainer,
@@ -22,6 +26,11 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
   const [idPicture, setIdPicture] = useState('');
   const [workFile, setWorkFile] = useState('');
   const [Property, setProperty] = useState('');
+
+  const [isLoging, setIsLoging] = useState(false);
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
+  );
 
   const id = params.id ? +params.id : 0;
   const getConsumerInfo = async () => {
@@ -59,6 +68,8 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
 
     async onSubmit(values) {
       try {
+        setIsLoging(true);
+
         const response = await Api.updateConsumer({
           id: id,
           name: values.name,
@@ -81,6 +92,8 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
         }
       } catch (error) {
         return message.error('Something goes wrong');
+      } finally {
+        setIsLoging(false);
       }
     },
   });
@@ -213,7 +226,7 @@ export const ConsumerUpdateDataFormScreen: React.FC = () => {
             onClick={() => form.handleSubmit()}
             danger
           >
-            Update
+            {isLoging ? <Spin indicator={antIcon} /> : 'Update'}
           </ButtonStyled>
         </>
       ) : (

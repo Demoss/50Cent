@@ -83,7 +83,7 @@ export function GetScreen() {
 
       <StepsContainer>
         The required amount of money: <br />
-        <Line>₴ {credit.data?.creditSum}</Line>
+        <Line>$ {credit.data?.creditSum}</Line>
       </StepsContainer>
 
       <StepsContainer>
@@ -93,11 +93,11 @@ export function GetScreen() {
 
       <StepsContainer>
         The ammount of money you will receive : <br />{' '}
-        <Line>{credit.data?.returnedInvestorMoney} $</Line>
+        <Line>$ {credit.data?.returnedInvestorMoney}</Line>
       </StepsContainer>
 
       <StepsContainer>
-        Term of the loan: <br /> <Line>{credit.data?.creditTerm} mo.</Line>
+        Term of the loan: <br /> <Line>{credit.data?.creditTerm} month(s)</Line>
       </StepsContainer>
 
       <StepsContainer>

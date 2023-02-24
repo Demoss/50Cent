@@ -1,6 +1,9 @@
-import { Form, Input } from 'antd';
+import { Form, Input, Spin } from 'antd';
 import { useFormik } from 'formik';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { LoadingOutlined } from '@ant-design/icons';
+
 import {
   RedButton,
   PageTitle,
@@ -15,6 +18,10 @@ import { routes } from '@/routing';
 export const ConfirmScreen = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const [isLoging, setIsLoging] = useState(false);
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
+  );
 
   const form = useFormik<ConfirmForm>({
     initialValues: {
@@ -22,8 +29,10 @@ export const ConfirmScreen = () => {
     },
     validationSchema: ConfirmValidationSchema,
     validateOnChange: false,
+
     async onSubmit(values) {
       try {
+        setIsLoging(true);
         await Api.confirmRegistration({
           email: searchParams.get('email') || '',
           code: values.code,
@@ -32,6 +41,8 @@ export const ConfirmScreen = () => {
         navigate('/login');
       } catch (error) {
         console.log('error', error);
+      } finally {
+        setIsLoging(false);
       }
     },
   });
@@ -54,7 +65,9 @@ export const ConfirmScreen = () => {
           />
         </Form.Item>
         <Form.Item>
-          <RedButton type="submit">Continue</RedButton>
+          <RedButton type="submit">
+            {isLoging ? <Spin indicator={antIcon} /> : 'Continue'}
+          </RedButton>
         </Form.Item>
       </form>
     </PageContainer>

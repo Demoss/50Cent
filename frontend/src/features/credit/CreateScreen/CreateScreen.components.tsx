@@ -1,4 +1,4 @@
-import { Form, Layout, Input, Steps, Divider, message } from 'antd';
+import { Form, Layout, Input, Steps, Divider, message, Spin } from 'antd';
 import { useFormik } from 'formik';
 import { CreditForm } from './CreateScreen.types';
 import { Api } from '@/api';
@@ -14,12 +14,18 @@ import {
 } from './CreateScreen.styles';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '@/routing';
+import { useState } from 'react';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { Step } = Steps;
 
 export const CreateScreen = () => {
   const navigate = useNavigate();
+  const [isLoging, setIsLoging] = useState(false);
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
+  );
 
   const creditForm = useFormik<CreditForm>({
     initialValues: {
@@ -33,6 +39,8 @@ export const CreateScreen = () => {
     validateOnChange: false,
     async onSubmit(values) {
       try {
+        setIsLoging(true);
+
         const response = await Api.createCredit({
           creditSum: Number(values.creditSum),
           creditTitle: values.creditTitle,
@@ -47,6 +55,8 @@ export const CreateScreen = () => {
       } catch (error) {
         console.log('error', error);
         message.error('Error due to creating od loan');
+      } finally {
+        setIsLoging(false);
       }
     },
   });
@@ -58,15 +68,16 @@ export const CreateScreen = () => {
           <Steps size="small" current={1}>
             <Step title="Submit documents" />
             <Step title="Fill out the form" />
-            <Step title="Your application will be placed on 50 Cent." />
+            <Step title="Your loan will be placed on 50 Cent." />
           </Steps>
         </StepsContainer>
         <CreditFormStyled onSubmit={creditForm.handleSubmit}>
           <Form.Item
             validateStatus={creditForm.errors.creditSum ? 'error' : 'success'}
             help={creditForm.errors.creditSum}
-            label="The required amount of money, $: "
-            labelCol={{ span: 6 }}
+            label="The required amount of money, $ "
+            labelCol={{ span: 8 }}
+            labelAlign={'left'}
           >
             <Input
               size="large"
@@ -79,8 +90,9 @@ export const CreateScreen = () => {
           <Form.Item
             validateStatus={creditForm.errors.creditTitle ? 'error' : 'success'}
             help={creditForm.errors.creditTitle}
-            label="Title of the loan: "
-            labelCol={{ span: 6 }}
+            label="Title of the loan "
+            labelCol={{ span: 8 }}
+            labelAlign={'left'}
           >
             <Input
               size="large"
@@ -93,8 +105,9 @@ export const CreateScreen = () => {
           <Form.Item
             validateStatus={creditForm.errors.creditDesc ? 'error' : 'success'}
             help={creditForm.errors.creditDesc}
-            label="Detailed description of the loan: "
-            labelCol={{ span: 6 }}
+            label="Detailed description of the loan "
+            labelCol={{ span: 8 }}
+            labelAlign={'left'}
           >
             <TextArea
               size="large"
@@ -108,7 +121,8 @@ export const CreateScreen = () => {
             validateStatus={creditForm.errors.creditTerm ? 'error' : 'success'}
             help={creditForm.errors.creditTerm}
             label="Term of the loan: "
-            labelCol={{ span: 6 }}
+            labelCol={{ span: 8 }}
+            labelAlign={'left'}
           >
             <Input
               size="large"
@@ -121,10 +135,9 @@ export const CreateScreen = () => {
           <Form.Item
             validateStatus={creditForm.errors.creditRate ? 'error' : 'success'}
             help={creditForm.errors.creditRate}
-            label="Desired Annual %
-            (0.5% service fee will be
-             added to this percentage): "
-            labelCol={{ span: 6 }}
+            label="Desired Annual %(0.5% service fee will be added to this percentage) "
+            labelCol={{ span: 8 }}
+            labelAlign={'left'}
           >
             <Input
               size="large"
@@ -135,7 +148,9 @@ export const CreateScreen = () => {
             />
           </Form.Item>
           <Form.Item>
-            <RedButton type="submit">Submit an application</RedButton>
+            <RedButton type="submit">
+              {isLoging ? <Spin indicator={antIcon} /> : 'Submit a loan'}
+            </RedButton>
           </Form.Item>
         </CreditFormStyled>
         <Divider />

@@ -83,21 +83,23 @@ type loansByInvestorIDResponse struct {
 }
 
 type currentInvestorResponse struct {
-	ID         int     `json:"ID"`
-	Name       string  `json:"Name"`
-	Surname    string  `json:"Surname"`
-	MiddleName string  `json:"MiddleName"`
-	UserEmail  string  `json:"UserEmail"`
-	Balance    float64 `json:"Balance"`
-	Role       string  `json:"Role"`
+	ID          int     `json:"ID"`
+	Name        string  `json:"Name"`
+	Surname     string  `json:"Surname"`
+	MiddleName  string  `json:"MiddleName"`
+	UserEmail   string  `json:"UserEmail"`
+	Balance     float64 `json:"Balance"`
+	Role        string  `json:"Role"`
+	IsConfirmed  bool    `json:"IsConfirmed"`
 }
 
 type currentConsumerResponse struct {
-	ID         int     `json:"ID"`
-	Name       string  `json:"Name"`
-	Surname    string  `json:"Surname"`
-	MiddleName string  `json:"MiddleName"`
-	UserEmail  string  `json:"UserEmail"`
-	Balance    float64 `json:"Balance"`
-	Role       string  `json:"Role"`
+	ID          int     `json:"ID"`
+	Name        string  `json:"Name"`
+	Surname     string  `json:"Surname"`
+	MiddleName  string  `json:"MiddleName"`
+	UserEmail   string  `json:"UserEmail"`
+	Balance     float64 `json:"Balance"`
+	Role        string  `json:"Role"`
+	IsConfirmed  bool    `json:"IsConfirmed"`
 }

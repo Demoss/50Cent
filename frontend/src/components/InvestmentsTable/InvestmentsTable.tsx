@@ -14,7 +14,7 @@ const columns: ColumnsType<Omit<LoanWithKeys, 'ID'>> = [
     width: '25%',
     render: (_, el) => (
       <>
-        ${Math.round(el.CreditSum)} at a {el.CreditRate}%
+        $ {el.CreditSum} at a {el.CreditRate}%
       </>
     ),
   },

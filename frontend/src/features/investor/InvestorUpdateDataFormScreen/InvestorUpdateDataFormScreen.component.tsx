@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
+import { useParams } from 'react-router-dom';
+import { Form, Input, message, Button, Upload, Image, Alert, Spin } from 'antd';
+import {
+  LoadingOutlined,
+  UploadOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+
 import { PageContainer, PageSubtitle } from '../Investor.styles';
 import { InvestorUpdateDataForm } from './InvestorUpdateDataFormScreen.types';
 import { investorDataFormValidationSchema } from './InvestorUpdateFormValidation';
-import { Form, Input, message, Button, Upload, Image, Alert } from 'antd';
 import { Api } from '@/api';
-
-import { UploadOutlined, UserOutlined } from '@ant-design/icons';
 import { RcFile } from 'antd/lib/upload';
-import { useParams } from 'react-router-dom';
 import {
   ButtonStyled,
   PhotoContainer,
@@ -20,6 +24,11 @@ export const InvestorUpdateDataFormScreen: React.FC = () => {
   const params = useParams();
   const [photo, setPhoto] = useState('');
   const [idPicture, setIdPicture] = useState('');
+
+  const [isLoging, setIsLoging] = useState(false);
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
+  );
 
   const id = params.id ? +params.id : 0;
   const getInvestorInfo = async () => {
@@ -53,6 +62,8 @@ export const InvestorUpdateDataFormScreen: React.FC = () => {
 
     async onSubmit(values) {
       try {
+        setIsLoging(true);
+
         const response = await Api.updateInvestor({
           id: id,
           name: values.name,
@@ -67,6 +78,8 @@ export const InvestorUpdateDataFormScreen: React.FC = () => {
         }
       } catch (error) {
         return message.error('Something goes wrong');
+      } finally {
+        setIsLoging(false);
       }
     },
   });
@@ -165,7 +178,7 @@ export const InvestorUpdateDataFormScreen: React.FC = () => {
             onClick={() => form.handleSubmit()}
             danger
           >
-            Update
+            {isLoging ? <Spin indicator={antIcon} /> : 'Update'}
           </ButtonStyled>
         </>
       ) : (

@@ -10,5 +10,6 @@ export function mapResponse(responseApi: InvestorModel): InvestorModelResponse {
     UserEmail: responseApi.UserEmail,
     Balance: responseApi.Balance,
     Role: responseApi.Role,
+    IsConfirmed: responseApi.IsConfirmed,
   };
 }

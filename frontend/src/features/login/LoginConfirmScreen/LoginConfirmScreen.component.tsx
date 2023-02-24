@@ -1,6 +1,10 @@
-import { Form, Input, message } from 'antd';
+import { Form, Input, message, Spin } from 'antd';
 import { useFormik } from 'formik';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { LoadingOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import jwt_decode from 'jwt-decode';
+
 import {
   RedButton,
   PageTitle,
@@ -15,12 +19,20 @@ import { ConfirmValidationSchema } from './LoginConfirmScreen.validation';
 import { Api } from '@/api';
 import { routes } from '@/routing';
 import { appStorage } from '@/services/appStorage';
-import jwt_decode from 'jwt-decode';
+
+function Redirect(url: string) {
+  window.location.href = url;
+  return null;
+}
 
 export const LoginConfirmScreen = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const type = searchParams.get('type');
+  const [isLoging, setIsLoging] = useState(false);
+  const antIcon = (
+    <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
+  );
 
   const form = useFormik<LoginConfirmForm>({
     initialValues: {
@@ -29,26 +41,56 @@ export const LoginConfirmScreen = () => {
     validationSchema: ConfirmValidationSchema,
     validateOnChange: false,
     async onSubmit(values) {
-      const method =
-        type === 'email'
-          ? 'loginConfirmEmail'
-          : type === 'phone'
-          ? 'loginConfirmPhone'
-          : 'loginConfirmOtp';
-      Api[method]({ code: values.code })
-        .then((response) => {
-          const token: LoginConfirmToken = jwt_decode(response.token);
-          message.success('Code sent');
-          appStorage.setApiKey(response.token);
-          if (token.role === 'user') {
-            navigate('/login/userType', { replace: true });
+      try {
+        setIsLoging(true);
+
+        const method =
+          type === 'email'
+            ? 'loginConfirmEmail'
+            : type === 'phone'
+            ? 'loginConfirmPhone'
+            : 'loginConfirmOtp';
+
+        const response = await Api[method]({ code: values.code });
+        const token: LoginConfirmToken = jwt_decode(response.token);
+        message.success('Code sent');
+        await appStorage.setApiKey(response.token);
+
+        if (token.role === 'investor') {
+          const investor = await Api.getCurrentInvestor();
+          if (!investor.IsConfirmed) {
+            message.warn('You did not add payment to your account!');
+            await Api.registerInvestorStripe()
+              .then((response) => Redirect(response.url))
+              .catch((error) =>
+                message.error('Error while trying to add payment.'),
+              );
+          } else {
+            navigate(`/${token.role}/cabinet`, { replace: true });
+          }
+        } else if (token.role === 'consumer') {
+          const consumer = await Api.getCurrentConsumer();
+
+          if (!consumer.IsConfirmed) {
+            message.warn('You did not add payment to your account!');
+            await Api.registerStripe()
+              .then((response) => Redirect(response.url))
+              .catch((err) =>
+                message.error(
+                  'An error occurred while trying to add a payment.',
+                ),
+              );
           } else {
             navigate(`/${token.role}`, { replace: true });
           }
-        })
-        .catch(() => {
-          message.error('Code is incorrect');
-        });
+        } else {
+          navigate('/login/userType', { replace: true });
+        }
+      } catch (e) {
+        message.error('Code is incorrect');
+      } finally {
+        setIsLoging(false);
+      }
     },
   });
 
@@ -70,7 +112,9 @@ export const LoginConfirmScreen = () => {
           />
         </Form.Item>
         <Form.Item>
-          <RedButton type="submit">Continue</RedButton>
+          <RedButton type="submit">
+            {isLoging ? <Spin indicator={antIcon} /> : 'Continue'}
+          </RedButton>
         </Form.Item>
       </form>
     </PageContainer>

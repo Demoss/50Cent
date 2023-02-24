@@ -102,7 +102,7 @@ export const InvestorResponse: React.FC = () => {
         key="CreditSum"
         width="9%"
         render={(_, record: CounterOffers) => {
-          return <span>₴ {record.CreditSum}</span>;
+          return <span>$ {record.CreditSum}</span>;
         }}
       />
       <ColumnGroup title="Interest rate">
@@ -152,7 +152,7 @@ export const InvestorResponse: React.FC = () => {
           key="TotalSum"
           width="9%"
           render={(_, record: CounterOffers) => {
-            return <span>₴ {record.TotalSum}</span>;
+            return <span>$ {record.TotalSum}</span>;
           }}
         />
         <Column
@@ -161,7 +161,7 @@ export const InvestorResponse: React.FC = () => {
           key="TotalNewSum"
           width="9%"
           render={(_, record: CounterOffers) => {
-            return <strong>₴ {record.TotalNewSum}</strong>;
+            return <strong>$ {record.TotalNewSum}</strong>;
           }}
         />
       </ColumnGroup>
@@ -172,7 +172,7 @@ export const InvestorResponse: React.FC = () => {
           key="MonthlyPayment"
           width="9%"
           render={(_, record: CounterOffers) => {
-            return <span>₴ {record.MonthlyPayment}</span>;
+            return <span>$ {record.MonthlyPayment}</span>;
           }}
         />
         <Column
@@ -181,7 +181,7 @@ export const InvestorResponse: React.FC = () => {
           key="NewMonthlyPayment"
           width="9%"
           render={(_, record: CounterOffers) => {
-            return <strong>₴ {record.NewMonthlyPayment}</strong>;
+            return <strong>$ {record.NewMonthlyPayment}</strong>;
           }}
         />
       </ColumnGroup>
