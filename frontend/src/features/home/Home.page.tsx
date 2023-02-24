@@ -9,23 +9,25 @@ export function HomePage() {
       <BgImgContainer>
         <HomeHero>
           <span>
+            {/* 50¢ */}
             <img
               src={HeroLogo}
               alt=""
-              style={{ opacity: '0.7', width: '500px' }}
+              style={{ opacity: '0.9', width: '690px' }}
             />
           </span>
           <br />
-          <span style={{ color: 'tan', fontFamily: 'emoji' }}>
+          <span
+            style={{ color: '#3c4364', fontFamily: 'emoji', fontSize: '124px' }}
+          >
             make money work
           </span>
         </HomeHero>
         <span
           style={{
-            textAlign: 'center',
             marginLeft: '150px',
-            fontSize: '24px',
-            color: 'darkgoldenrod',
+            fontSize: '26px',
+            color: '#120d00',
           }}
         >
           The 50 cent application is the service where you can lend or borrow
