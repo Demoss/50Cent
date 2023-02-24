@@ -1,5 +1,7 @@
 import * as yup from 'yup';
 
+import {FILE_SIZE} from "@/constants/constants";
+
 export const investorDataFormValidationSchema = yup.object().shape({
   name: yup.string().required('Please, enter the Name'),
   surname: yup.string().required('Please, enter the Surname'),
@@ -10,7 +12,7 @@ export const investorDataFormValidationSchema = yup.object().shape({
     .test(
       'fileSize',
       'File too large. Size must be equal or less then 2 mb.',
-      (value) => value && value.size <= 2 * 1024 * 1024,
+      (value) => value && value.size <= FILE_SIZE,
     ),
   photo: yup
     .mixed()
@@ -18,6 +20,6 @@ export const investorDataFormValidationSchema = yup.object().shape({
     .test(
       'fileSize',
       'File too large. Size must be equal or less then 2 mb.',
-      (value) => value && value.size <= 2 * 1024 * 1024,
+      (value) => value && value.size <= FILE_SIZE,
     ),
 });
