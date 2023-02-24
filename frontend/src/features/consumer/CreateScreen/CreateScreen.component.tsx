@@ -112,52 +112,68 @@ export const CreateScreen = () => {
             onChange={form.handleChange}
           />
         </Form.Item>
-        <Form.Item rules={[{ required: true }]}>
+        <Form.Item
+          rules={[{ required: true }]}
+          validateStatus={form.errors.photo ? 'error' : 'success'}
+          help={form.errors.photo}
+        >
           <Upload
             beforeUpload={(file) => {
               form.setFieldValue('photo', file);
-
               return false;
             }}
+            listType="picture"
           >
             <span style={{ color: 'red' }}>*</span>
             Photo:
             <Button icon={<UploadOutlined />}> Select File</Button>
           </Upload>
         </Form.Item>
-        <Form.Item rules={[{ required: true }]}>
+        <Form.Item
+          rules={[{ required: true }]}
+          validateStatus={form.errors.work_file ? 'error' : 'success'}
+          help={form.errors.work_file}
+        >
           <Upload
             beforeUpload={(file) => {
               form.setFieldValue('work_file', file);
-
               return false;
             }}
+            listType="picture"
           >
             <span style={{ color: 'red' }}>*</span>
             Certificate of employment:
             <Button icon={<UploadOutlined />}> Select File</Button>
           </Upload>
         </Form.Item>
-        <Form.Item rules={[{ required: true }]}>
+        <Form.Item
+          rules={[{ required: true }]}
+          validateStatus={form.errors.id_file ? 'error' : 'success'}
+          help={form.errors.id_file}
+        >
           <Upload
             beforeUpload={(file) => {
               form.setFieldValue('id_file', file);
-
               return false;
             }}
+            listType="picture"
           >
             <span style={{ color: 'red' }}>*</span>
             ID Card:
             <Button icon={<UploadOutlined />}> Select File</Button>
           </Upload>
         </Form.Item>
-        <Form.Item rules={[{ required: true }]}>
+        <Form.Item
+          rules={[{ required: true }]}
+          validateStatus={form.errors.property_file ? 'error' : 'success'}
+          help={form.errors.property_file}
+        >
           <Upload
             beforeUpload={(file) => {
               form.setFieldValue('property_file', file);
-
               return false;
             }}
+            listType="picture"
           >
             <span style={{ color: 'red' }}>*</span>
             Documents for existing property:

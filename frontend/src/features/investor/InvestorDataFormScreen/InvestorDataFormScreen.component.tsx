@@ -105,24 +105,34 @@ export const InvestorDataFormScreen: React.FC = () => {
             onChange={form.handleChange}
           />
         </Form.Item>
-        <Form.Item rules={[{ required: true }]}>
+        <Form.Item
+          rules={[{ required: true }]}
+          validateStatus={form.errors.photo ? 'error' : 'success'}
+          help={form.errors.photo}
+        >
           <Upload
             beforeUpload={(file) => {
               form.setFieldValue('photo', file);
               return false;
             }}
+            listType="picture"
           >
             <span style={{ color: 'red' }}>*</span>
             Photo:
             <Button icon={<UploadOutlined />}>Click, to upload</Button>
           </Upload>
         </Form.Item>
-        <Form.Item rules={[{ required: true }]}>
+        <Form.Item
+          rules={[{ required: true }]}
+          validateStatus={form.errors.idFile ? 'error' : 'success'}
+          help={form.errors.idFile}
+        >
           <Upload
             beforeUpload={(file) => {
               form.setFieldValue('idFile', file);
               return false;
             }}
+            listType="picture"
           >
             <span style={{ color: 'red' }}>*</span>
             ID Card:
