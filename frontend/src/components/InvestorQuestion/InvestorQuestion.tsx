@@ -19,7 +19,7 @@ const InvestorQuestion = () => {
             <Col>
               <h2>Online support</h2>
               <p>Our support will answer all your quetions. </p>
-              <a href="/">write in support</a>
+              <a href="/" style={{color:"var(--header-color"}}>write in support</a>
             </Col>
           </Row>
         </Col>
@@ -34,7 +34,7 @@ const InvestorQuestion = () => {
             <Col>
               <h2>FAQ</h2>
               <p>Visit out frequently asked questions page </p>
-              <a href="/">visit FAQ </a>
+              <a href="/" style={{color:"var(--header-color)"}}>visit FAQ </a>
             </Col>
           </Row>
         </Col>
@@ -52,7 +52,7 @@ const InvestorQuestion = () => {
             <Col>
               <h2>About us</h2>
               <p>Visit the about us page to get more info </p>
-              <a href="/">About us</a>
+              <a href="/" style={{color:"var(--header-color)"}}>About us</a>
             </Col>
           </Row>
         </Col>

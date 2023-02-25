@@ -1,0 +1,191 @@
+.pyramid {
+    position: absolute;
+    right: 50vw;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    transform: translateX(0);
+    border-style: solid;
+    border-width: 0 120vw 120vw 100vw;
+    border-color: transparent transparent var(--secondary-color) transparent;
+}
+
+.sand {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 9vw;
+    min-height: 8rem;
+    background: var(--main-color);
+}
+
+.ternary-system {
+    position: absolute;
+    bottom: 0;
+    left: 82vw;
+    transform: translateX(-100%);
+}
+
+.sun {
+    position: relative;
+    border-radius: 50%;
+    background: #d8c5ed;
+}
+
+.sun.primary {
+    position: absolute;
+    top: 15vw;
+    left: -2vw;
+    width: 2rem;
+    height: 2rem;
+}
+
+.sun.secondary {
+    position: absolute;
+    top: 5vw;
+    left: 4vw;
+    width: 16vw;
+    max-width: 6rem;
+    height: 16vw;
+    max-height: 6rem;
+}
+
+.sun.ternary {
+    right: 5vw;
+    transform: translateX(11rem);
+    width: 70vw;
+    max-width: 700px;
+    height: 70vw;
+    max-height: 700px;
+}
+
+.pendulums {
+    position: absolute;
+    width: 50px;
+    height: 200px;
+    right: 35vw;
+    top: -120px;
+    perspective: 400px;
+}
+
+.pendulum {
+    position: absolute;
+    width: 50px;
+    height: 200px;
+    right: 44%;
+    top: 0;
+    left: 50%;
+    transform: translateZ(-300px) translateX(-50%);
+}
+
+.pendulum.shadow {
+    top: 263%;
+    left: -65%;
+    bottom: 0;
+    transform-origin: 50% 0;
+    transform: translateX(-50%) scaleY(-1) scaleZ(2) rotateY(-30deg) rotateX(-75deg) translateZ(300px);
+}
+
+.pendulum .bar {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    display: block;
+    width: 20px;
+    height: 200px;
+    background: #333;
+}
+
+.pendulum .string {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 150px;
+    background: #333;
+}
+
+.pendulum .weight {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #333;
+}
+
+.pendulum .motion {
+    position: absolute;
+    height: 200px;
+    width: 50px;
+    transform-origin: 50% 10px;
+    animation: swing 1600ms infinite ease-in-out;
+}
+
+.pendulum.shadow .bar, .pendulum.shadow .string, .pendulum.shadow .weight {
+    background: #3d3a34;
+}
+
+.text {
+    position: absolute;
+    width: 40vw;
+    right: 15vw;
+    bottom: calc(63vh);
+    transform: translateY(50%);
+    font-size: 2.6rem;
+}
+
+.title {
+    text-align: center;
+    font-size: 1em;
+    font-weight: 300;
+    text-transform: uppercase;
+    line-height: 1.3em;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.title strong {
+    display: block;
+    font-weight: 700;
+    font-size: 2em;
+    line-height: 1em;
+}
+
+.text > p {
+    position: absolute;
+    left: -5vw;
+    transform: translateX(3.2em);
+    font-size: 0.6em;
+    color: #222;
+    margin: 0 17px;
+    padding: 0;
+    text-align: left
+}
+
+@keyframes swing {
+    0% {
+        transform: rotate(-45deg);
+    }
+    50% {
+        transform: rotate(45deg);
+    }
+    100% {
+        transform: rotate(-45deg);
+    }
+}
+@media only screen and (orientation: portrait) {
+    .text {
+        right: 50%;
+        top: 10%;
+        transform: translateX(50%);
+        font-size: 7vw;
+    }
+
+    .title {
+        font-size: 1em;
+    }
+}
