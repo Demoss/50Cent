@@ -9,7 +9,7 @@
   --page-subtitle-line-height: 32px;
   --cabinet-title-size: 18px;
   --main-grey: #FAFAFA;
-  --primary-color: #fde396;
+  --primary-color: #b78b05;
   --secondary-color: #8865a9;
   --header-color: white;
   --footer-color: black;
@@ -29,6 +29,10 @@ header {
 
 #root section header {
       background-color: var(--header-color);
+}
+
+.ant-layout *, * {
+  box-sizing: unset;
 }
 
 footer {
@@ -62,5 +66,5 @@ background-color: #fff;
 
 .facebookButton {
 background: url(../src/images/metaLogo.png) center/cover no-repeat;
-  background-color: #fff;
+background-color: #fff;
 }

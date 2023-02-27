@@ -33,7 +33,7 @@ export const GoogleLoginButton = () => {
 
   return (
     <GoogleLogin
-      type="icon"
+      type={'icon'}
       shape="circle"
       onSuccess={onSuccess}
       onError={() => onFailure}
