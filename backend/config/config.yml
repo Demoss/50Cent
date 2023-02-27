@@ -38,6 +38,6 @@ stripe:
   returnURL: 'http://localhost:3000/obtain'
   loanID: 'loanID'
   repayLoanID: 'repayLoanID'
-  paymentSuccessURL: 'paymentSuccessURL'
-  paymentCancelURL: 'paymentCancelURL'
+  paymentSuccessURL: 'http://localhost:3000/obtain?type=success'
+  paymentCancelURL: 'http://localhost:3000/obtain?type=error'
   webhookKey: 'webhookKey'

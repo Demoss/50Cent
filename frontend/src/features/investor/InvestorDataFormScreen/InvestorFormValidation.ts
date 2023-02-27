@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import {FILE_SIZE} from "@/constants/constants";
+import { FILE_SIZE } from '@/constants/constants';
 
 export const investorDataFormValidationSchema = yup.object().shape({
   name: yup.string().required('Please, enter the Name'),
