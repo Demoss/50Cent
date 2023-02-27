@@ -42,6 +42,7 @@ type Loan interface {
 	Delete(ctx context.Context, id uint64) error
 	Update(ctx context.Context, loan *models.Loan) error
 	GetByID(ctx context.Context, id uint64) (*models.Loan, error)
+	GetByIDWithConsumer(ctx context.Context, id uint64) (*models.LoanWithConsumer, error)
 	GetLoanByConsumerID(ctx context.Context, consumerID uint) (*models.Loan, error)
 	GetAcceptedLoan(ctx context.Context, consumerID uint) (*[]models.Loan, error)
 	GetUnOfferedLoansByConsumerID(ctx context.Context, consumerID uint) (*[]models.Loan, error)

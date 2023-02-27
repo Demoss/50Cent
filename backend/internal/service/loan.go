@@ -513,6 +513,31 @@ func (s *LoanService) GetByID(ctx context.Context, id uint64) (*domain.Loan, err
 	return convertLoan(model), err
 }
 
+func (s *LoanService) GetByIDWithConsumer(ctx context.Context, id uint64) (*domain.LoanDetailWithConsumer, error) {
+	model, err := s.loanRepo.GetByIDWithConsumer(ctx, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &domain.LoanDetailWithConsumer{
+		ID:                model.ID,
+		CreditSum:         model.CreditSum,
+		CreditTitle:       model.CreditTitle,
+		CreditDescription: model.CreditDescription,
+		CreditTerm:        model.CreditTerm,
+		CreditRate:        model.CreditRate,
+		ReturnedAmount:    model.ReturnedAmount,
+		IsReturned:        model.IsReturned,
+		IsAccepted:        model.IsAccepted,
+		AcceptedAt:        model.AcceptedAt,
+		ConsumerID:        model.ConsumerID,
+		InvestorID:        model.InvestorID,
+		ConsumerName:      model.Name,
+		ConsumerSurname:   model.Surname,
+	}, err
+}
+
 func (s *LoanService) GetTransactionsByLoanID(ctx context.Context, id uint) ([]domain.Transaction, error) {
 	transactionModels, err := s.transactionRepo.GetByLoanID(ctx, id)
 	if err != nil {

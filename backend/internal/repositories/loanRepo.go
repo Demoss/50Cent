@@ -55,6 +55,19 @@ func (r *LoanRepository) GetByID(ctx context.Context, id uint64) (*models.Loan, 
 	return &loan, err
 }
 
+func (r *LoanRepository) GetByIDWithConsumer(ctx context.Context, id uint64) (*models.LoanWithConsumer, error) {
+	var loan models.Loan
+
+	var result models.LoanWithConsumer
+
+	err := r.db.WithContext(ctx).First(&loan, id).Select("loans.*, consumers.name, consumers.surname").Joins("left join consumers on consumers.id = loans.consumer_id").Scan(&result).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, err
+}
+
 func (r *LoanRepository) GetLoanByConsumerID(ctx context.Context, consumerID uint) (*models.Loan, error) {
 	var loans models.Loan
 
