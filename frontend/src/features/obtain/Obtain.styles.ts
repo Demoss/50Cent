@@ -18,10 +18,13 @@ export const PageTitle = styled.h1`
 export const PageSubtitle = styled.h2`
   font-size: var(--page-subtitle-size);
   line-height: var(--page-subtitle-line-height);
+  letter-spacing: 2px;
   font-weight: 400;
 `;
 
 export const ButtonStyled = styled(Button)`
+  text-transform: uppercase;
+  letter-spacing: 2px;
   width: 100%;
 `;
 

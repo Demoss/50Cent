@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import {FILE_SIZE} from "@/constants/constants";
+import { FILE_SIZE } from '@/constants/constants';
 
 export const CreateFormValidationSchema = yup.object().shape({
   name: yup.string().required('required'),
