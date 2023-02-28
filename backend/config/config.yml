@@ -19,26 +19,25 @@ auth:
     expire: 3600
 
 awsS3:
-  awsAccessKeyId: "awsAccessKeyId"
-  awsSecretAccessKey: "awsSecretAccessKey"
-  awsRegion: "awsRegion"
-  awsBucketName: "awsBucketName"
+  awsAccessKeyId: "AKIARAGU6ON46YN6DMLY"
+  awsSecretAccessKey: "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"
+  awsRegion: "us-west-2"
+  awsBucketName: "test-3-2-3"
 
 sendGrid:
-  key: "sendGridAccessKey"
+  key: "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"
 
 twilio:
-  accountSid: "accountSid"
-  authToken: "authToken"
-  from: "from"
+  accountSid: "AC342c3eefb8bcfb092801f3065fc77eda"
+  authToken: "fcf346001bab0bd822f9cd755b8902a2"
+  from: "+19807058661"
 
-stripe:
-  key: "stripeKey"
-  refreshURL: "http://localhost:3000/login"
-  returnURL: "http://localhost:3000/obtain"
-  loanID: "loanID"
-  repayLoanID: "repayLoanID"
-  paymentSuccessURL: "paymentSuccessURL"
-  paymentCancelURL: "paymentCancelURL"
-  webhookKey: "webhookKey"
-
+  stripe:
+    key: "sk_test_51M6sLzBit1Xos21HJ6dSyhvXHJdmetDC7AjmNaKMmcrmvvCKT1ViE1opckQIBxVTHEaTI79tV8xoKxwOLppDTB4r00ZH0EjrZ6"
+    refreshURL: "http://localhost:3000/refresh"
+    returnURL: "http://localhost:3000/obtain"
+    loanID: "prod_MqwYpexHoVQPGw"
+    repayLoanID: "prod_MqwoPAJ55lfnQ9"
+    paymentSuccessURL: "http://localhost:3000/investor/cabinet?type=success"
+    paymentCancelURL: "http://localhost:3000/investor/cabinet?type=error"
+    webhookKey: "whsec_8f989d759c48d2c9243d337fcd0eee3a604ff04c40604e2da4a46d0fde19a74a"
