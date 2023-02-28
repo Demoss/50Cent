@@ -4,9 +4,9 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import jwt_decode from 'jwt-decode';
-import {useQueryClient} from "react-query";
+import { useQueryClient } from 'react-query';
 
-import {cacheKeys} from "@/hooks/auth/auth.cacheKeys";
+import { cacheKeys } from '@/hooks/auth/auth.cacheKeys';
 import {
   RedButton,
   PageTitle,
@@ -58,7 +58,6 @@ export const LoginConfirmScreen = () => {
         const token: LoginConfirmToken = jwt_decode(response.token);
         message.success('Code sent');
         await appStorage.setApiKey(response.token);
-
 
         if (token.role === 'investor') {
           const investor = await Api.getCurrentInvestor();

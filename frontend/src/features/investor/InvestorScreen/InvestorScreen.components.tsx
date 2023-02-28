@@ -13,7 +13,6 @@ import {
 } from './InvestorScreen.styles';
 
 export function InvestorScreen() {
-
   return (
     <Layout>
       <InvestorHomeContainer>

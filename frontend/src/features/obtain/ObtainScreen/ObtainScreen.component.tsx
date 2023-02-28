@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import {useCurrentUser} from '@/hooks';
+import { useCurrentUser } from '@/hooks';
 import { useGetUserToken } from '@/hooks/auth/useGetUserToken';
 import { appStorage } from '@/services/appStorage';
 import {
