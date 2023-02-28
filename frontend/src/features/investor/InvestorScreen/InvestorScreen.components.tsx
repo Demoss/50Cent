@@ -1,4 +1,4 @@
-import { InvestmentsTable, InvestorQuestion } from '../../../components/index';
+import { InvestmentsTable, InvestorQuestion } from '@/components';
 import { Col, Layout, Row } from 'antd';
 
 import investorHomeImg from '../../../images/pexels-tima-miroshnichenko-6694864.jpg';
@@ -13,8 +13,6 @@ import {
 } from './InvestorScreen.styles';
 
 export function InvestorScreen() {
-  console.log();
-
   return (
     <Layout>
       <InvestorHomeContainer>
