@@ -11,4 +11,12 @@ export const HeaderStyles = {
     padding: 6px 15px;
     font-size: 14px;
   `,
+  LogoHomeButton: styled.button`
+    height: 50px;
+    background: none;
+    border: 0;
+    &:hover {
+      cursor: pointer;
+    }
+  `,
 };
