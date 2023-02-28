@@ -13,7 +13,8 @@ export function mapResponse(
         CreditDesc: el.CreditDesc,
         CreditTerm: el.CreditTerm,
         CreditRate: el.CreditRate,
-        ReturnedAmount: Math.round((el.ReturnedAmount + Number.EPSILON) * 100) / 100,
+        ReturnedAmount:
+          Math.round((el.ReturnedAmount + Number.EPSILON) * 100) / 100,
         IsReturned: el.IsReturned,
         IsAccepted: el.IsAccepted,
         LatestPaymount: `${new Date(el.LatestPaymount).toLocaleDateString(
