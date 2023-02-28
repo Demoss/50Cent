@@ -364,7 +364,6 @@ func (s *InvestorService) addPotentialPayout(ctx context.Context, id uint) (*dom
 			if int(monthCount) > int(loan.ReturnedAmount) {
 				amount += loan.CreditSum / float64(loan.CreditTerm)
 			}
-
 		}
 	}
 
