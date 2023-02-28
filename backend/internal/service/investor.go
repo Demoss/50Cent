@@ -1,17 +1,16 @@
 package service
 
 import (
-	"context"
-	"errors"
-	"fmt"
-	"mime/multipart"
-	"time"
-
 	"50Cent/backend/config"
 	"50Cent/backend/internal/constants"
 	"50Cent/backend/internal/domain"
 	"50Cent/backend/internal/models"
 	"50Cent/backend/internal/repositories"
+	"context"
+	"errors"
+	"fmt"
+	"mime/multipart"
+	"time"
 )
 
 type InvestorService struct {
@@ -332,15 +331,12 @@ func (s *InvestorService) GetPotentialPayouts(ctx context.Context, id uint) (flo
 		}
 		payouts = append(payouts, payout)
 	}
-
-	if len(payoutModels) == 0 || payoutModels[len(payoutModels)-1].CreatedAt.Month() != time.Now().Month() {
-		payment, err := s.addPotentialPayout(ctx, id)
-		if err != nil {
-			return 0, err
-		}
-
-		payouts = append(payouts, *payment)
+	payment, err := s.addPotentialPayout(ctx, id)
+	if err != nil {
+		return 0, err
 	}
+
+	payouts = append(payouts, *payment)
 
 	return payouts[len(payouts)-1].Amount, nil
 }
@@ -355,8 +351,19 @@ func (s *InvestorService) addPotentialPayout(ctx context.Context, id uint) (*dom
 
 	for _, loan := range loans {
 		now := time.Now()
-		if (loan.AcceptedAt.Year()-now.Year())*12+int(now.Month()-loan.AcceptedAt.Month())-int(loan.ReturnedAmount) > 0 {
-			amount += loan.CreditSum / float64(loan.CreditTerm)
+		if now.Year() != loan.AcceptedAt.Year() {
+			yearGap := now.Year() - loan.AcceptedAt.Year()
+			monthCount := (12 - int(loan.AcceptedAt.Month())) + (yearGap - 1) + int(now.Month())
+
+			if monthCount > int(loan.ReturnedAmount) {
+				amount += loan.CreditSum / float64(loan.CreditTerm)
+			}
+		} else {
+			monthCount := now.Month() - loan.AcceptedAt.Month() + 1
+
+			if int(monthCount) > int(loan.ReturnedAmount) {
+				amount += loan.CreditSum / float64(loan.CreditTerm)
+			}
 		}
 	}
 
