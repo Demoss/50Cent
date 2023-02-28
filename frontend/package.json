@@ -107,6 +107,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "start:dev": "node scripts/start.js && cd .. && cd ./backend && go run cmd/main.go ",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --watchAll=false",
     "eslint": "eslint -c ./.eslintrc.json \"**/*.{tsx,ts,js,jsx}\"",
