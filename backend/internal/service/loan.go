@@ -7,7 +7,6 @@ import (
 	"errors"
 
 	"fmt"
-	"math"
 	"time"
 
 	"50Cent/backend/internal/domain"
@@ -604,6 +603,8 @@ func (s *LoanService) GetLoansByInvestor(ctx context.Context, id uint64) ([]doma
 	loans := make([]domain.LoanWithConsumer, 0, len(loansModel))
 
 	for _, model := range loansModel {
+		returnedPersentage := ((model.CreditSum/float64(model.CreditTerm) + (model.CreditSum*model.CreditRate)/100) / model.CreditSum) * 100
+		
 		loan := domain.LoanWithConsumer{
 			ID:                model.ID,
 			CreditSum:         model.CreditSum,
@@ -611,7 +612,7 @@ func (s *LoanService) GetLoansByInvestor(ctx context.Context, id uint64) ([]doma
 			CreditDescription: model.CreditDescription,
 			CreditTerm:        model.CreditTerm,
 			CreditRate:        model.CreditRate,
-			ReturnedAmount:    math.Round(((float64(model.ReturnedAmount)/model.CreditSum)*100)*100) / 100,
+			ReturnedAmount:    returnedPersentage,
 			IsReturned:        model.IsReturned,
 			IsAccepted:        model.IsAccepted,
 			LatestPaymount:    model.AcceptedAt.AddDate(0, int(model.CreditTerm), 0),
