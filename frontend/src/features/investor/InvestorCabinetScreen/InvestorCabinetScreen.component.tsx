@@ -14,7 +14,7 @@ import { useCurrentInvestor, usePotentialPayout } from '@/hooks/investor';
 import { Messages } from '@/components/Messages/Messages';
 
 export function InvestorCabinetScreen() {
-  const { Name, Surname, MiddleName, Balance } = useCurrentInvestor();
+  const { Name, Surname, MiddleName, Balance} = useCurrentInvestor();
   const { payout } = usePotentialPayout();
 
   const balance = (

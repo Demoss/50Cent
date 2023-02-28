@@ -90,7 +90,7 @@ const HeaderComponent: FC = () => {
                     currentUser.role === 'investor' ? (
                       <>
                         <SettingOutlined />
-                        Change accout type
+                        Change account type
                       </>
                     ) : currentUser.role === 'consumer' ? (
                       <>
