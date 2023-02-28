@@ -122,6 +122,7 @@ func (h *Controller) InitRouter(port string) error {
 	loan.POST("", h.VerifyConsumerExistsMiddleware, h.createLoan)
 	loan.GET("", h.getLoans)
 	loan.GET("/:id", h.getLoanByID)
+	loan.GET("/:id/details", h.getLoanByIDWithConsumer)
 	loan.GET("/:id/transactions", h.CheckAccessLoanMiddleware, h.getLoanTransactions)
 	loan.POST("/:id/accept", h.VerifyInvestorExistsMiddleware, h.acceptLoan)
 	loan.POST("/:id/repay", h.VerifyConsumerExistsMiddleware, h.repayLoan)

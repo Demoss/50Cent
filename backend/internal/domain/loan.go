@@ -49,3 +49,20 @@ type LoanWithConsumer struct {
 	ConsumerName      string
 	ConsumerSurname   string
 }
+
+type LoanDetailWithConsumer struct {
+	ID                uint
+	CreditSum         float64
+	CreditTitle       string
+	CreditDescription string
+	CreditTerm        uint
+	CreditRate        float64
+	ReturnedAmount    uint
+	IsReturned        bool
+	IsAccepted        bool
+	AcceptedAt        time.Time
+	ConsumerID        uint
+	InvestorID        uint
+	ConsumerName      string
+	ConsumerSurname   string
+}
