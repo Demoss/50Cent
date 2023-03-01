@@ -3,8 +3,11 @@
 .vscode/
 .database/
 
+.node_modules/
+
 bin/
 
+./backend/config/config.yml
 config.yml
 *.dev.yml
 .DS_Store
