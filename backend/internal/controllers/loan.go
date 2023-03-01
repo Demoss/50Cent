@@ -5,6 +5,7 @@ import (
 	"50Cent/backend/internal/helper"
 	"50Cent/backend/internal/query"
 	"fmt"
+	"strings"
 
 	"encoding/json"
 	"math"
@@ -194,6 +195,51 @@ func (h *Controller) getLoanByID(c *gin.Context) {
 		CreditTerm:            loan.CreditTerm,
 		CreditRate:            loan.CreditRate,
 		ReturnedInvestorMoney: returnedInvestorMoney,
+	}
+	c.JSON(http.StatusOK, loanResponse)
+}
+
+// @Summary                     Get loans by id with consumer name
+// @Tags                        Loans
+// @Description                 Get loan by id (yet not ) with consumer name
+// @ID                          getloanbyid
+// @Accept                      json
+// @Produce                     json
+// @Param                       id   path      int  true  "Loan ID"
+// @securityDefinitions.apikey  ApiKeyAuth
+// @Success                     200  {object}  statusResponse
+// @Failure                     400  {object}  errorResponse
+// @Failure                     500  {object}  errorResponse
+// @Router                      /loans/{id}/details [get]
+// @Security                    ApiKeyAuth
+func (h *Controller) getLoanByIDWithConsumer(c *gin.Context) {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id")
+		return
+	}
+
+	loan, err := h.services.Loan.GetByIDWithConsumer(c, id)
+	if err != nil {
+		newErrorResponse(c, http.StatusNotFound, "ID not found")
+		return
+	}
+
+	roundedCreditSum := math.Round(loan.CreditSum*100) / 100
+	returnedInvestorMoney := (math.Round(loan.CreditSum*loan.CreditRate) / 100)
+
+	fullNameSlice := []string{loan.ConsumerName, loan.ConsumerSurname}
+
+	consumerFullName := strings.Join(fullNameSlice, string(' '))
+
+	loanResponse := query.GetLoanByIDResponseWithConsumer{
+		CreditSum:             roundedCreditSum,
+		CreditTitle:           loan.CreditTitle,
+		CreditDescription:     loan.CreditDescription,
+		CreditTerm:            loan.CreditTerm,
+		CreditRate:            loan.CreditRate,
+		ReturnedInvestorMoney: returnedInvestorMoney,
+		Consumer:              consumerFullName,
 	}
 	c.JSON(http.StatusOK, loanResponse)
 }

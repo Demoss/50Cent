@@ -7,7 +7,6 @@ import (
 	"errors"
 
 	"fmt"
-	"math"
 	"time"
 
 	"50Cent/backend/internal/domain"
@@ -513,6 +512,31 @@ func (s *LoanService) GetByID(ctx context.Context, id uint64) (*domain.Loan, err
 	return convertLoan(model), err
 }
 
+func (s *LoanService) GetByIDWithConsumer(ctx context.Context, id uint64) (*domain.LoanDetailWithConsumer, error) {
+	model, err := s.loanRepo.GetByIDWithConsumer(ctx, id)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &domain.LoanDetailWithConsumer{
+		ID:                model.ID,
+		CreditSum:         model.CreditSum,
+		CreditTitle:       model.CreditTitle,
+		CreditDescription: model.CreditDescription,
+		CreditTerm:        model.CreditTerm,
+		CreditRate:        model.CreditRate,
+		ReturnedAmount:    model.ReturnedAmount,
+		IsReturned:        model.IsReturned,
+		IsAccepted:        model.IsAccepted,
+		AcceptedAt:        model.AcceptedAt,
+		ConsumerID:        model.ConsumerID,
+		InvestorID:        model.InvestorID,
+		ConsumerName:      model.Name,
+		ConsumerSurname:   model.Surname,
+	}, err
+}
+
 func (s *LoanService) GetTransactionsByLoanID(ctx context.Context, id uint) ([]domain.Transaction, error) {
 	transactionModels, err := s.transactionRepo.GetByLoanID(ctx, id)
 	if err != nil {
@@ -604,6 +628,8 @@ func (s *LoanService) GetLoansByInvestor(ctx context.Context, id uint64) ([]doma
 	loans := make([]domain.LoanWithConsumer, 0, len(loansModel))
 
 	for _, model := range loansModel {
+		returnedPersentage := ((model.CreditSum/float64(model.CreditTerm) + (model.CreditSum*model.CreditRate)/100) / model.CreditSum) * 100
+		
 		loan := domain.LoanWithConsumer{
 			ID:                model.ID,
 			CreditSum:         model.CreditSum,
@@ -611,7 +637,7 @@ func (s *LoanService) GetLoansByInvestor(ctx context.Context, id uint64) ([]doma
 			CreditDescription: model.CreditDescription,
 			CreditTerm:        model.CreditTerm,
 			CreditRate:        model.CreditRate,
-			ReturnedAmount:    math.Round(((float64(model.ReturnedAmount)/model.CreditSum)*100)*100) / 100,
+			ReturnedAmount:    returnedPersentage,
 			IsReturned:        model.IsReturned,
 			IsAccepted:        model.IsAccepted,
 			LatestPaymount:    model.AcceptedAt.AddDate(0, int(model.CreditTerm), 0),
