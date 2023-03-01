@@ -39,8 +39,6 @@ export const routes = {
 
   consumer: {
     absolute: () => '/consumer',
-    //// CABINET LINK IS NEEDED ///////
-    // relative: () => 'cabinet',
     registration: {
       absolute: () => '/consumer/registration',
       relative: () => 'registration',
