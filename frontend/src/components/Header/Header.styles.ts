@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 export const HeaderStyles = {
   ImgContainer: styled.img`
@@ -18,5 +19,12 @@ export const HeaderStyles = {
     &:hover {
       cursor: pointer;
     }
+  `,
+  NavLinkCabinetStyled: styled(NavLink)`
+    background-color: var(--header-color);
+    color: var(--footer-color);
+    letter-spacing: 1px;
+    // text-transform: uppercase;
+    padding: 5px 3px;
   `,
 };

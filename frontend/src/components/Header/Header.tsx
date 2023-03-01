@@ -18,9 +18,15 @@ import { admin, consumer, investor, user } from '@/constants/constants';
 import { appStorage } from '@/services/appStorage/appStorage.service';
 import { Api } from '@/api';
 import { LoginConfirmToken } from '@/features/login/LoginConfirmScreen/LoginConfirmScreen.types';
+import { NavLinkStyled } from '@/features/investor/InvestorScreen/InvestorScreen.styles';
 
 const { Header } = Layout;
-const { ImgContainer, UserTypeContainer, LogoHomeButton } = HeaderStyles;
+const {
+  ImgContainer,
+  UserTypeContainer,
+  LogoHomeButton,
+  NavLinkCabinetStyled,
+} = HeaderStyles;
 
 const HeaderComponent: FC = () => {
   const navigate = useNavigate();
@@ -41,6 +47,10 @@ const HeaderComponent: FC = () => {
     ).role;
 
     navigate(`/${decodedToken}`);
+  };
+
+  const onGoCabinet = () => {
+    console.log('GO CABINET');
   };
 
   const logButton = () => {
@@ -65,6 +75,15 @@ const HeaderComponent: FC = () => {
 
   const { currentUser } = useCurrentUser();
 
+  const cabinetRole =
+    currentUser?.role === 'user'
+      ? user
+      : currentUser?.role === 'investor'
+      ? investor
+      : currentUser?.role === 'consumer'
+      ? consumer
+      : admin;
+
   return (
     <Header>
       <Row>
@@ -87,20 +106,23 @@ const HeaderComponent: FC = () => {
               <Col>
                 {currentUser?.role ? (
                   <UserTypeContainer>
-                    {currentUser?.role === 'user'
-                      ? user
-                      : currentUser?.role === 'investor'
-                      ? investor
-                      : currentUser?.role === 'consumer'
-                      ? consumer
-                      : admin}
+                    <NavLinkCabinetStyled
+                      to={`${
+                        cabinetRole === 'investor'
+                          ? cabinetRole + '/cabinet'
+                          : cabinetRole
+                      }`}
+                    >
+                      👉 Cabinet
+                    </NavLinkCabinetStyled>
                   </UserTypeContainer>
                 ) : (
                   logButton()
                 )}
               </Col>
 
-              <Col>
+              {/* IF THERE NEED FOR THIS BUTTON */}
+              {/* <Col>
                 <Button>
                   {currentUser?.email ? (
                     currentUser.role === 'investor' ? (
@@ -122,9 +144,29 @@ const HeaderComponent: FC = () => {
                     </NavLink>
                   )}
                 </Button>
-              </Col>
+              </Col> */}
+
+              {currentUser && currentUser.role !== 'user' && (
+                <Col>
+                  <Button
+                    // type="primary"
+                    // danger
+                    // size="large"
+                    onClick={
+                      currentUser?.role === 'investor'
+                        ? getInvestorInfo
+                        : getConsumerInfo
+                    }
+                  >
+                    <UserOutlined />
+                    Update account info
+                  </Button>
+                </Col>
+              )}
+
               {currentUser && (
                 <Button
+                  danger
                   onClick={() => {
                     appStorage.setApiKey('');
                     navigate(routes.login.absolute(), { replace: true });
@@ -135,31 +177,6 @@ const HeaderComponent: FC = () => {
                   Sign Out
                 </Button>
               )}
-
-              {currentUser && currentUser.role !== 'user' && (
-                <Col>
-                  <Button
-                    type="primary"
-                    danger
-                    size="large"
-                    onClick={
-                      currentUser?.role === 'investor'
-                        ? getInvestorInfo
-                        : getConsumerInfo
-                    }
-                  >
-                    <UserOutlined />
-                    Change accout type
-                  </Button>
-                </Col>
-              )}
-
-              {/*TOD0: Find icon translate and change*/}
-              <Col>
-                <Button>
-                  <TransactionOutlined />
-                </Button>
-              </Col>
             </Space>
           </Row>
         </Col>

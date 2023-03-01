@@ -22,11 +22,11 @@ export function InvestorScreen() {
           <Col span={12}>
             <TitleContainer>Start investing and earning!</TitleContainer>
             <SubTitleContainer>
-              All active applications for investment are posted on this page👇👇
+              All active applications for investment are posted on Cabinet ↗️
             </SubTitleContainer>
-            <NavLinkStyled to="cabinet" className={'btn-cabinet'}>
+            {/* <NavLinkStyled to="cabinet" className={'btn-cabinet'}>
               Investor cabinet
-            </NavLinkStyled>
+            </NavLinkStyled> */}
           </Col>
           <Col span={12}>
             <Row justify="end">
