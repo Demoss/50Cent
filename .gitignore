@@ -6,5 +6,6 @@
 bin/
 
 config.yml
+
 *.dev.yml
 .DS_Store
