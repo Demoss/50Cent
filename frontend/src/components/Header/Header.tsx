@@ -1,14 +1,8 @@
 import { FC } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Button, Layout, Row, Col, Space } from 'antd';
-import {
-  UserOutlined,
-  SettingOutlined,
-  WalletOutlined,
-  TransactionOutlined,
-  LogoutOutlined,
-} from '@ant-design/icons';
-import jwt_decode, { JwtPayload } from 'jwt-decode';
+import { UserOutlined, LogoutOutlined } from '@ant-design/icons';
+import jwt_decode from 'jwt-decode';
 
 import logo from '../../images/logo-test.png';
 import { HeaderStyles } from './Header.styles';
@@ -18,7 +12,6 @@ import { admin, consumer, investor, user } from '@/constants/constants';
 import { appStorage } from '@/services/appStorage/appStorage.service';
 import { Api } from '@/api';
 import { LoginConfirmToken } from '@/features/login/LoginConfirmScreen/LoginConfirmScreen.types';
-import { NavLinkStyled } from '@/features/investor/InvestorScreen/InvestorScreen.styles';
 
 const { Header } = Layout;
 const {
@@ -47,10 +40,6 @@ const HeaderComponent: FC = () => {
     ).role;
 
     navigate(`/${decodedToken}`);
-  };
-
-  const onGoCabinet = () => {
-    console.log('GO CABINET');
   };
 
   const logButton = () => {
@@ -121,37 +110,9 @@ const HeaderComponent: FC = () => {
                 )}
               </Col>
 
-              {/* IF THERE NEED FOR THIS BUTTON */}
-              {/* <Col>
-                <Button>
-                  {currentUser?.email ? (
-                    currentUser.role === 'investor' ? (
-                      <>
-                        <SettingOutlined />
-                        Change account type
-                      </>
-                    ) : currentUser.role === 'consumer' ? (
-                      <>
-                        <Link to={routes.credit.absolute()}>
-                          <WalletOutlined />
-                          Take a loan
-                        </Link>
-                      </>
-                    ) : null
-                  ) : (
-                    <NavLink to={routes.login.registration.absolute()}>
-                      Sign Up
-                    </NavLink>
-                  )}
-                </Button>
-              </Col> */}
-
               {currentUser && currentUser.role !== 'user' && (
                 <Col>
                   <Button
-                    // type="primary"
-                    // danger
-                    // size="large"
                     onClick={
                       currentUser?.role === 'investor'
                         ? getInvestorInfo
