@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Button, Layout, Row, Col, Space } from 'antd';
 import {
   UserOutlined,
@@ -7,18 +8,25 @@ import {
   TransactionOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
+import jwt_decode, { JwtPayload } from 'jwt-decode';
 
 import logo from '../../images/logo-test.png';
 import { HeaderStyles } from './Header.styles';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { routes } from '@/routing';
 import { useCurrentUser } from '@/hooks';
 import { admin, consumer, investor, user } from '@/constants/constants';
 import { appStorage } from '@/services/appStorage/appStorage.service';
 import { Api } from '@/api';
+import { LoginConfirmToken } from '@/features/login/LoginConfirmScreen/LoginConfirmScreen.types';
+import { NavLinkStyled } from '@/features/investor/InvestorScreen/InvestorScreen.styles';
 
 const { Header } = Layout;
-const { ImgContainer, UserTypeContainer } = HeaderStyles;
+const {
+  ImgContainer,
+  UserTypeContainer,
+  LogoHomeButton,
+  NavLinkCabinetStyled,
+} = HeaderStyles;
 
 const HeaderComponent: FC = () => {
   const navigate = useNavigate();
@@ -31,6 +39,18 @@ const HeaderComponent: FC = () => {
   const getConsumerInfo = async () => {
     const consumer = await Api.getCurrentConsumer();
     navigate(`/consumer/update/${consumer.ID}`);
+  };
+
+  const onGoHome = () => {
+    const decodedToken = jwt_decode<LoginConfirmToken>(
+      localStorage.getItem('apiToken') || '',
+    ).role;
+
+    navigate(`/${decodedToken}`);
+  };
+
+  const onGoCabinet = () => {
+    console.log('GO CABINET');
   };
 
   const logButton = () => {
@@ -55,12 +75,27 @@ const HeaderComponent: FC = () => {
 
   const { currentUser } = useCurrentUser();
 
+  const cabinetRole =
+    currentUser?.role === 'user'
+      ? user
+      : currentUser?.role === 'investor'
+      ? investor
+      : currentUser?.role === 'consumer'
+      ? consumer
+      : admin;
+
   return (
     <Header>
       <Row>
         <Col span={12} className="logo-container">
           <Row align="middle">
-            <ImgContainer src={logo} alt="logo" />
+            <LogoHomeButton type="button" onClick={onGoHome}>
+              <ImgContainer
+                src={logo}
+                alt="logo"
+                style={{ display: 'block' }}
+              />
+            </LogoHomeButton>
             <span>Loans that won’t make you poor</span>
           </Row>
         </Col>
@@ -71,20 +106,23 @@ const HeaderComponent: FC = () => {
               <Col>
                 {currentUser?.role ? (
                   <UserTypeContainer>
-                    {currentUser?.role === 'user'
-                      ? user
-                      : currentUser?.role === 'investor'
-                      ? investor
-                      : currentUser?.role === 'consumer'
-                      ? consumer
-                      : admin}
+                    <NavLinkCabinetStyled
+                      to={`${
+                        cabinetRole === 'investor'
+                          ? cabinetRole + '/cabinet'
+                          : cabinetRole
+                      }`}
+                    >
+                      👉 Cabinet
+                    </NavLinkCabinetStyled>
                   </UserTypeContainer>
                 ) : (
                   logButton()
                 )}
               </Col>
 
-              <Col>
+              {/* IF THERE NEED FOR THIS BUTTON */}
+              {/* <Col>
                 <Button>
                   {currentUser?.email ? (
                     currentUser.role === 'investor' ? (
@@ -106,9 +144,29 @@ const HeaderComponent: FC = () => {
                     </NavLink>
                   )}
                 </Button>
-              </Col>
+              </Col> */}
+
+              {currentUser && currentUser.role !== 'user' && (
+                <Col>
+                  <Button
+                    // type="primary"
+                    // danger
+                    // size="large"
+                    onClick={
+                      currentUser?.role === 'investor'
+                        ? getInvestorInfo
+                        : getConsumerInfo
+                    }
+                  >
+                    <UserOutlined />
+                    Update account info
+                  </Button>
+                </Col>
+              )}
+
               {currentUser && (
                 <Button
+                  danger
                   onClick={() => {
                     appStorage.setApiKey('');
                     navigate(routes.login.absolute(), { replace: true });
@@ -119,31 +177,6 @@ const HeaderComponent: FC = () => {
                   Sign Out
                 </Button>
               )}
-
-              {currentUser && currentUser.role !== 'user' && (
-                <Col>
-                  <Button
-                    type="primary"
-                    danger
-                    size="large"
-                    onClick={
-                      currentUser?.role === 'investor'
-                        ? getInvestorInfo
-                        : getConsumerInfo
-                    }
-                  >
-                    <UserOutlined />
-                    Change accout type
-                  </Button>
-                </Col>
-              )}
-
-              {/*TOD0: Find icon translate and change*/}
-              <Col>
-                <Button>
-                  <TransactionOutlined />
-                </Button>
-              </Col>
             </Space>
           </Row>
         </Col>

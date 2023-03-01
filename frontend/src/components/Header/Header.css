@@ -1,3 +1,12 @@
 #root section header {
   background-color: var(--header-color);
 }
+
+.btn {
+  background: none;
+  border: 0;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
