@@ -1,4 +1,4 @@
-import { useCurrentCreditWithConsumer } from '@/hooks/credit';
+import { useCurrentCredit } from '@/hooks/credit';
 import { message, Modal, Spin, Form, Input, Button } from 'antd';
 import { useParams } from 'react-router-dom';
 import { useCurrentURLStripe } from '@/hooks/credit/useCurrentURLStripe';
@@ -25,7 +25,7 @@ function Redirect(url: string) {
 
 export function GetScreen() {
   const { id } = useParams();
-  const credit = useCurrentCreditWithConsumer(id);
+  const credit = useCurrentCredit(id);
   const mutation = useCurrentURLStripe(id);
   const [visible, setVisible] = useState(false);
   const creditForm = useFormik({
@@ -84,10 +84,6 @@ export function GetScreen() {
       <StepsContainer>
         The required amount of money: <br />
         <Line>$ {credit.data?.creditSum}</Line>
-      </StepsContainer>
-
-      <StepsContainer>
-        Consumer Full Name: <br /> <Line>{credit.data?.consumer}</Line>
       </StepsContainer>
 
       <StepsContainer>

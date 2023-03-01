@@ -50,7 +50,6 @@ type Loan interface {
 	Delete(ctx context.Context, id uint64, consumerID uint) error
 	GetAll(ctx context.Context, page, pageSize int) (*domain.LoanResponse, error)
 	GetByID(ctx context.Context, id uint64) (*domain.Loan, error)
-	GetByIDWithConsumer(ctx context.Context, id uint64) (*domain.LoanDetailWithConsumer, error)
 	Update(ctx context.Context, id uint64, loan *domain.Loan, consumerID uint) error
 	PaymentSuccess(ctx context.Context, sessionID string) error
 	PaymentFailed(ctx context.Context, sessionID string) error

@@ -4,9 +4,7 @@ import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import jwt_decode from 'jwt-decode';
-import { useQueryClient } from 'react-query';
 
-import { cacheKeys } from '@/hooks/auth/auth.cacheKeys';
 import {
   RedButton,
   PageTitle,
@@ -28,7 +26,6 @@ function Redirect(url: string) {
 }
 
 export const LoginConfirmScreen = () => {
-  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const type = searchParams.get('type');
@@ -61,7 +58,6 @@ export const LoginConfirmScreen = () => {
 
         if (token.role === 'investor') {
           const investor = await Api.getCurrentInvestor();
-
           if (!investor.IsConfirmed) {
             message.warn('You did not add payment to your account!');
             await Api.registerInvestorStripe()
@@ -70,7 +66,6 @@ export const LoginConfirmScreen = () => {
                 message.error('Error while trying to add payment.'),
               );
           } else {
-            await queryClient.invalidateQueries(cacheKeys.currentUser());
             navigate(`/${token.role}/cabinet`, { replace: true });
           }
         } else if (token.role === 'consumer') {
@@ -86,7 +81,6 @@ export const LoginConfirmScreen = () => {
                 ),
               );
           } else {
-            await queryClient.invalidateQueries(cacheKeys.currentUser());
             navigate(`/${token.role}`, { replace: true });
           }
         } else {

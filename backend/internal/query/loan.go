@@ -11,16 +11,6 @@ type GetLoanByIDResponse struct {
 	ReturnedInvestorMoney float64 `json:"ReturnedInvestorMoney"`
 }
 
-type GetLoanByIDResponseWithConsumer struct {
-	CreditSum             float64 `json:"CreditSum"`
-	CreditTitle           string  `json:"CreditTitle"`
-	CreditDescription     string  `json:"CreditDescription"`
-	CreditTerm            uint    `json:"CreditTerm"`
-	CreditRate            float64 `json:"CreditRate"`
-	ReturnedInvestorMoney float64 `json:"ReturnedInvestorMoney"`
-	Consumer              string  `json:"Consumer"`
-}
-
 type GetConsumerLoansResponse struct {
 	ID             uint      `json:"ID"`
 	CreditSum      float64   `json:"credit_sum"`
