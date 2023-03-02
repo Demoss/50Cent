@@ -23,6 +23,11 @@ export const routes = {
       absolute: () => '/login/registration/otp/confirm',
     },
   },
+
+  admin: {
+    absolute: () => '/admin',
+  },
+
   investor: {
     absolute: () => '/investor',
     relative: () => 'cabinet',
@@ -31,19 +36,21 @@ export const routes = {
       relative: () => 'registration',
     },
   },
-  admin: {
-    absolute: () => '/admin',
-  },
-  credit: {
-    absolute: () => '/credit',
-  },
+
   consumer: {
     absolute: () => '/consumer',
+    //// CABINET LINK IS NEEDED ///////
+    // relative: () => 'cabinet',
     registration: {
       absolute: () => '/consumer/registration',
       relative: () => 'registration',
     },
   },
+
+  credit: {
+    absolute: () => '/credit',
+  },
+
   obtain: {
     absolute: () => '/obtain',
   },
