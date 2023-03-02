@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { InvestorResponse } from '@/components/InvestorResponseTable/InvestorResponseTable';
 import { AcceptedLoansTable } from '@/components/AcceptedLoansTable/AcceptedLoansTable';
 import { Messages } from '@/components/Messages/Messages';
+import { useCurrentConsumer, useRequiredPayment } from '@/hooks/consumer';
 
 const content = (
   <div style={{ width: '200px', fontSize: '14px' }}>Your current balance</div>
@@ -30,6 +31,9 @@ const { TabPane } = Tabs;
 
 export const ConsumerScreen = () => {
   const navigate = useNavigate();
+  const { Name, Surname, MiddleName, Balance } = useCurrentConsumer();
+  const { payment } = useRequiredPayment();
+
   const handleClick = () => {
     navigate('/credit');
   };
@@ -47,7 +51,7 @@ export const ConsumerScreen = () => {
               </Row>
               <Row>
                 {/* query to the stripe account */}
-                <PageSubtitle>$ 20000</PageSubtitle>
+                <PageSubtitle>${Balance}</PageSubtitle>
               </Row>
               <Row>
                 <ImgContainer src={diagram} />
@@ -71,7 +75,7 @@ export const ConsumerScreen = () => {
                 </Popover>
               </Row>
               <Row>
-                <PageSubtitle>$ 100</PageSubtitle>
+                <PageSubtitle>${payment?.payments}</PageSubtitle>
               </Row>
               <Row>
                 <ImgContainer src={diagram} />
