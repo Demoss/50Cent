@@ -55,10 +55,15 @@ const HeaderComponent: FC = () => {
         Sign Out
       </Button>
     ) : (
-      <Button>
-        <UserOutlined />
-        <NavLink to={routes.login.absolute()}>Sign In</NavLink>
-      </Button>
+      <>
+        <Button>
+          <UserOutlined />
+          <NavLink to={routes.login.absolute()}>Sign In</NavLink>
+        </Button>
+        <Button style={{ marginLeft: '10px' }}>
+          <NavLink to={routes.login.registration.absolute()}>Sign Up</NavLink>
+        </Button>
+      </>
     );
   };
 
