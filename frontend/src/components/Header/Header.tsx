@@ -1,21 +1,21 @@
 import { FC } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Button, Layout, Row, Col, Space } from 'antd';
 import {
   UserOutlined,
-  SettingOutlined,
-  WalletOutlined,
-  TransactionOutlined,
   LogoutOutlined,
+  TransactionOutlined,
 } from '@ant-design/icons';
+import jwt_decode from 'jwt-decode';
 
 import logo from '../../images/logo-test.png';
 import { HeaderStyles } from './Header.styles';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { routes } from '@/routing';
 import { useCurrentUser } from '@/hooks';
 import { admin, consumer, investor, user } from '@/constants/constants';
 import { appStorage } from '@/services/appStorage/appStorage.service';
 import { Api } from '@/api';
+import { LoginConfirmToken } from '@/features/login/LoginConfirmScreen/LoginConfirmScreen.types';
 
 const { Header } = Layout;
 const { ImgContainer, UserTypeContainer } = HeaderStyles;
@@ -31,6 +31,14 @@ const HeaderComponent: FC = () => {
   const getConsumerInfo = async () => {
     const consumer = await Api.getCurrentConsumer();
     navigate(`/consumer/update/${consumer.ID}`);
+  };
+
+  const onGoHome = () => {
+    const decodedToken = jwt_decode<LoginConfirmToken>(
+      localStorage.getItem('apiToken') || '',
+    ).role;
+
+    navigate(`/${decodedToken}`);
   };
 
   const logButton = () => {
@@ -84,29 +92,21 @@ const HeaderComponent: FC = () => {
                 )}
               </Col>
 
-              <Col>
-                <Button>
-                  {currentUser?.email ? (
-                    currentUser.role === 'investor' ? (
-                      <>
-                        <SettingOutlined />
-                        Change accout type
-                      </>
-                    ) : currentUser.role === 'consumer' ? (
-                      <>
-                        <Link to={routes.credit.absolute()}>
-                          <WalletOutlined />
-                          Take a loan
-                        </Link>
-                      </>
-                    ) : null
-                  ) : (
-                    <NavLink to={routes.login.registration.absolute()}>
-                      Sign Up
-                    </NavLink>
-                  )}
-                </Button>
-              </Col>
+              {currentUser && currentUser.role !== 'user' && (
+                <Col>
+                  <Button
+                    onClick={
+                      currentUser?.role === 'investor'
+                        ? getInvestorInfo
+                        : getConsumerInfo
+                    }
+                  >
+                    <UserOutlined />
+                    Update account info
+                  </Button>
+                </Col>
+              )}
+
               {currentUser && (
                 <Button
                   onClick={() => {

@@ -24,9 +24,6 @@ export function InvestorScreen() {
             <SubTitleContainer>
               All active applications for investment are posted on this page👇👇
             </SubTitleContainer>
-            <NavLinkStyled to="cabinet" className={'btn-cabinet'}>
-              Investor cabinet
-            </NavLinkStyled>
           </Col>
           <Col span={12}>
             <Row justify="end">
