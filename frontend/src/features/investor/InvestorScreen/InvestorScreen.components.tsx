@@ -1,4 +1,4 @@
-import { InvestmentsTable, InvestorQuestion } from '../../../components/index';
+import { InvestmentsTable, InvestorQuestion } from '@/components';
 import { Col, Layout, Row } from 'antd';
 
 import investorHomeImg from '../../../images/pexels-tima-miroshnichenko-6694864.jpg';
@@ -13,8 +13,6 @@ import {
 } from './InvestorScreen.styles';
 
 export function InvestorScreen() {
-  console.log();
-
   return (
     <Layout>
       <InvestorHomeContainer>
@@ -22,11 +20,8 @@ export function InvestorScreen() {
           <Col span={12}>
             <TitleContainer>Start investing and earning!</TitleContainer>
             <SubTitleContainer>
-              All active applications for investment are posted on this page👇👇
+              All active applications for investment are posted on Cabinet ↗️
             </SubTitleContainer>
-            <NavLinkStyled to="cabinet" className={'btn-cabinet'}>
-              Investor cabinet
-            </NavLinkStyled>
           </Col>
           <Col span={12}>
             <Row justify="end">

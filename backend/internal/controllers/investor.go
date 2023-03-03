@@ -6,7 +6,6 @@ import (
 	"50Cent/backend/internal/helper"
 	"50Cent/backend/internal/models"
 	"fmt"
-	"math"
 
 	"net/http"
 	"strconv"
@@ -91,11 +90,11 @@ func (h *Controller) getInvestorInfo(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, investorUpdatingResponse{
-		Name:       investor.Name,
-		Surname:    investor.Surname,
-		MiddleName: investor.MiddleName,
-		Photo:      userFiles["photo"],
-		IDFile:     userFiles["id_file"],
+		Name:        investor.Name,
+		Surname:     investor.Surname,
+		MiddleName:  investor.MiddleName,
+		Photo:       userFiles["photo"],
+		IDFile:      userFiles["id_file"],
 	})
 }
 
@@ -167,16 +166,14 @@ func (h *Controller) getCurrentInvestor(c *gin.Context) {
 		return
 	}
 
-	roundedBalance := math.Round(investor.Balance*100) / 100
-
 	c.JSON(http.StatusOK, currentInvestorResponse{
-		ID:          int(investorID),
-		Name:        investor.Name,
-		Surname:     investor.Surname,
-		MiddleName:  investor.MiddleName,
-		UserEmail:   investor.UserEmail,
-		Balance:     roundedBalance,
-		Role:        investor.Role,
+		ID:         int(investorID),
+		Name:       investor.Name,
+		Surname:    investor.Surname,
+		MiddleName: investor.MiddleName,
+		UserEmail:  investor.UserEmail,
+		Balance:    investor.Balance,
+		Role:       investor.Role,
 		IsConfirmed: investor.StripeConfirmed,
 	})
 }

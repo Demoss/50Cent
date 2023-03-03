@@ -1,16 +1,17 @@
 package service
 
 import (
-	"50Cent/backend/config"
-	"50Cent/backend/internal/constants"
-	"50Cent/backend/internal/domain"
-	"50Cent/backend/internal/models"
-	"50Cent/backend/internal/repositories"
 	"context"
 	"errors"
 	"fmt"
 	"mime/multipart"
 	"time"
+
+	"50Cent/backend/config"
+	"50Cent/backend/internal/constants"
+	"50Cent/backend/internal/domain"
+	"50Cent/backend/internal/models"
+	"50Cent/backend/internal/repositories"
 )
 
 type InvestorService struct {
@@ -331,12 +332,15 @@ func (s *InvestorService) GetPotentialPayouts(ctx context.Context, id uint) (flo
 		}
 		payouts = append(payouts, payout)
 	}
-	payment, err := s.addPotentialPayout(ctx, id)
-	if err != nil {
-		return 0, err
-	}
 
-	payouts = append(payouts, *payment)
+	if len(payoutModels) == 0 || payoutModels[len(payoutModels)-1].CreatedAt.Month() != time.Now().Month() {
+		payment, err := s.addPotentialPayout(ctx, id)
+		if err != nil {
+			return 0, err
+		}
+
+		payouts = append(payouts, *payment)
+	}
 
 	return payouts[len(payouts)-1].Amount, nil
 }
