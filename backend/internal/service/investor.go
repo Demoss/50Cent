@@ -347,26 +347,26 @@ func (s *InvestorService) addPotentialPayout(ctx context.Context, id uint) (*dom
 		return nil, err
 	}
 
-	var amount float64
+		var amount float64
 
-	for _, loan := range loans {
-		now := time.Now()
-		if now.Year() != loan.AcceptedAt.Year() {
-			yearGap := now.Year() - loan.AcceptedAt.Year()
-			monthCount := (12 - int(loan.AcceptedAt.Month())) + (yearGap - 1) + int(now.Month())
+    for _, loan := range loans {
+        now := time.Now()
+        if now.Year() != loan.AcceptedAt.Year() {
+            yearGap := now.Year() - loan.AcceptedAt.Year()
+            monthCount := (12 - int(loan.AcceptedAt.Month())) + (yearGap - 1) + int(now.Month())
 
-			if monthCount > int(loan.ReturnedAmount) {
-				amount += loan.CreditSum / float64(loan.CreditTerm)
-			}
-		} else {
-			monthCount := now.Month() - loan.AcceptedAt.Month() + 1
+            if monthCount > int(loan.ReturnedAmount) {
+                amount += loan.CreditSum / float64(loan.CreditTerm)
+           }
+        } else {
+            monthCount := now.Month() - loan.AcceptedAt.Month() + 1
 
-			if int(monthCount) > int(loan.ReturnedAmount) {
-				amount += loan.CreditSum / float64(loan.CreditTerm)
-			}
+            if int(monthCount) > int(loan.ReturnedAmount) {
+                amount += loan.CreditSum / float64(loan.CreditTerm)
+            }
 
-		}
-	}
+        }
+    }
 
 	payment := models.Payout{
 		Amount:     amount,
