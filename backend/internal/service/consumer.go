@@ -269,7 +269,7 @@ func (s *ConsumerService) GetRequiredPayments(ctx context.Context, id uint) ([]d
 		payouts = append(payouts, payout)
 	}
 
-	if payoutModels[len(payoutModels)-1].CreatedAt.Month() != time.Now().Month() {
+	if len(payoutModels) == 0 || payoutModels[len(payoutModels)-1] .CreatedAt.Month() != time.Now().Month() {
 		payment, err := s.addRequiredPayment(ctx, id)
 		if err != nil {
 			return nil, err
