@@ -18,6 +18,7 @@ export function mapAcceptedLoans(loansFromBack: LoansFromBack[]): Loans[] {
         e.credit_sum) *
       100,
 
+    // (e.credit_sum / e.credit_term) * e.returned_amount * 10,
     FinalPaymentDate: new Date(
       new Date(e.accepted_at).setMonth(
         new Date(e.accepted_at).getMonth() + e.credit_term,

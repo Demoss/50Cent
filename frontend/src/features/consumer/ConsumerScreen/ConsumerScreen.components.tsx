@@ -51,7 +51,9 @@ export const ConsumerScreen = () => {
               </Row>
               <Row>
                 {/* query to the stripe account */}
-                <PageSubtitle>${Balance}</PageSubtitle>
+                <PageSubtitle>
+                  ${Balance ? Math.round(Balance) : 0}
+                </PageSubtitle>
               </Row>
               <Row>
                 <ImgContainer src={diagram} />
@@ -75,7 +77,7 @@ export const ConsumerScreen = () => {
                 </Popover>
               </Row>
               <Row>
-                <PageSubtitle>${payment?.payments}</PageSubtitle>
+                <PageSubtitle>${payment?.payouts[0].Amount}</PageSubtitle>
               </Row>
               <Row>
                 <ImgContainer src={diagram} />

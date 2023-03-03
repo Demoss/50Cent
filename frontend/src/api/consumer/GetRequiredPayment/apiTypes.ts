@@ -1,3 +1,8 @@
 export interface PaymentResponse {
-  payments: number;
+  ID: number;
+  Amount: number;
+}
+
+export interface Payments {
+  payouts: PaymentResponse[];
 }

@@ -1,3 +1,7 @@
+export interface PaymentArr {
+  payouts: PaymentApi[];
+}
 export interface PaymentApi {
-  payments: number;
+  ID: number;
+  Amount: number;
 }
