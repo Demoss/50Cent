@@ -1,12 +1,13 @@
 package domain
 
 type User struct {
-	ID         uint
-	Password   string
-	IsVerified bool
-	Email      string
-	Phone      string
-	Role       string
+	ID           uint
+	Password     string
+	IsVerified   bool
+	Email        string
+	Phone        string
+	Role         string
+	RefreshToken string
 }
 
 type GetMeUser struct {

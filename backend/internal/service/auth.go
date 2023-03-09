@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"image/png"
 	"io"
+	math "math/rand"
 	"net/http"
 	"strconv"
 	"time"
@@ -177,72 +178,104 @@ func (s *AuthService) LoginEmail(ctx context.Context, email string) error {
 	return nil
 }
 
-func (s *AuthService) LoginConfirmPhone(ctx context.Context, email string, code string) (string, error) {
+func (s *AuthService) LoginConfirmPhone(ctx context.Context, email string, code string) (string, string, error) {
 	user, err := s.authRepo.GetUserByEmail(ctx, email)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	if user.HasMFA&models.Phone == 0 {
-		return "", errors.New("this user doesn't have phone authorization method")
+		return "", "", errors.New("this user doesn't have phone authorization method")
 	}
 
 	err = s.verifyCode(ctx, code, user)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	if er := s.resetConfirmationCode(ctx, email); er != nil {
-		return "", er
+		return "", "", er
 	}
 
 	token, err := s.GenerateToken(email, user.ID, user.Role, false)
 	if err != nil {
-		return "", errors.New("failed to generate token")
+		return "", "", errors.New("failed to generate token")
 	}
 
-	return token, nil
+	refresh, err := s.GenerateRefreshToken()
+	if err != nil {
+		return "", "", errors.New("failed to generate refresh token")
+	}
+	user.RefreshToken = refresh
+	err = s.authRepo.Update(ctx, user)
+	if err != nil {
+		return "", "", err
+	}
+	return token, refresh, nil
 }
 
-func (s *AuthService) LoginConfirmEmail(ctx context.Context, email string, code string) (string, error) {
+func (s *AuthService) LoginConfirmEmail(ctx context.Context, email string, code string) (string, string, error) {
 	user, err := s.authRepo.GetUserByEmail(ctx, email)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	if user.HasMFA&models.Email == 0 {
-		return "", errors.New("this user doesn't have email authorization method")
+		return "", "", errors.New("this user doesn't have email authorization method")
 	}
 
 	err = s.verifyCode(ctx, code, user)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	err = s.resetConfirmationCode(ctx, email)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	token, err := s.GenerateToken(email, user.ID, user.Role, false)
 	if err != nil {
-		return "", errors.New("failed to generate token")
+		return "", "", errors.New("failed to generate token")
 	}
-
-	return token, nil
+	refresh, err := s.GenerateRefreshToken()
+	if err != nil {
+		return "", "", errors.New("failed to generate refresh token")
+	}
+	user.RefreshToken = refresh
+	err = s.authRepo.Update(ctx, user)
+	if err != nil {
+		return "", "", err
+	}
+	return token, refresh, nil
 }
 
-func (s *AuthService) LoginConfirmOTP(ctx context.Context, email string, userID uint, role string, code string) (string, error) {
+func (s *AuthService) LoginConfirmOTP(ctx context.Context, email string, userID uint, role string, code string) (string, string, error) {
 	if err := s.checkOTP(ctx, email, code); err != nil {
-		return "", err
+		return "", "", err
 	}
 
+	user, err := s.authRepo.GetUserByEmail(ctx, email)
+	if err != nil {
+		return "", "", err
+	}
 	token, err := s.GenerateToken(email, userID, role, false)
 	if err != nil {
-		return "", errors.New("failed to generate token")
-	}
+		return "", "", errors.New("failed to generate token")
 
-	return token, nil
+	}
+	refresh, err := s.GenerateRefreshToken()
+	if err != nil {
+		return "", "", errors.New("failed to generate refresh token")
+	}
+	user.RefreshToken = refresh
+	err = s.authRepo.Update(ctx, user)
+	if err != nil {
+		return "", "", err
+	}
+	return token, refresh, nil
+
+	return token, refresh, nil
 }
 
 func (s *AuthService) GenerateToken(email string, userID uint, role string, isTemporary bool) (string, error) {
@@ -273,6 +306,29 @@ func (s *AuthService) GenerateToken(email string, userID uint, role string, isTe
 	return tokenString, nil
 }
 
+func (s *AuthService) GenerateRefreshToken() (string, error) {
+	b := make([]byte, 32)
+	salt := math.NewSource(time.Now().Unix())
+	res := math.New(salt)
+	_, err := res.Read(b)
+	if err != nil {
+		return "", err
+	}
+	return fmt.Sprintf("%x", b), nil
+}
+
+func (s *AuthService) RefreshTokens(user *domain.User) (string, string, error) {
+	token, err := s.GenerateToken(user.Email, user.ID, user.Role, false)
+	if err != nil {
+		return "", "", err
+	}
+	refresh, err := s.GenerateRefreshToken()
+	if err != nil {
+		return "", "", err
+	}
+	return token, refresh, nil
+}
+
 func (s *AuthService) ParseToken(tokenString string) (tok string, userID uint, role string, isTemporary bool, err error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -292,7 +348,6 @@ func (s *AuthService) ParseToken(tokenString string) (tok string, userID uint, r
 
 		return claims["email"].(string), userID, claims["role"].(string), claims["isTemporary"].(bool), nil
 	}
-
 	return "", 0, "", false, fmt.Errorf("token is not valid")
 }
 

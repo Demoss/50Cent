@@ -78,6 +78,7 @@ func (h *Controller) InitRouter(port string) error {
 	auth.POST("/reset/confirm", h.confirmReset)
 	auth.POST("/reset/change", h.changePassword)
 	auth.GET("/me", h.AuthMiddleware, h.getMe)
+	auth.POST("/refresh", h.AuthMiddleware, h.RefreshToken)
 
 	admin := gr.Group("/admin")
 	// endpoints for admin auth

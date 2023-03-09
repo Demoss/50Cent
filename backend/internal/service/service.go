@@ -16,14 +16,16 @@ type Auth interface {
 	Registration(ctx context.Context, user *domain.User) (uint, error)
 	Confirm(ctx context.Context, email string, code string) error
 	GenerateToken(email string, userID uint, role string, isTemporary bool) (string, error)
+	RefreshTokens(user *domain.User) (string, string, error)
+	GenerateRefreshToken() (string, error)
 	ParseToken(token string) (string, uint, string, bool, error)
 	Login(ctx context.Context, email string, password string) (string, []string, error)
 	ExternalLogin(ctx context.Context, email string) (string, []string, error)
 	LoginPhone(ctx context.Context, email string) error
 	LoginEmail(ctx context.Context, email string) error
-	LoginConfirmPhone(ctx context.Context, email string, code string) (string, error)
-	LoginConfirmEmail(ctx context.Context, email string, code string) (string, error)
-	LoginConfirmOTP(ctx context.Context, email string, userID uint, role string, code string) (string, error)
+	LoginConfirmPhone(ctx context.Context, email string, code string) (string, string, error)
+	LoginConfirmEmail(ctx context.Context, email string, code string) (string, string, error)
+	LoginConfirmOTP(ctx context.Context, email string, userID uint, role string, code string) (string, string, error)
 	UpdatePassword(ctx context.Context, email, password string) error
 	GetUserByID(ctx context.Context, userID uint) (*domain.User, error)
 	GetUserByEmail(ctx context.Context, email string) (*domain.User, error)

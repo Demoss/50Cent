@@ -16,7 +16,6 @@ export const useCurrentUser = (
     },
     options,
   );
-
   return {
     currentUser: data?.data,
     ...rest,

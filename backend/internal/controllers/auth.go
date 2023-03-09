@@ -390,14 +390,15 @@ func (h *Controller) loginConfirmPhone(c *gin.Context) {
 		return
 	}
 
-	token, err := h.services.Auth.LoginConfirmPhone(c, user.Email, input.Code)
+	token, refresh, err := h.services.Auth.LoginConfirmPhone(c, user.Email, input.Code)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	c.JSON(http.StatusOK, LoginConfirmResponse{
-		Token: token,
+		Token:   token,
+		Refresh: refresh,
 	})
 }
 
@@ -426,14 +427,15 @@ func (h *Controller) loginConfirmEmail(c *gin.Context) {
 		return
 	}
 
-	token, err := h.services.Auth.LoginConfirmEmail(c, user.Email, input.Code)
+	token, refresh, err := h.services.Auth.LoginConfirmEmail(c, user.Email, input.Code)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	c.JSON(http.StatusOK, LoginConfirmResponse{
-		Token: token,
+		Token:   token,
+		Refresh: refresh,
 	})
 }
 
@@ -461,14 +463,30 @@ func (h *Controller) loginConfirmOTP(c *gin.Context) {
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 	}
 
-	token, err := h.services.Auth.LoginConfirmOTP(c, user.Email, user.ID, user.Role, input.Code)
+	token, refresh, err := h.services.Auth.LoginConfirmOTP(c, user.Email, user.ID, user.Role, input.Code)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	c.JSON(http.StatusOK, LoginConfirmResponse{
-		Token: token,
+		Token:   token,
+		Refresh: refresh,
+	})
+}
+func (h *Controller) RefreshToken(c *gin.Context) {
+	user, err := h.GetUser(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, err.Error())
+		return
+	}
+	token, refresh, err := h.services.Auth.RefreshTokens(user)
+	if err != nil {
+		return
+	}
+	c.JSON(http.StatusOK, LoginConfirmResponse{
+		Token:   token,
+		Refresh: refresh,
 	})
 }
 
