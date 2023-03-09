@@ -74,7 +74,7 @@ func (r *LoanRepository) GetAcceptedLoan(ctx context.Context, consumerID uint) (
 		return nil, err
 	}
 
-	return &loans, err
+	return &loans, nil
 }
 
 func (r *LoanRepository) GetUnOfferedLoansByConsumerID(ctx context.Context, consumerID uint) (*[]models.Loan, error) {

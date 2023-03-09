@@ -77,7 +77,12 @@ export const ConsumerScreen = () => {
                 </Popover>
               </Row>
               <Row>
-                <PageSubtitle>${payment?.payouts[0].Amount}</PageSubtitle>
+                <PageSubtitle>
+                  $
+                  {payment?.payouts[2].Amount
+                    ? Math.round(payment?.payouts[2].Amount)
+                    : 0}
+                </PageSubtitle>
               </Row>
               <Row>
                 <ImgContainer src={diagram} />
