@@ -15,4 +15,4 @@ services:
     environment:
       POSTGRES_PASSWORD: "qwerty"
     ports:
-      - "5433:5432"
+      - "5436:5432"
