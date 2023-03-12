@@ -18,7 +18,7 @@ auth:
   confirmationCode:
     expire: 3600
 
-awsS3:
+
   awsAccessKeyId: 'awsAccessKeyId'
   awsSecretAccessKey: 'awsSecretAccessKey'
   awsRegion: 'awsRegion'
@@ -41,3 +41,4 @@ stripe:
   paymentSuccessURL: 'http://localhost:3000/obtain?type=success'
   paymentCancelURL: 'http://localhost:3000/obtain?type=error'
   webhookKey: 'webhookKey'
+
