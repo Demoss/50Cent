@@ -274,8 +274,6 @@ func (s *AuthService) LoginConfirmOTP(ctx context.Context, email string, userID 
 		return "", "", err
 	}
 	return token, refresh, nil
-
-	return token, refresh, nil
 }
 
 func (s *AuthService) GenerateToken(email string, userID uint, role string, isTemporary bool) (string, error) {
@@ -317,12 +315,18 @@ func (s *AuthService) GenerateRefreshToken() (string, error) {
 	return fmt.Sprintf("%x", b), nil
 }
 
-func (s *AuthService) RefreshTokens(user *domain.User) (string, string, error) {
+func (s *AuthService) RefreshTokens(ctx context.Context, input string) (string, string, error) {
+	user, err := s.authRepo.GetUserByRefreshToken(ctx, input)
+	if err != nil {
+		return "", "", err
+	}
 	token, err := s.GenerateToken(user.Email, user.ID, user.Role, false)
 	if err != nil {
 		return "", "", err
 	}
 	refresh, err := s.GenerateRefreshToken()
+	user.RefreshToken = refresh
+	err = s.authRepo.Update(ctx, user)
 	if err != nil {
 		return "", "", err
 	}

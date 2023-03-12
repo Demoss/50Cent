@@ -474,14 +474,16 @@ func (h *Controller) loginConfirmOTP(c *gin.Context) {
 		Refresh: refresh,
 	})
 }
+
 func (h *Controller) RefreshToken(c *gin.Context) {
-	user, err := h.GetUser(c)
-	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, err.Error())
+	var input command.RefreshToken
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Invalid refresh token")
 		return
 	}
-	token, refresh, err := h.services.Auth.RefreshTokens(user)
+	token, refresh, err := h.services.Auth.RefreshTokens(c, input.RefreshToken)
 	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, "internal server error")
 		return
 	}
 	c.JSON(http.StatusOK, LoginConfirmResponse{

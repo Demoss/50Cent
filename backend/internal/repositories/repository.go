@@ -18,6 +18,7 @@ type Auth interface {
 	Create(ctx context.Context, user *models.User) (uint, error)
 	GetUserByID(ctx context.Context, userID uint) (*models.User, error)
 	GetUserByEmail(ctx context.Context, email string) (*models.User, error)
+	GetUserByRefreshToken(ctx context.Context, token string) (*models.User, error)
 	Update(ctx context.Context, user *models.User) error
 
 	// admin functionality

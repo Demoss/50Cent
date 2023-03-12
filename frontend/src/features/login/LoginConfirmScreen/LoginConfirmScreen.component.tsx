@@ -32,7 +32,7 @@ export const LoginConfirmScreen = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const type = searchParams.get('type');
-  const [isLoging, setIsLoging] = useState(false);
+  const [isLogging, setIsLogging] = useState(false);
   const antIcon = (
     <LoadingOutlined style={{ fontSize: 24, color: 'white' }} spin />
   );
@@ -45,7 +45,7 @@ export const LoginConfirmScreen = () => {
     validateOnChange: false,
     async onSubmit(values) {
       try {
-        setIsLoging(true);
+        setIsLogging(true);
 
         const method =
           type === 'email'
@@ -58,7 +58,8 @@ export const LoginConfirmScreen = () => {
         const token: LoginConfirmToken = jwt_decode(response.token);
         message.success('Code sent');
         await appStorage.setApiKey(response.token);
-
+        await appStorage.setExpirationTimeApiKey(token.exp)
+        await appStorage.setRefreshToken(response.refresh)
         if (token.role === 'investor') {
           const investor = await Api.getCurrentInvestor();
 
@@ -95,7 +96,7 @@ export const LoginConfirmScreen = () => {
       } catch (e) {
         message.error('Code is incorrect');
       } finally {
-        setIsLoging(false);
+        setIsLogging(false);
       }
     },
   });
@@ -119,7 +120,7 @@ export const LoginConfirmScreen = () => {
         </Form.Item>
         <Form.Item>
           <RedButton type="submit">
-            {isLoging ? <Spin indicator={antIcon} /> : 'Continue'}
+            {isLogging ? <Spin indicator={antIcon} /> : 'Continue'}
           </RedButton>
         </Form.Item>
       </form>

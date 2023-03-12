@@ -16,7 +16,7 @@ type Auth interface {
 	Registration(ctx context.Context, user *domain.User) (uint, error)
 	Confirm(ctx context.Context, email string, code string) error
 	GenerateToken(email string, userID uint, role string, isTemporary bool) (string, error)
-	RefreshTokens(user *domain.User) (string, string, error)
+	RefreshTokens(ctx context.Context, token string) (string, string, error)
 	GenerateRefreshToken() (string, error)
 	ParseToken(token string) (string, uint, string, bool, error)
 	Login(ctx context.Context, email string, password string) (string, []string, error)
