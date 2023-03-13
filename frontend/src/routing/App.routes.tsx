@@ -11,6 +11,7 @@ import { AdminRoutes } from '@/features/admin/Admin.routes';
 import { CreditRoutes } from '@/features/credit';
 import ProtectedRoute from '@/routing/protected.Routes';
 import { LoginRoutes } from '@/features/login/Login.routes';
+import React from "react";
 
 export function AppRoutes() {
   return (
