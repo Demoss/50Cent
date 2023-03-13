@@ -1,7 +1,5 @@
-
-import {RefreshResponse} from "./apiTypes";
+import {RefreshResponse, RefreshRequest} from "./apiTypes";
 import {RefreshRequestApi, RefreshResponseApi} from "./apiTypes.server";
-import {RefreshRequest} from "./apiTypes";
 
 export function mapRequest(
     request: RefreshRequestApi,
