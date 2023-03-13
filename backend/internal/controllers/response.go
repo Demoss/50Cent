@@ -30,7 +30,8 @@ type LoginResponse struct {
 }
 
 type LoginConfirmResponse struct {
-	Token string `json:"token"`
+	Token   string `json:"token"`
+	Refresh string `json:"refresh"`
 }
 
 type addPaymentResponse struct {
@@ -90,7 +91,7 @@ type currentInvestorResponse struct {
 	UserEmail   string  `json:"UserEmail"`
 	Balance     float64 `json:"Balance"`
 	Role        string  `json:"Role"`
-	IsConfirmed  bool    `json:"IsConfirmed"`
+	IsConfirmed bool    `json:"IsConfirmed"`
 }
 
 type currentConsumerResponse struct {
@@ -101,5 +102,5 @@ type currentConsumerResponse struct {
 	UserEmail   string  `json:"UserEmail"`
 	Balance     float64 `json:"Balance"`
 	Role        string  `json:"Role"`
-	IsConfirmed  bool    `json:"IsConfirmed"`
+	IsConfirmed bool    `json:"IsConfirmed"`
 }

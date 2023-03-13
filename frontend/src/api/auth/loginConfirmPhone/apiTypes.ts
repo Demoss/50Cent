@@ -4,4 +4,5 @@ export interface LoginConfirmPhoneRequest {
 
 export interface LoginConfirmPhoneResponse {
   token: string;
+  refresh: string;
 }

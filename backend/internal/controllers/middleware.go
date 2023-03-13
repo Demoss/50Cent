@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 	"strings"
@@ -25,6 +26,9 @@ func (h *Controller) AuthMiddleware(c *gin.Context) {
 	}
 
 	email, userID, role, isTemporary, err := h.services.Auth.ParseToken(headerParts[1])
+	if err == errors.New("token is not valid") {
+		h.RefreshToken(c)
+	}
 	if err != nil {
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return

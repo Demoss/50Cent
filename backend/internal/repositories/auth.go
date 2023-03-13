@@ -31,6 +31,16 @@ func (r *AuthRepository) GetUserByID(ctx context.Context, userID uint) (*models.
 
 	return &user, nil
 }
+func (r *AuthRepository) GetUserByRefreshToken(ctx context.Context, token string) (*models.User, error) {
+	var user models.User
+
+	err := r.db.WithContext(ctx).Where("refresh_token = ?", token).First(&user).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
 
 func (r *AuthRepository) GetUserByEmail(ctx context.Context, email string) (*models.User, error) {
 	var user models.User

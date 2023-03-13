@@ -4,4 +4,5 @@ export interface LoginConfirmEmailRequestApi {
 
 export interface LoginConfirmEmailResponseApi {
   token: string;
+  refresh: string;
 }

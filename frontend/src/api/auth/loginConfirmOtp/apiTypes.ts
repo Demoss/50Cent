@@ -4,4 +4,5 @@ export interface LoginConfirmOtpRequest {
 
 export interface LoginConfirmOtpResponse {
   token: string;
+  refresh: string;
 }
