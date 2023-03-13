@@ -8,7 +8,8 @@ import {
   InvestmentsContainer,
   InvestorHomeContainer,
   SubTitleContainer,
-  TitleContainer
+  TitleContainer,
+  NavLinkStyled,
 } from './InvestorScreen.styles';
 
 export function InvestorScreen() {
