@@ -454,23 +454,25 @@ func (s *LoanService) GetAcceptedLoan(ctx context.Context, consumerID uint) (*[]
 	return &loans, err
 }
 
-func (s *LoanService) GetCounterOfferedLoans(ctx context.Context) (*[]domain.CounterOffers, error) {
-	allCounterOffers, err := s.loanRepo.GetAllCounterOffers(ctx)
+func (s *LoanService) GetCounterOfferedLoans(ctx context.Context, consumerID uint) (*[]domain.CounterOffers, error) {
+	allCounterOffers, err := s.loanRepo.GetAllCounterOffersByConsumerID(ctx, consumerID)
 	if err != nil {
 		return nil, err
 	}
 
-	offeredLoans := make([]domain.CounterOffers, 100)
+	offeredLoans := make([]domain.CounterOffers, len(*allCounterOffers))
 
 	for i, modelItem := range *allCounterOffers {
+
 		offeredLoans[i].ID = modelItem.ID
-		offeredLoans[i].ConsumerID = modelItem.Loan.ConsumerID
-		offeredLoans[i].CreditSum = modelItem.Loan.CreditSum
-		offeredLoans[i].CreditTitle = modelItem.Loan.CreditTitle
-		offeredLoans[i].CreditNewRate = modelItem.CreditRate
-		offeredLoans[i].CreditRate = modelItem.Loan.CreditRate
-		offeredLoans[i].CreditNewTerm = modelItem.CreditTerm
-		offeredLoans[i].CreditTerm = modelItem.Loan.CreditTerm
+		
+		offeredLoans[i].CreditSum = modelItem.CreditSum
+		offeredLoans[i].CreditTitle = modelItem.CreditTitle
+		// offeredLoans[i].CreditNewRate = modelItem.CreditRate
+		offeredLoans[i].CreditRate = modelItem.CreditRate
+		// offeredLoans[i].CreditNewTerm = modelItem.CreditTerm
+		offeredLoans[i].CreditTerm = modelItem.CreditTerm
+		// offeredLoans[i].LoanID = modelItem.LoanID
 	}
 
 	return &offeredLoans, err

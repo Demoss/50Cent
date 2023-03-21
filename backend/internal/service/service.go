@@ -61,7 +61,7 @@ type Loan interface {
 	CounterofferAccept(ctx context.Context, consumerID, offerID uint) error
 	CounterofferReject(ctx context.Context, offerID, consumerID uint) error
 	GetAllCounteroffers(ctx context.Context, loanID uint) ([]domain.LoanCounteroffer, error)
-	GetCounterOfferedLoans(ctx context.Context) (*[]domain.CounterOffers, error)
+	GetCounterOfferedLoans(ctx context.Context, consumerID uint) (*[]domain.CounterOffers, error)
 	GetAllUnofferedLoans(ctx context.Context, consumerID uint) (*[]domain.Loan, error)
 	GetLoansByInvestor(ctx context.Context, id uint64) ([]domain.LoanWithConsumer, error)
 }

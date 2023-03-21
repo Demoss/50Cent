@@ -88,10 +88,18 @@ func (r *LoanRepository) GetUnOfferedLoansByConsumerID(ctx context.Context, cons
 	return &loans, err
 }
 
-func (r *LoanRepository) GetAllCounterOffers(ctx context.Context) (*[]models.LoanCounteroffer, error) {
-	var counterLoans []models.LoanCounteroffer
+func (r *LoanRepository) GetAllCounterOffersByConsumerID(ctx context.Context, consumerID uint) (*[]models.LoanCounterofferDetails, error) {
 
-	err := r.db.WithContext(ctx).Find(&counterLoans).Error
+	var loans []models.Loan
+	var counterLoans []models.LoanCounterofferDetails
+	
+	// db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
+
+	// err := r.db.WithContext(ctx).Model(&loans).Select("loans.credit_title, loan_counteroffers.loan_id, loans.consumer_id, loan_counteroffers.credit_term, loan_counteroffers.credit_rate").Joins("left join loan_counteroffers on loan_counteroffers.loan_id = loans.id").Where("consumer_id = ?", consumerID).Scan(&counterLoans).Error
+
+	err := r.db.WithContext(ctx).Model(&loans).Where("consumer_id = ?", consumerID).Joins("LEFT JOIN loan_counteroffers ON loans.id = loan_counteroffers.loan_id").
+	Select("loans.id, loans.credit_sum, loans.credit_title, loans.credit_term, loans.credit_rate, loans.investor_id, loan_counteroffers.credit_term, loan_counteroffers.credit_rate").
+	Scan(&counterLoans).Error
 	if err != nil {
 		return nil, err
 	}
