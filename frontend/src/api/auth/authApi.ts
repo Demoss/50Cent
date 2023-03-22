@@ -14,6 +14,7 @@ import { facebookSignup } from './facebookSignup';
 import { githubSignup } from './githubSignup';
 import { confirmRegistration } from './confirm';
 import { addPaymentComplete } from './addPaymentComplete';
+import {refresh} from "@/api/auth/refresh";
 
 export function createAuthApi(getApi: GetApiFunc) {
   return {
@@ -32,5 +33,6 @@ export function createAuthApi(getApi: GetApiFunc) {
     githubSignup: makeEndpoint(githubSignup, getApi),
     confirmRegistration: makeEndpoint(confirmRegistration, getApi),
     addPaymentComplete: makeEndpoint(addPaymentComplete, getApi),
+    refresh: makeEndpoint(refresh,getApi)
   };
 }

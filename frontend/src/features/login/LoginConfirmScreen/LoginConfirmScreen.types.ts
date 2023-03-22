@@ -4,7 +4,7 @@ export interface LoginConfirmForm {
 
 export interface LoginConfirmToken {
   email: string;
-  exp: number;
+  exp: string;
   isTemporary: boolean;
   role: string;
   userID: number;

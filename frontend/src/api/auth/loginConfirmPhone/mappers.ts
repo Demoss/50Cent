@@ -20,5 +20,6 @@ export function mapResponse(
 ): LoginConfirmPhoneResponse {
   return {
     token: responseApi.token,
+    refresh: responseApi.refresh
   };
 }

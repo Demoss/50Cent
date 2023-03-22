@@ -17,5 +17,6 @@ export function mapResponse(
 ): LoginConfirmOtpResponse {
   return {
     token: responseApi.token,
+    refresh: responseApi.refresh
   };
 }

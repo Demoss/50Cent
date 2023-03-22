@@ -20,5 +20,6 @@ export function mapResponse(
 ): LoginConfirmEmailResponse {
   return {
     token: responseApi.token,
+    refresh: responseApi.refresh
   };
 }

@@ -8,3 +8,7 @@ type Login struct {
 type LoginConfirm struct {
 	Code string `json:"code" binding:"required"`
 }
+
+type RefreshToken struct {
+	RefreshToken string `json:"refresh_token"`
+}

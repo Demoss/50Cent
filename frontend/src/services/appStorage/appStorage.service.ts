@@ -1,5 +1,7 @@
 export type AppStorageSchema = {
   apiToken?: string;
+  apiRefresh?: string;
+  apiExpiration?: string;
 };
 
 class AppStorage {
@@ -21,9 +23,20 @@ class AppStorage {
   async getApiToken(): Promise<string> {
     return (await this.get('apiToken')) || '';
   }
-
+  async getApiRefresh(): Promise<string> {
+    return (await this.get('apiRefresh')) || '';
+  }
+  async getApiExpiration(): Promise<string>{
+    return (await this.get('apiExpiration')) || '';
+  }
   async setApiKey(apiToken: string) {
     return await this.set('apiToken', apiToken);
+  }
+  async setRefreshToken(apiRefresh: string) {
+    return await this.set('apiRefresh', apiRefresh);
+  }
+  async setExpirationTimeApiKey(Expiration: string) {
+    return await this.set('apiExpiration', Expiration);
   }
 }
 
