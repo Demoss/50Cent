@@ -464,13 +464,14 @@ func (s *LoanService) GetCounterOfferedLoans(ctx context.Context, consumerID uin
 
 	for i, modelItem := range *allCounterOffers {
 
+		offeredLoans[i].ID = modelItem.ID
 		offeredLoans[i].CreditSum = modelItem.CreditSum
 		offeredLoans[i].CreditTitle = modelItem.CreditTitle
 		offeredLoans[i].CreditRate = modelItem.CreditRate
 		offeredLoans[i].CreditNewRate = modelItem.NewCreditRate
 		offeredLoans[i].CreditTerm = modelItem.CreditTerm
 		offeredLoans[i].CreditNewTerm = modelItem.NewCreditTerm
-		// offeredLoans[i].LoanID = modelItem.LoanID
+		
 	}
 
 	return &offeredLoans, err

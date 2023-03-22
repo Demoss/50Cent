@@ -95,7 +95,7 @@ func (r *LoanRepository) GetAllCounterOffersByConsumerID(ctx context.Context, co
 
 
 	err := r.db.WithContext(ctx).Model(&loans).Where("consumer_id = ?", consumerID).Joins("JOIN loan_counteroffers ON loans.id = loan_counteroffers.loan_id").
-	Select("loans.credit_title, loans.credit_sum, loans.credit_term, loans.credit_rate, loan_counteroffers.credit_term as new_credit_term, loan_counteroffers.credit_rate as new_credit_rate").
+	Select("loans.id, loans.credit_title, loans.credit_sum, loans.credit_term, loans.credit_rate, loan_counteroffers.credit_term as new_credit_term, loan_counteroffers.credit_rate as new_credit_rate").
 	Scan(&counterLoans).Error
 	if err != nil {
 		return nil, err

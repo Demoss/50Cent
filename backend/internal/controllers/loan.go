@@ -275,7 +275,7 @@ func (h *Controller) getContrOffersByConsumer(c *gin.Context) {
 	loans := make([]query.GetContrOffersResponse, len(*offeredLoans))
 
 	for i, currentOfferedLoan := range *offeredLoans {
-		
+		loans[i].ID = currentOfferedLoan.ID
 		loans[i].CreditTitle = currentOfferedLoan.CreditTitle
 		loans[i].CreditSum = currentOfferedLoan.CreditSum
 		loans[i].CreditRate = currentOfferedLoan.CreditRate
