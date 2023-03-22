@@ -28,9 +28,9 @@ type CounterOffers struct {
 	CreditSum     float64
 	CreditTitle   string
 	CreditRate    float64
-	// CreditNewRate float64
+	CreditNewRate float64
 	CreditTerm    uint
-	// CreditNewTerm uint
+	CreditNewTerm uint
 	LoanID uint
 }
 

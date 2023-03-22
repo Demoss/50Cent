@@ -272,21 +272,16 @@ func (h *Controller) getContrOffersByConsumer(c *gin.Context) {
 		return
 	}
 
-	loans := make([]query.GetContrOffersResponse, 0, len(*offeredLoans))
+	loans := make([]query.GetContrOffersResponse, len(*offeredLoans))
 
 	for i, currentOfferedLoan := range *offeredLoans {
-		if currentOfferedLoan.ConsumerID != consumerID {
-			continue
-		}
-
-		loans[i].ID = currentOfferedLoan.LoanID
+		
 		loans[i].CreditTitle = currentOfferedLoan.CreditTitle
-		// loans[i].CreditSum = currentOfferedLoan.CreditSum
+		loans[i].CreditSum = currentOfferedLoan.CreditSum
 		loans[i].CreditRate = currentOfferedLoan.CreditRate
-		// loans[i].CreditNewRate = currentOfferedLoan.CreditNewRate
+		loans[i].CreditNewRate = currentOfferedLoan.CreditNewRate
 		loans[i].CreditTerm = currentOfferedLoan.CreditTerm
-		// loans[i].CreditNewTerm = currentOfferedLoan.CreditNewTerm
-		loans[i].LoanID = currentOfferedLoan.LoanID
+		loans[i].CreditNewTerm = currentOfferedLoan.CreditNewTerm
 	}
 
 	c.JSON(http.StatusOK, loans)
