@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"mime/multipart"
-	"time"
 
 	"50Cent/backend/config"
 	"50Cent/backend/internal/constants"
@@ -269,14 +268,14 @@ func (s *ConsumerService) GetRequiredPayments(ctx context.Context, id uint) ([]d
 		payouts = append(payouts, payout)
 	}
 
-	if payoutModels[len(payoutModels)-1].CreatedAt.Month() != time.Now().Month() {
-		payment, err := s.addRequiredPayment(ctx, id)
-		if err != nil {
-			return nil, err
-		}
+	// if len(payoutModels) != 0 || payoutModels[len(payoutModels)-1] .CreatedAt.Month() == time.Now().Month() {
+	// 	payment, err := s.addRequiredPayment(ctx, id)
+	// 	if err != nil {
+	// 		return nil, err
+	// 	}
 
-		payouts = append(payouts, *payment)
-	}
+	// 	payouts = append(payouts, *payment)
+	// }
 
 	return payouts, nil
 }
@@ -290,10 +289,10 @@ func (s *ConsumerService) addRequiredPayment(ctx context.Context, id uint) (*dom
 	var amount float64
 
 	for _, loan := range loans {
-		now := time.Now()
-		if (loan.AcceptedAt.Year()-now.Year())*12+int(now.Month()-loan.AcceptedAt.Month())-int(loan.ReturnedAmount) > 0 {
+		// now := time.Now()
+		
 			amount += loan.CreditSum / float64(loan.CreditTerm)
-		}
+		
 	}
 
 	payment := models.Payout{

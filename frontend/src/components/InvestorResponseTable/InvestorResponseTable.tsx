@@ -107,7 +107,7 @@ export const InvestorResponse: React.FC = () => {
       />
       <ColumnGroup title="Interest rate">
         <Column
-          title="Your rate"
+          title="Yours"
           dataIndex="CreditRate"
           key="CreditRate"
           width="7%"
@@ -127,7 +127,7 @@ export const InvestorResponse: React.FC = () => {
       </ColumnGroup>
       <ColumnGroup title="Loan term">
         <Column
-          title="Your term"
+          title="Yours"
           dataIndex="CreditTerm"
           key="CreditTerm"
           width="7%"
@@ -147,7 +147,7 @@ export const InvestorResponse: React.FC = () => {
       </ColumnGroup>
       <ColumnGroup title="The entire loan repayment amount">
         <Column
-          title="On your cond."
+          title="Actual"
           dataIndex="TotalSum"
           key="TotalSum"
           width="9%"
@@ -156,7 +156,7 @@ export const InvestorResponse: React.FC = () => {
           }}
         />
         <Column
-          title="Accord. to offer"
+          title="Due to offer"
           dataIndex="TotalNewSum"
           key="TotalNewSum"
           width="9%"
@@ -167,7 +167,7 @@ export const InvestorResponse: React.FC = () => {
       </ColumnGroup>
       <ColumnGroup title="Monthly payment">
         <Column
-          title="On your cond."
+          title="Actual"
           dataIndex="MonthlyPayment"
           key="MonthlyPayment"
           width="9%"
@@ -176,7 +176,7 @@ export const InvestorResponse: React.FC = () => {
           }}
         />
         <Column
-          title="Accord. to offer"
+          title="Due to offer"
           dataIndex="NewMonthlyPayment"
           key="NewMonthlyPayment"
           width="9%"
@@ -186,18 +186,20 @@ export const InvestorResponse: React.FC = () => {
         />
       </ColumnGroup>
       <Column
-        title="Actiona"
+        title="Actions"
         dataIndex="creditTotalPayment"
         key="creditTotalPayment"
         width="9%"
         render={(_, record: CounterOffers) => (
           <>
-            <button
+            <Button
+              type="primary"
+              ghost
               onClick={showModalAccept(record)}
-              style={{ color: 'green' }}
+              style={{ width: '75px', marginBottom: '5px' }}
             >
               Accept
-            </button>
+            </Button>
             <Modal
               visible={visibleModalAccept}
               title="Congirm action"
@@ -238,9 +240,15 @@ export const InvestorResponse: React.FC = () => {
               </Form>
             </Modal>
             <Divider type="vertical" />
-            <button onClick={showModalDenied(record)} style={{ color: 'red' }}>
+            <Button
+              type="primary"
+              danger
+              ghost
+              onClick={showModalDenied(record)}
+              style={{ width: '75px' }}
+            >
               Reject
-            </button>
+            </Button>
             <Modal
               visible={visibleModalDenied}
               onCancel={handleCancel}

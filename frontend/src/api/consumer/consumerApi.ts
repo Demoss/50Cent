@@ -9,6 +9,7 @@ import { updateConsumer } from './UpdateConsumer/UpdateConsumer';
 import { getConsumerInfo } from './GetConsumerInfo/getConsumerInfo';
 import { getCurrentConsumer } from './GetCurrentConsumer/getCurrentConsumer';
 import { registerStripe } from './RegisterStripe/registerStripe';
+import { getRequiredPayment } from './GetRequiredPayment';
 
 export function createConsumerApi(getApi: GetApiFunc) {
   return {
@@ -17,6 +18,7 @@ export function createConsumerApi(getApi: GetApiFunc) {
     getConsumerInfo: makeEndpoint(getConsumerInfo, getApi),
     registerStripe: makeEndpoint(registerStripe, getApi),
     getCurrentConsumer: makeEndpoint(getCurrentConsumer, getApi),
+    getRequiredPayment: makeEndpoint(getRequiredPayment, getApi),
   };
 }
 export function createAcceptedLoanApi(getApi: GetApiFunc) {

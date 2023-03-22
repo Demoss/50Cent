@@ -13,7 +13,7 @@ export const rejectOfferApi = async (
     AxiosResponse<RejectOfferResponseApi>
   >({
     method: 'post',
-    url: `/counteroffers/${requestApi.id}/reject`,
+    url: `/loans/counteroffers/${requestApi.id}/reject`,
   });
 
   return data;

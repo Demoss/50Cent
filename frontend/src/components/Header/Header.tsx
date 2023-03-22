@@ -34,13 +34,8 @@ const HeaderComponent: FC = () => {
     navigate(`/consumer/update/${consumer.ID}`);
   };
 
-  const onGoHome = () => {
-    const decodedToken = jwt_decode<LoginConfirmToken>(
-      localStorage.getItem('apiToken') || '',
-    ).role;
-
-    navigate(`/${decodedToken}`);
-  };
+  const getRoleFromToken = () =>
+    jwt_decode<LoginConfirmToken>(localStorage.getItem('apiToken') || '').role;
 
   const logButton = () => {
     return currentUser ? (
@@ -83,7 +78,10 @@ const HeaderComponent: FC = () => {
       <Row>
         <Col span={12} className="logo-container">
           <Row align="middle">
-            <LogoHomeButton type="button" onClick={onGoHome}>
+            <LogoHomeButton
+              type="button"
+              onClick={() => navigate(getRoleFromToken())}
+            >
               <ImgContainer
                 src={logo}
                 alt="logo"

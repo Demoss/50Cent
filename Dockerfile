@@ -8,5 +8,5 @@ RUN go build -o back cmd/main.go
 FROM alpine:3.16
 WORKDIR /docker
 COPY --from=builder /docker/back .
-COPY /backend/config/config.yml /docker/config/config.yml
+COPY /backend/config/config.dev.yml /docker/config/config.yml
 CMD ["./back"]

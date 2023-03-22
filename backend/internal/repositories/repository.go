@@ -46,8 +46,9 @@ type Loan interface {
 	GetLoanByConsumerID(ctx context.Context, consumerID uint) (*models.Loan, error)
 	GetAcceptedLoan(ctx context.Context, consumerID uint) (*[]models.Loan, error)
 	GetUnOfferedLoansByConsumerID(ctx context.Context, consumerID uint) (*[]models.Loan, error)
-	GetAllCounterOffers(ctx context.Context) (*[]models.LoanCounteroffer, error)
+	GetAllCounterOffersByConsumerID(ctx context.Context, consumerID uint) (*[]models.LoanCounterofferDetails, error)
 	GetAllByInvestorIDWithConsumer(ctx context.Context, id uint) ([]models.GetLoanByInvestorID, error)
+
 }
 
 type Consumer interface {

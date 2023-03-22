@@ -31,6 +31,7 @@ type CounterOffers struct {
 	CreditNewRate float64
 	CreditTerm    uint
 	CreditNewTerm uint
+	LoanID uint
 }
 
 type LoanWithConsumer struct {

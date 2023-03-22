@@ -1,6 +1,8 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type LoanCounteroffer struct {
 	gorm.Model
@@ -8,4 +10,14 @@ type LoanCounteroffer struct {
 	CreditRate float64 `gorm:"type:float; not null"`
 	LoanID     uint
 	Loan       Loan
+}
+
+type LoanCounterofferDetails struct {
+    ID                uint
+    CreditSum         float64
+    CreditTitle       string
+    CreditTerm        uint
+    CreditRate        float64
+    NewCreditTerm     uint
+    NewCreditRate     float64
 }

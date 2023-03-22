@@ -29,6 +29,7 @@ type GetContrOffersResponse struct {
 	CreditNewRate float64 `json:"credit_new_rate"`
 	CreditTerm    uint    `json:"credit_term"`
 	CreditNewTerm uint    `json:"credit_new_term"`
+	LoanID uint
 }
 type GetAllUnOfferedLoansResponse struct {
 	ID          uint    `json:"ID"`

@@ -225,7 +225,7 @@ func (h *Controller) getAcceptedLoans(c *gin.Context) {
 		return
 	}
 
-	investorsID, err := h.services.Loan.GetInvestorFromLoan(c, acceptedLoans)
+	// investorsID, err := h.services.Loan.GetInvestorFromLoan(c, acceptedLoans)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "didn't find investor's id")
@@ -233,21 +233,30 @@ func (h *Controller) getAcceptedLoans(c *gin.Context) {
 	}
 
 	loans := make([]query.GetConsumerLoansResponse, len(*acceptedLoans))
+	
+	if len(loans) > 0 {
+		
+		for i, currentAcceptedLoan := range *acceptedLoans {
+			loans[i].ID = currentAcceptedLoan.ID
+			loans[i].CreditSum = currentAcceptedLoan.CreditSum
+			loans[i].CreditTerm = currentAcceptedLoan.CreditTerm
+			loans[i].CreditTitle = currentAcceptedLoan.CreditTitle
+			loans[i].ReturnedAmount = currentAcceptedLoan.ReturnedAmount
+			loans[i].AcceptedAt = currentAcceptedLoan.AcceptedAt
 
-	for i, currentAcceptedLoan := range *acceptedLoans {
-		loans[i].ID = currentAcceptedLoan.ID
-		loans[i].CreditSum = currentAcceptedLoan.CreditSum
-		loans[i].CreditTerm = currentAcceptedLoan.CreditTerm
-		loans[i].CreditTitle = currentAcceptedLoan.CreditTitle
-		loans[i].ReturnedAmount = currentAcceptedLoan.ReturnedAmount
-		loans[i].AcceptedAt = currentAcceptedLoan.AcceptedAt
+			loans[i].InvestorID = currentAcceptedLoan.InvestorID
+		}
+	
+		// for _, currentLoanInvestor := range *investorsID {
+			
+		// 	loans[0].InvestorID = currentLoanInvestor
+		// }
+	
+		c.JSON(http.StatusOK, loans)
+
+
 	}
 
-	for _, currentLoanInvestor := range *investorsID {
-		loans[0].InvestorID = currentLoanInvestor
-	}
-
-	c.JSON(http.StatusOK, loans)
 }
 
 func (h *Controller) getContrOffersByConsumer(c *gin.Context) {
@@ -257,19 +266,15 @@ func (h *Controller) getContrOffersByConsumer(c *gin.Context) {
 		return
 	}
 
-	offeredLoans, err := h.services.Loan.GetCounterOfferedLoans(c)
+	offeredLoans, err := h.services.Loan.GetCounterOfferedLoans(c, consumerID)
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "didn't find loan of consumer in counteroffers")
 		return
 	}
 
-	loans := make([]query.GetContrOffersResponse, 0, 100)
+	loans := make([]query.GetContrOffersResponse, len(*offeredLoans))
 
 	for i, currentOfferedLoan := range *offeredLoans {
-		if currentOfferedLoan.ConsumerID != consumerID {
-			continue
-		}
-
 		loans[i].ID = currentOfferedLoan.ID
 		loans[i].CreditTitle = currentOfferedLoan.CreditTitle
 		loans[i].CreditSum = currentOfferedLoan.CreditSum
