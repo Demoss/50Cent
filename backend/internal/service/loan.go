@@ -612,7 +612,7 @@ func (s *LoanService) GetLoansByInvestor(ctx context.Context, id uint64) ([]doma
 			CreditDescription: model.CreditDescription,
 			CreditTerm:        model.CreditTerm,
 			CreditRate:        model.CreditRate,
-			ReturnedAmount:    math.Round(((float64(model.ReturnedAmount)/model.CreditSum)*100)*100) / 100,
+			ReturnedAmount:    math.Round(((float64(model.ReturnedAmount)/model.CreditSum)*100)*100),
 			IsReturned:        model.IsReturned,
 			IsAccepted:        model.IsAccepted,
 			LatestPaymount:    model.AcceptedAt.AddDate(0, int(model.CreditTerm), 0),
