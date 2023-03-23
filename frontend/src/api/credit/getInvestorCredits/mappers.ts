@@ -17,7 +17,7 @@ export function mapResponse(
         IsReturned: el.IsReturned,
         IsAccepted: el.IsAccepted,
         LatestPaymount: `${new Date(el.LatestPaymount).toLocaleDateString(
-          'uk-UA',
+          'en-US',
           { year: 'numeric', month: 'long', day: 'numeric' },
         )}`,
         ConsumerID: el.ConsumerID,

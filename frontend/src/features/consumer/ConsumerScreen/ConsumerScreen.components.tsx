@@ -31,7 +31,7 @@ const { TabPane } = Tabs;
 
 export const ConsumerScreen = () => {
   const navigate = useNavigate();
-  const { Name, Surname, MiddleName, Balance } = useCurrentConsumer();
+  const { Balance } = useCurrentConsumer();
   const { payment } = useRequiredPayment();
 
   const handleClick = () => {
@@ -79,8 +79,10 @@ export const ConsumerScreen = () => {
               <Row>
                 <PageSubtitle>
                   $
-                  {payment?.payouts[2].Amount
-                    ? Math.round(payment?.payouts[2].Amount)
+                  {payment?.payouts.length
+                    ? payment?.payouts[0].Amount
+                      ? Math.round(payment.payouts[0].Amount)
+                      : 0
                     : 0}
                 </PageSubtitle>
               </Row>
