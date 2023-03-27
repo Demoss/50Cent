@@ -80,8 +80,8 @@ export const ConsumerScreen = () => {
                 <PageSubtitle>
                   $
                   {payment?.payouts.length
-                    ? payment?.payouts[0].Amount
-                      ? Math.round(payment.payouts[0].Amount)
+                    ? payment?.payouts[1].Amount
+                      ? Math.round(payment.payouts[1].Amount)
                       : 0
                     : 0}
                 </PageSubtitle>
